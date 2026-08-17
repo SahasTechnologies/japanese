@@ -8,9 +8,15 @@ import STROKES from '../data/kanjivg-strokes.json';
 let selKanji = null;
 let strokeMode = 'watch'; // 'watch' | 'trace'
 
-/** Build meaning quiz questions from kanji pool */
-export function kanjiQs(n) {
-  const pool = shuffle(KANJI).slice(0, n);
+/** Build meaning quiz questions from kanji pool (or learned-only) */
+export function kanjiQs(n, onlyLearned = false) {
+  const P = getState();
+  let source = KANJI;
+  if (onlyLearned) {
+    source = KANJI.filter(k => P.kanjiLearned.includes(k[0]));
+    if (source.length < 4) return [];
+  }
+  const pool = shuffle(source).slice(0, Math.min(n, source.length));
   return pool.map(k => {
     const correct = k[3];
     const distractors = shuffle(KANJI.filter(x => x[3] !== k[3])).slice(0, 3).map(x => x[3]);
@@ -26,26 +32,30 @@ export function renderKanji() {
 
 function renderKanjiList() {
   const main = document.getElementById('main');
+  const P = getState();
+  const learnedCount = P.kanjiLearned.length;
   main.innerHTML = `
     <div class="sec-title">Kanji Trainer</div>
     <div class="sec-sub">103 N5 kanji grouped by theme. Tap a kanji to see stroke order and trace it.</div>
-    <div class="btnrow" style="justify-content:flex-start;margin-bottom:14px">
-      <button class="btn primary" id="kqbtn">Kanji → Meaning quiz</button>
+    <div class="btnrow" style="justify-content:flex-start;margin-bottom:14px;flex-wrap:wrap">
+      <button class="btn primary" id="kqbtn"><ion-icon name="help-circle-outline"></ion-icon> Meaning quiz</button>
+      <button class="btn" id="klqbtn" ${learnedCount < 4 ? 'disabled title="Mark at least 4 kanji as learned"' : ''}>
+        <ion-icon name="checkmark-done-outline"></ion-icon> Learned quiz (${learnedCount})
+      </button>
     </div>
-    <div id="kg"></div>
-    <div id="kqz" style="margin-top:24px"></div>`;
+    <div id="kqz" style="margin-bottom:20px"></div>
+    <div id="kg"></div>`;
 
   const kg = document.getElementById('kg');
   let idx = 0;
   KANJI_GROUPS.forEach(g => {
     const lab = document.createElement('div');
     lab.className = 'kg-label';
-    lab.innerHTML = `${g.name} <span class="mono" style="color:#b9ae94">${g.n}</span>`;
+    lab.innerHTML = `${g.name} <span class="mono" style="color:var(--ink2)">${g.n}</span>`;
     kg.appendChild(lab);
 
     const grid = document.createElement('div');
     grid.className = 'kanji-grid';
-    const P = getState();
     for (let j = 0; j < g.n; j++) {
       const k = KANJI[idx++];
       const tile = document.createElement('div');
@@ -62,6 +72,17 @@ function renderKanjiList() {
     quiz(document.getElementById('kqz'), kanjiQs(12), {
       onDone: (s, t) => updateBest('kanji', s, t),
     });
+
+  const klq = document.getElementById('klqbtn');
+  if (klq && !klq.disabled) {
+    klq.onclick = () => {
+      const qs = kanjiQs(12, true);
+      if (!qs.length) return;
+      quiz(document.getElementById('kqz'), qs, {
+        onDone: (s, t) => updateBest('kanji', s, t),
+      });
+    };
+  }
 }
 
 function renderKanjiDetail() {
@@ -323,19 +344,47 @@ function distStats(a, b) {
 
 function setupTrace(paths, svg, cw, ctl, msg) {
   cw.classList.add('trace');
+  let showGuide = true;
+  let showGhost = true;
+
   ctl.innerHTML = `
-    <div class="btnrow" style="margin-top:12px">
+    <div class="btnrow" style="margin-top:12px;flex-wrap:wrap">
       <button class="btn" id="undo-btn"><ion-icon name="arrow-undo-outline"></ion-icon> Undo</button>
       <button class="btn" id="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Reset</button>
       <button class="btn" id="show-btn"><ion-icon name="eye-outline"></ion-icon> Show order</button>
+    </div>
+    <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
+      <button class="btn" id="guide-btn"><ion-icon name="locate-outline"></ion-icon> Guide: On</button>
+      <button class="btn" id="ghost-btn"><ion-icon name="layers-outline"></ion-icon> Outline: On</button>
     </div>`;
 
   const targetG = svgEl('g', {});
   const doneG   = svgEl('g', {});
   const drawG   = svgEl('g', {});
+  // Stable start-dot that we only update position/visibility on — never destroy/recreate
+  const startDot = svgEl('circle', { r: 3.4, class: 'trace-dot', visibility: 'hidden' });
+  const startNum = svgEl('text', {
+    'text-anchor': 'middle',
+    fill: '#9c2b1e',
+    'font-size': '5',
+    'font-family': 'IBM Plex Mono',
+  });
+  targetG.appendChild(startDot);
+  targetG.appendChild(startNum);
   svg.appendChild(targetG);
   svg.appendChild(doneG);
   svg.appendChild(drawG);
+
+  // Ghost group is already in the SVG from loadKanjiStrokes; toggle its visibility
+  const ghostG = svg.querySelector('g'); // first g is ghost
+  // Actually order: guides, ghostG, strokeG, numG — then we append target/done/draw
+  // Safer: find by looking for .ghost paths
+  const allGs = [...svg.querySelectorAll(':scope > g')];
+  // ghostG was appended first among content groups
+  let ghostGroup = null;
+  for (const g of allGs) {
+    if (g.querySelector('path.ghost')) { ghostGroup = g; break; }
+  }
 
   const samples = paths.map(p => {
     const L = p.el.getTotalLength();
@@ -349,21 +398,42 @@ function setupTrace(paths, svg, cw, ctl, msg) {
 
   let cur = 0, drawing = false, pts = [], curLine = null, busy = false;
 
+  function setGhostVisible(on) {
+    showGhost = on;
+    if (ghostGroup) ghostGroup.style.display = on ? '' : 'none';
+    // Also hide finished stroke numbers if desired? keep numbers
+    document.getElementById('ghost-btn').innerHTML =
+      `<ion-icon name="layers-outline"></ion-icon> Outline: ${on ? 'On' : 'Off'}`;
+  }
+
+  function setGuideVisible(on) {
+    showGuide = on;
+    document.getElementById('guide-btn').innerHTML =
+      `<ion-icon name="locate-outline"></ion-icon> Guide: ${on ? 'On' : 'Off'}`;
+    showTarget();
+  }
+
   function showTarget() {
-    targetG.innerHTML = '';
-    if (cur >= paths.length) return;
-    targetG.appendChild(svgEl('path', { d: paths[cur].d, class: 'trace-target' }));
-    targetG.appendChild(svgEl('circle', { cx: paths[cur].sx, cy: paths[cur].sy, r: 3.4, class: 'trace-dot' }));
-    const t = svgEl('text', {
-      x: paths[cur].sx,
-      y: Math.max(paths[cur].sy - 6, 2.5),
-      'text-anchor': 'middle',
-    });
-    t.textContent = cur + 1;
-    t.setAttribute('fill', '#9c2b1e');
-    t.setAttribute('font-size', '5');
-    t.setAttribute('font-family', 'IBM Plex Mono');
-    targetG.appendChild(t);
+    // Clear only the guide path (not the stable dot)
+    [...targetG.querySelectorAll('path.trace-target')].forEach(el => el.remove());
+    if (cur >= paths.length) {
+      startDot.setAttribute('visibility', 'hidden');
+      startNum.textContent = '';
+      return;
+    }
+    if (showGuide) {
+      const guidePath = svgEl('path', { d: paths[cur].d, class: 'trace-target' });
+      targetG.insertBefore(guidePath, startDot);
+      startDot.setAttribute('cx', paths[cur].sx);
+      startDot.setAttribute('cy', paths[cur].sy);
+      startDot.setAttribute('visibility', 'visible');
+      startNum.setAttribute('x', paths[cur].sx);
+      startNum.setAttribute('y', Math.max(paths[cur].sy - 6, 2.5));
+      startNum.textContent = String(cur + 1);
+    } else {
+      startDot.setAttribute('visibility', 'hidden');
+      startNum.textContent = '';
+    }
   }
 
   function updMsg() {
@@ -371,10 +441,19 @@ function setupTrace(paths, svg, cw, ctl, msg) {
       msg.textContent = 'Complete! Beautiful.';
       msg.className = 'tp-msg ok';
       document.getElementById('stamp')?.classList.add('show');
-    } else {
+    } else if (showGuide) {
       msg.textContent = `Stroke ${cur + 1} of ${paths.length} — start at the red dot`;
       msg.className = 'tp-msg';
+    } else {
+      msg.textContent = `Stroke ${cur + 1} of ${paths.length} — freehand (no guide)`;
+      msg.className = 'tp-msg';
     }
+  }
+
+  function shakeCanvas() {
+    cw.classList.remove('shake');
+    void cw.offsetWidth; // reflow
+    cw.classList.add('shake');
   }
 
   function evaluate() {
@@ -385,13 +464,18 @@ function setupTrace(paths, svg, cw, ctl, msg) {
     let uL = 0;
     for (let i = 1; i < pts.length; i++)
       uL += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
-    if (uL < s.len * 0.3) return { ok: false, msg: 'Too short — follow the whole guide.' };
+    if (uL < s.len * 0.3) return { ok: false, msg: 'Too short — follow the whole stroke.' };
     const fwd = distStats(u, s.pts);
     const rev = distStats([...u].reverse(), s.pts);
-    if (rev.mean < fwd.mean * 0.8) return { ok: false, msg: 'Wrong direction — start at the red dot.' };
-    const sd = Math.hypot(u[0][0] - s.pts[0][0], u[0][1] - s.pts[0][1]);
-    if (sd > 15) return { ok: false, msg: 'Start closer to the red dot.' };
-    if (fwd.mean > 8.6 || fwd.max > 19) return { ok: false, msg: 'Off the guide — try again.' };
+    if (rev.mean < fwd.mean * 0.8) return { ok: false, msg: 'Wrong direction.' };
+    // When guide is on, enforce start position more strictly
+    if (showGuide) {
+      const sd = Math.hypot(u[0][0] - s.pts[0][0], u[0][1] - s.pts[0][1]);
+      if (sd > 15) return { ok: false, msg: 'Start closer to the red dot.' };
+    }
+    if (fwd.mean > (showGuide ? 8.6 : 12) || fwd.max > (showGuide ? 19 : 28)) {
+      return { ok: false, msg: 'Off the stroke — try again.' };
+    }
     return { ok: true };
   }
 
@@ -407,6 +491,7 @@ function setupTrace(paths, svg, cw, ctl, msg) {
     curLine?.remove(); curLine = null;
     msg.textContent = res.msg;
     msg.className = 'tp-msg err';
+    shakeCanvas();
   }
 
   function getXY(ev) {
@@ -436,7 +521,12 @@ function setupTrace(paths, svg, cw, ctl, msg) {
     }
   };
 
-  const end = () => { if (!drawing) return; drawing = false; const r = evaluate(); r.ok ? accept() : reject(r); };
+  const end = () => {
+    if (!drawing) return;
+    drawing = false;
+    const r = evaluate();
+    r.ok ? accept() : reject(r);
+  };
   svg.onpointerup = end;
   svg.onpointercancel = end;
 
@@ -462,7 +552,9 @@ function setupTrace(paths, svg, cw, ctl, msg) {
   document.getElementById('show-btn').onclick = () => {
     if (busy || !paths.length) return;
     busy = true;
-    targetG.innerHTML = '';
+    [...targetG.querySelectorAll('path.trace-target')].forEach(el => el.remove());
+    startDot.setAttribute('visibility', 'hidden');
+    startNum.textContent = '';
     const prevDisplay = doneG.style.display;
     doneG.style.display = 'none';
     drawG.innerHTML = '';
@@ -472,12 +564,16 @@ function setupTrace(paths, svg, cw, ctl, msg) {
       targetG.appendChild(pp);
     });
     setTimeout(() => {
+      [...targetG.querySelectorAll('path.replay-anim')].forEach(el => el.remove());
       doneG.style.display = prevDisplay;
       busy = false;
       showTarget();
       updMsg();
     }, paths.length * 550 + 680);
   };
+
+  document.getElementById('guide-btn').onclick = () => setGuideVisible(!showGuide);
+  document.getElementById('ghost-btn').onclick = () => setGhostVisible(!showGhost);
 
   showTarget();
   updMsg();

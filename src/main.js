@@ -1,5 +1,8 @@
 import './style.css';
 import { getState, resetState } from './state.js';
+import { KANJI } from './data/kanji.js';
+import { ALLVOCAB } from './data/vocab.js';
+import { GRAMMAR } from './data/grammar.js';
 import { renderHome } from './sections/home.js';
 import { renderKana } from './sections/kana.js';
 import { renderKanji } from './sections/kanji.js';
@@ -105,6 +108,61 @@ if (themeBtn) {
   };
 }
 initTheme();
+
+// Global search
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+  let searchTimer = null;
+  searchInput.addEventListener('input', () => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      const q = searchInput.value.trim().toLowerCase();
+      if (!q) {
+        route();
+        return;
+      }
+      const main = document.getElementById('main');
+      const hits = [];
+      // Kanji
+      KANJI.forEach(k => {
+        const hay = (k[0] + ' ' + (k[1]||'') + ' ' + (k[2]||'') + ' ' + k[3]).toLowerCase();
+        if (hay.includes(q) || k[0].includes(q)) {
+          hits.push({ type: 'Kanji', title: k[0] + ' — ' + k[3], meta: `ON ${k[1]||'–'} · KUN ${k[2]||'–'}`, go: () => { navigateTo('kanji'); /* detail would need more state */ } });
+        }
+      });
+      // Vocab
+      ALLVOCAB.forEach(w => {
+        const hay = (w[0] + ' ' + w[1] + ' ' + w[2]).toLowerCase();
+        if (hay.includes(q)) {
+          hits.push({ type: 'Vocab', title: w[0] + '（' + w[1] + '）', meta: w[2], go: () => navigateTo('vocab') });
+        }
+      });
+      // Grammar
+      GRAMMAR.forEach(g => {
+        const hay = (g.t + ' ' + g.p + ' ' + g.e).toLowerCase();
+        if (hay.includes(q)) {
+          hits.push({ type: 'Grammar', title: g.t, meta: g.p, go: () => navigateTo('grammar') });
+        }
+      });
+      main.innerHTML = `
+        <div class="sec-title">Search results</div>
+        <div class="sec-sub">${hits.length} match${hits.length === 1 ? '' : 'es'} for “${q.replace(/"/g,'')}”</div>
+        <div class="search-results" id="sr"></div>`;
+      const sr = document.getElementById('sr');
+      if (!hits.length) {
+        sr.innerHTML = '<p style="color:var(--ink2);padding:12px">No matches. Try a different keyword.</p>';
+      } else {
+        hits.slice(0, 80).forEach(h => {
+          const el = document.createElement('div');
+          el.className = 'search-hit';
+          el.innerHTML = `<div class="sh-title">${h.title}</div><div class="sh-meta">${h.type} · ${h.meta}</div>`;
+          el.onclick = () => h.go();
+          sr.appendChild(el);
+        });
+      }
+    }, 180);
+  });
+}
 
 // Global update trigger for submodules when progress changes
 window.addEventListener('storage', updateMasteredCount);

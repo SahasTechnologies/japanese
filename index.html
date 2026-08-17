@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>JLPT N5 Study — 日本語能力試験</title>
+<meta name="description" content="Interactive JLPT N5 study app covering Kana, Kanji, Vocabulary, Grammar, Reading, and Listening with quizzes and stroke-order practice.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c73e2e'/%3E%3Ctext x='32' y='46' font-size='32' text-anchor='middle' fill='white' font-family='serif' font-weight='bold'%3EN5%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/shippori-mincho@5/600.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/shippori-mincho@5/800.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/400.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/500.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/700.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/ibm-plex-mono@5/500.css">
+</head>
+<body>
+
+<header>
+  <div class="logo" aria-label="N5">N5</div>
+  <div class="hdr-title">
+    <h1>JLPT N5 Study</h1>
+    <div class="hdr-sub">日本語能力試験 N5 · Scripts · Vocab · Grammar · Reading · Listening</div>
+  </div>
+  <div class="hdr-right">
+    <div class="streak">mastered <b id="mastered">0</b></div>
+    <button class="btn" id="resetBtn" title="Reset all progress">↺ Reset</button>
+  </div>
+</header>
+
+<nav id="nav" role="navigation" aria-label="Study sections"></nav>
+<main id="main" role="main"></main>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

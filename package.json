@@ -1,0 +1,14 @@
+{
+  "name": "jlpt-n5",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "JLPT N5 interactive study app — Kana, Kanji, Vocab, Grammar, Reading, Listening",
+  "scripts": {
+    "dev": "node scripts/fetch-kanjivg.js && vite",
+    "build": "node scripts/fetch-kanjivg.js && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.4.0"
+  }
+}

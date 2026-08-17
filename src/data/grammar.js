@@ -1,0 +1,158 @@
+/**
+ * Grammar patterns for JLPT N5.
+ * Each entry: { t: title, p: pattern, e: explanation, x: [[japanese, english], ...] }
+ */
+export const GRAMMAR = [
+  {
+    t: 'X は Y です', p: '〜は〜です',
+    e: 'The basic "X is Y" sentence. です is the polite copula (linking verb).',
+    x: [['私は学生です。','I am a student.'],['これは本です。','This is a book.']]
+  },
+  {
+    t: 'Particles は・が・を', p: 'は / が / を',
+    e: 'は marks the topic, が marks the subject/identifier, を marks the direct object of action verbs.',
+    x: [['私は水を飲みます。','I drink water.'],['猫がいます。','There is a cat.']]
+  },
+  {
+    t: 'Particle に', p: '〜に',
+    e: 'Marks: (1) time of action, (2) direction/destination, (3) location of existence (with ある/いる), (4) indirect object.',
+    x: [['九時に学校へ行きます。','I go to school at 9.'],['部屋に机があります。','There is a desk in the room.']]
+  },
+  {
+    t: 'Particle で', p: '〜で',
+    e: 'Marks: (1) place where an action occurs, (2) means or tool, (3) material something is made of.',
+    x: [['図書館で勉強します。','I study at the library.'],['バスで行きます。','I go by bus.']]
+  },
+  {
+    t: 'Particle へ', p: '〜へ',
+    e: 'Marks direction or destination. More literary than に for destinations; interchangeable in most cases.',
+    x: [['東京へ行きます。','I go to Tokyo.'],['学校へ来てください。','Please come to school.']]
+  },
+  {
+    t: 'Particle と', p: '〜と',
+    e: '"With" (accompany a person) or "and" (exhaustively listing nouns). Also used for quoting thoughts/speech.',
+    x: [['友達と映画を見ます。','I watch a movie with a friend.'],['パンと牛乳を買います。','I buy bread and milk.']]
+  },
+  {
+    t: 'Particle も', p: '〜も',
+    e: '"Also / too" — replaces は or が when adding something to the same statement.',
+    x: [['私も学生です。','I am also a student.'],['田中さんも来ます。','Tanaka-san is also coming.']]
+  },
+  {
+    t: 'Particle の', p: '〜の',
+    e: 'Shows possession or connection ("of / \'s"). Also nominalises verbs: 食べるのが好き.',
+    x: [['私の本です。','It is my book.'],['日本語の先生です。','A Japanese-language teacher.']]
+  },
+  {
+    t: 'から・まで', p: '〜から〜まで',
+    e: 'から = "from" (starting point of time, place, or cause). まで = "until / as far as".',
+    x: [['九時から五時まで働きます。','I work from 9 to 5.'],['駅まで歩きます。','I walk to the station.']]
+  },
+  {
+    t: 'Demonstratives (こ・そ・あ・ど)', p: 'こ / そ / あ / ど',
+    e: 'こ = near speaker, そ = near listener, あ = far from both, ど = question. Apply to れ (things), の (possession), こ (place ここ/そこ/あそこ), んな (type).',
+    x: [['これは何ですか。','What is this?'],['あそこが駅です。','The station is over there.']]
+  },
+  {
+    t: 'Polite verb form', p: '〜ます / ません / ました / ませんでした',
+    e: 'ます = present/future positive. ません = negative. ました = past positive. ませんでした = past negative.',
+    x: [['毎日コーヒーを飲みます。','I drink coffee every day.'],['昨日は出かけませんでした。','I did not go out yesterday.']]
+  },
+  {
+    t: 'て-form — connecting & requesting', p: '〜てください / 〜て〜',
+    e: 'The て-form connects sequential actions and forms polite requests with ください. Group 1: change う→って, く→いて, etc. Group 2: drop る, add て.',
+    x: [['見てください。','Please look.'],['朝ご飯を食べて、学校に行きます。','I eat breakfast, then go to school.']]
+  },
+  {
+    t: 'Permission & prohibition', p: '〜てもいいです / 〜てはいけません',
+    e: 'て-form + もいいです = "may do". て-form + はいけません = "must not do". Polite requests use いただけますか.',
+    x: [['写真を撮ってもいいですか。','May I take a photo?'],['ここで食べてはいけません。','You must not eat here.']]
+  },
+  {
+    t: 'Ongoing action / state', p: '〜ています',
+    e: 'て-form + います = (1) action in progress right now, (2) habitual action, (3) resultant state.',
+    x: [['今、本を読んでいます。','I am reading a book now.'],['日本語を勉強しています。','I am studying Japanese (habitually).']]
+  },
+  {
+    t: 'i-adjective conjugation', p: '〜い → 〜くない / 〜かった',
+    e: 'Non-past neg: drop い → add くない. Past pos: drop い → add かった. Past neg: drop い → add くなかった.',
+    x: [['この本は高くないです。','This book is not expensive.'],['昨日は寒かったです。','It was cold yesterday.']]
+  },
+  {
+    t: 'na-adjective conjugation', p: '〜な / 〜ではありません / 〜でした',
+    e: 'Before nouns: + な. Non-past neg: + ではありません. Past pos: + でした. Past neg: + ではありませんでした.',
+    x: [['この町は静かでした。','This town was quiet.'],['彼女は元気ではありません。','She is not well.']]
+  },
+  {
+    t: 'Existence — ある / いる', p: 'あります / います',
+    e: 'あります for inanimate objects and plants. います for people, animals, living things. Location marked with に.',
+    x: [['公園に犬がいます。','There is a dog in the park.'],['机の上に本があります。','There is a book on the desk.']]
+  },
+  {
+    t: 'Want to do', p: '〜たいです',
+    e: 'Verb stem (drop ます) + たいです = "want to do". Negative: たくないです. Conjugates like an i-adjective.',
+    x: [['日本へ行きたいです。','I want to go to Japan.'],['今日は休みたいです。','I want to rest today.']]
+  },
+  {
+    t: 'Likes & dislikes', p: '〜が好き / 嫌い / 上手 / 下手です',
+    e: 'Topic + が + 好き/嫌い/上手/下手 + です. The subject always takes は.',
+    x: [['私は魚が好きです。','I like fish.'],['彼は料理が上手です。','He is good at cooking.']]
+  },
+  {
+    t: 'Obligation', p: '〜なければなりません',
+    e: '"Must do". Formed: neg. conditional (なければ) + なりません. Casual: ないといけない.',
+    x: [['毎日勉強しなければなりません。','I must study every day.'],['薬を飲まなければなりません。','I must take medicine.']]
+  },
+  {
+    t: 'Let\'s do / Invitation', p: '〜ましょう / 〜ませんか',
+    e: 'ましょう = "Let\'s do". ませんか = invitation "Won\'t you…?" (softer, awaiting agreement).',
+    x: [['一緒に行きましょう。','Let\'s go together.'],['映画を見ませんか。','Shall we watch a movie?']]
+  },
+  {
+    t: 'Comparison', p: 'より / のほうが / 一番',
+    e: 'A は B より〜です = A is more ~ than B. A のほうが B より〜 same meaning. 一番 = most / the most.',
+    x: [['犬のほうが猫より大きいです。','Dogs are bigger than cats.'],['夏が一番好きです。','I like summer the most.']]
+  },
+  {
+    t: 'I think that…', p: '〜と思います',
+    e: 'Plain form verb/adj + と思います = "I think that…". Used to express opinions politely.',
+    x: [['この映画は面白いと思います。','I think this movie is interesting.'],['明日は晴れると思います。','I think it will be sunny tomorrow.']]
+  },
+  {
+    t: 'Giving & receiving', p: 'あげる / もらう / くれる',
+    e: 'あげる = give (from me/others outward). もらう = receive (toward me/others). くれる = give (toward me).',
+    x: [['友達にプレゼントをあげました。','I gave a present to a friend.'],['先生に本をもらいました。','I received a book from the teacher.']]
+  },
+  {
+    t: 'Counting & classifiers', p: '〜つ / 〜本 / 〜枚 / 〜冊 / 〜人',
+    e: 'Japanese uses different counters depending on the shape/type of object. 〜つ is the generic counter for 1–9 things.',
+    x: [['りんごを三つください。','Please give me three apples.'],['学生が五人います。','There are five students.']]
+  },
+];
+
+/**
+ * Particle fill-in-the-blank quiz questions.
+ * { q: sentence with ___ gap, o: options array, a: correct index }
+ */
+export const PARTICLE_QUIZ = [
+  { q: '私は学生___です。', o: ['は','を','に','で'], a: 0 },
+  { q: 'コーヒー___飲みます。', o: ['を','は','へ','と'], a: 0 },
+  { q: '九時___学校へ行きます。', o: ['に','を','や','も'], a: 0 },
+  { q: '図書館___勉強します。', o: ['で','に','へ','の'], a: 0 },
+  { q: '友達___映画を見ます。', o: ['と','を','で','が'], a: 0 },
+  { q: '私___本です。', o: ['の','を','に','へ'], a: 0 },
+  { q: '私も学生___。', o: ['です','ます','だ','いる'], a: 0 },
+  { q: '公園___犬がいます。', o: ['に','を','で','や'], a: 0 },
+  { q: '机の上___本があります。', o: ['に','を','へ','も'], a: 0 },
+  { q: '東京___行きたいです。', o: ['へ','を','で','や'], a: 0 },
+  { q: 'これは何___。', o: ['ですか','ます','です','いません'], a: 0 },
+  { q: '九時から五時___働きます。', o: ['まで','から','に','と'], a: 0 },
+  { q: 'バス___行きます。', o: ['で','を','に','が'], a: 0 },
+  { q: '日本語___先生です。', o: ['の','を','や','も'], a: 0 },
+  { q: '魚が好き___。', o: ['です','ます','いる','ある'], a: 0 },
+  { q: '田中さん___来ました。', o: ['が','を','に','で'], a: 0 },
+  { q: '日本___来ました。', o: ['から','まで','へ','で'], a: 0 },
+  { q: '駅___歩いて行きます。', o: ['まで','から','へ','の'], a: 0 },
+  { q: '友達___一緒に行きます。', o: ['と','が','で','の'], a: 0 },
+  { q: '先生___本をもらいました。', o: ['に','で','を','が'], a: 0 },
+];

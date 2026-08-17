@@ -54,7 +54,7 @@ export function renderVocab() {
       <div class="vcard-top">
         <span class="w">${w[0]}</span>
         <span class="r">${w[1]}</span>
-        <span class="v-speaker" title="Listen" aria-label="Listen">🔊</span>
+        <span class="v-speaker" title="Listen" aria-label="Listen"><ion-icon name="volume-high-outline"></ion-icon></span>
       </div>
       <div class="m">${w[2]}</div>`;
     card.onclick = () => speak(w[0]);

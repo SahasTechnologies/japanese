@@ -20,7 +20,7 @@ export function ring(pct, color) {
   const r = 24, c = 2 * Math.PI * r, off = c * (1 - pct / 100);
   return `<div class="ring">
     <svg width="58" height="58" aria-hidden="true">
-      <circle cx="29" cy="29" r="${r}" fill="none" stroke="#eee5d2" stroke-width="6"/>
+      <circle cx="29" cy="29" r="${r}" fill="none" stroke="var(--line)" stroke-width="6"/>
       <circle cx="29" cy="29" r="${r}" fill="none" stroke="${color}" stroke-width="6"
         stroke-linecap="round" stroke-dasharray="${c.toFixed(2)}" stroke-dashoffset="${off.toFixed(2)}"
         style="transition: stroke-dashoffset 0.7s ease"/>
@@ -31,7 +31,7 @@ export function ring(pct, color) {
 
 /** Score-based feedback message */
 export function msgFor(pct) {
-  if (pct === 100) return 'Perfect! 満点! ✦';
+  if (pct === 100) return 'Perfect! 満点!';
   if (pct >= 80)   return 'Excellent — よくできました!';
   if (pct >= 60)   return 'Good — keep going!';
   if (pct >= 40)   return 'Getting there — try again.';

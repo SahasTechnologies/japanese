@@ -25,7 +25,7 @@ export function renderMock() {
       </div>
     </div>
     <div class="btnrow">
-      <button class="btn primary" id="m1-btn">▶ Start Mock Test</button>
+      <button class="btn primary" id="m1-btn"><ion-icon name="play-outline"></ion-icon> Start Mock Test</button>
     </div>
     <div id="mq" style="margin-top:24px"></div>`;
 

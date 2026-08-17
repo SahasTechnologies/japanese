@@ -95,8 +95,8 @@ function renderKanjiDetail() {
       </div>
 
       <div class="mode-tabs" style="display:flex;gap:8px;margin:12px 0">
-        <button class="btn ${strokeMode === 'watch' ? 'red' : ''}" id="mw-btn">▶ Watch</button>
-        <button class="btn ${strokeMode === 'trace' ? 'red' : ''}" id="mt-btn">✍ Trace</button>
+        <button class="btn ${strokeMode === 'watch' ? 'red' : ''}" id="mw-btn"><ion-icon name="play-outline"></ion-icon> Watch</button>
+        <button class="btn ${strokeMode === 'trace' ? 'red' : ''}" id="mt-btn"><ion-icon name="pencil-outline"></ion-icon> Trace</button>
       </div>
 
       <div class="kanji-detail">
@@ -112,7 +112,7 @@ function renderKanjiDetail() {
           <h4 style="margin-bottom:10px;font-size:14px">Example words</h4>
           <div id="exw"></div>
           <button class="btn primary" id="learn-btn" style="margin-top:12px">
-            ${P.kanjiLearned.includes(k[0]) ? '✓ Learned' : 'Mark as learned'}
+            ${P.kanjiLearned.includes(k[0]) ? '<ion-icon name="checkmark-circle"></ion-icon> Learned' : 'Mark as learned'}
           </button>
         </div>
       </div>
@@ -155,11 +155,11 @@ function svgEl(tag, attrs) {
 }
 
 const GUIDES = `
-  <rect x="0" y="0" width="109" height="109" fill="none" stroke="#e3c3ae" stroke-width="1" rx="2"/>
-  <line x1="54.5" y1="0" x2="54.5" y2="109" stroke="#ecd0bd" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
-  <line x1="0" y1="54.5" x2="109" y2="54.5" stroke="#ecd0bd" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
-  <line x1="0" y1="0" x2="109" y2="109" stroke="#f2dccd" stroke-width=".55" stroke-dasharray="2.5 4"/>
-  <line x1="109" y1="0" x2="0" y2="109" stroke="#f2dccd" stroke-width=".55" stroke-dasharray="2.5 4"/>`;
+  <rect class="guide-rect" x="0" y="0" width="109" height="109" fill="none" stroke-width="1" rx="2"/>
+  <line class="guide-mid" x1="54.5" y1="0" x2="54.5" y2="109" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
+  <line class="guide-mid" x1="0" y1="54.5" x2="109" y2="54.5" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
+  <line class="guide-diag" x1="0" y1="0" x2="109" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>
+  <line class="guide-diag" x1="109" y1="0" x2="0" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>`;
 
 function loadKanjiStrokes(ch) {
   const svg  = document.getElementById('stage');
@@ -201,7 +201,7 @@ function loadKanjiStrokes(ch) {
     const sy = Math.min(Math.max(m ? +m[2] : 0, 3), 106);
 
     const g = svgEl('g', {});
-    g.appendChild(svgEl('circle', { cx: sx, cy: sy, r: 3.4, fill: '#c73e2e', stroke: '#fffcf3', 'stroke-width': 1.1 }));
+    g.appendChild(svgEl('circle', { cx: sx, cy: sy, r: 3.4, class: 'stroke-num-dot' }));
     const tx = svgEl('text', { x: sx, y: sy, dy: '0.34em', 'text-anchor': 'middle' });
     tx.textContent = j + 1;
     tx.setAttribute('fill', '#fff');
@@ -221,9 +221,8 @@ function loadKanjiStrokes(ch) {
 function setupWatch(paths, ctl, msg) {
   ctl.innerHTML = `
     <div class="btnrow" style="margin-top:12px">
-      <button class="btn primary" id="play-btn">▶ Play</button>
-      <button class="btn" id="step-btn">Next stroke →</button>
-      <button class="btn" id="rst-btn">↺ Restart</button>
+      <button class="btn primary" id="play-btn"><ion-icon name="play-outline"></ion-icon> Replay</button>
+      <button class="btn" id="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Restart</button>
     </div>`;
 
   let i = 0, playing = false, raf = null;
@@ -241,7 +240,10 @@ function setupWatch(paths, ctl, msg) {
   }
 
   function step() {
-    if (i >= paths.length) { reset(); return; }
+    if (i >= paths.length) {
+      playing = false;
+      return;
+    }
     const p = paths[i];
     p.el.classList.add('current');
     const dur = Math.max(160, (p.len / 210) * 1000);
@@ -262,23 +264,26 @@ function setupWatch(paths, ctl, msg) {
     raf = requestAnimationFrame(fr);
   }
 
-  document.getElementById('play-btn').onclick = () => {
-    if (playing) { playing = false; return; }
+  function play() {
+    if (playing) return;
     if (i >= paths.length) reset();
     playing = true;
     step();
-  };
-  document.getElementById('step-btn').onclick = () => {
-    playing = false;
-    if (raf) cancelAnimationFrame(raf);
-    if (i < paths.length) { finishStroke(i); i++; } else reset();
-  };
+  }
+
+  document.getElementById('play-btn').onclick = () => play();
   document.getElementById('rst-btn').onclick = () => {
     playing = false;
     if (raf) cancelAnimationFrame(raf);
     reset();
+    // Auto-play again after restart
+    setTimeout(play, 80);
   };
+
+  // Autoplay on load: entire kanji is already shown as light ghost paths;
+  // strokes animate on top of the full background outline.
   reset();
+  setTimeout(play, 180);
 }
 
 /* ---- Trace mode ---- */
@@ -320,9 +325,9 @@ function setupTrace(paths, svg, cw, ctl, msg) {
   cw.classList.add('trace');
   ctl.innerHTML = `
     <div class="btnrow" style="margin-top:12px">
-      <button class="btn" id="undo-btn">← Undo</button>
-      <button class="btn" id="rst-btn">↺ Reset</button>
-      <button class="btn" id="show-btn">Show order</button>
+      <button class="btn" id="undo-btn"><ion-icon name="arrow-undo-outline"></ion-icon> Undo</button>
+      <button class="btn" id="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Reset</button>
+      <button class="btn" id="show-btn"><ion-icon name="eye-outline"></ion-icon> Show order</button>
     </div>`;
 
   const targetG = svgEl('g', {});
@@ -363,7 +368,7 @@ function setupTrace(paths, svg, cw, ctl, msg) {
 
   function updMsg() {
     if (cur >= paths.length) {
-      msg.textContent = 'Complete! ✦ Beautiful.';
+      msg.textContent = 'Complete! Beautiful.';
       msg.className = 'tp-msg ok';
       document.getElementById('stamp')?.classList.add('show');
     } else {

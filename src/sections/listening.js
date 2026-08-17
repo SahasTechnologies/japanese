@@ -13,7 +13,7 @@ export function listeningQs(n) {
     const options = shuffle([correct, ...distractors]);
     return {
       q: HAS_TTS
-        ? '🔊 Listen carefully — what does it mean?'
+        ? '<ion-icon name="volume-high-outline"></ion-icon> Listen carefully — what does it mean?'
         : `${w[0]}（${w[1]}）`,
       speak: w[0],
       options,
@@ -30,7 +30,7 @@ export function renderListening() {
     <div class="sec-sub">${
       HAS_TTS
         ? 'Listen with your speakers/headphones and pick the correct meaning.'
-        : '⚠ Your browser has no speech synthesis — the words are shown instead.'
+        : 'Your browser has no speech synthesis — the words are shown instead.'
     }</div>
     <div class="btnrow">
       <button class="btn primary" id="lq-btn">Start quiz · 10 questions</button>

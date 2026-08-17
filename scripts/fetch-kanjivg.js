@@ -37,19 +37,18 @@ function codepoint(ch) {
 }
 
 /**
- * Extract path `d` attributes from KanjiVG SVG text using regex.
- * KanjiVG SVGs have paths inside <g id="kvg:StrokePaths_..."> groups.
+ * Extract all path `d` attributes from a KanjiVG SVG.
+ * Uses a global match so nested <g> elements do not truncate the result.
  */
 function extractPaths(svgText) {
-  // Find the StrokePaths group content
-  const groupMatch = svgText.match(/id="kvg:StrokePaths[^"]*"[^>]*>([\s\S]*?)<\/g>/);
-  const content = groupMatch ? groupMatch[1] : svgText;
-
   const paths = [];
   const pathRegex = /<path[^>]+\bd="([^"]+)"/g;
   let m;
-  while ((m = pathRegex.exec(content)) !== null) {
-    paths.push(m[1]);
+  while ((m = pathRegex.exec(svgText)) !== null) {
+    // Only keep actual stroke path data (coordinates), ignore any id-like values
+    if (/^[Mm][\d\s,.\-]+/.test(m[1])) {
+      paths.push(m[1]);
+    }
   }
   return paths;
 }
@@ -67,25 +66,33 @@ async function fetchKanji(ch) {
       if (paths.length > 0) return paths;
     } catch (_) {}
   }
-  console.warn(`  ⚠  Could not fetch strokes for: ${ch} (U+${codepoint(ch)})`);
+  console.warn(`  Could not fetch strokes for: ${ch} (U+${codepoint(ch)})`);
   return [];
 }
 
 async function main() {
-  // If the file already exists and was generated recently (< 7 days), skip
+  // Force refresh when any entry has incomplete data (old broken cache)
+  let force = false;
   if (existsSync(OUT)) {
-    const stat = readFileSync(OUT);
     try {
-      const data = JSON.parse(stat);
+      const data = JSON.parse(readFileSync(OUT, 'utf8'));
       const keys = Object.keys(data);
       if (keys.length === KANJI_LIST.length) {
-        console.log('✓ KanjiVG strokes already cached — skipping fetch.');
-        return;
+        // Sanity-check a few multi-stroke kanji that were previously truncated
+        if ((data['二'] || []).length < 2 || (data['三'] || []).length < 3) {
+          force = true;
+          console.log('Incomplete stroke data detected — re-fetching…');
+        } else {
+          console.log('KanjiVG strokes already cached — skipping fetch.');
+          return;
+        }
       }
-    } catch (_) {}
+    } catch (_) {
+      force = true;
+    }
   }
 
-  console.log(`⬇  Fetching KanjiVG stroke data for ${KANJI_LIST.length} kanji…`);
+  console.log(`Fetching KanjiVG stroke data for ${KANJI_LIST.length} kanji…`);
   const result = {};
   let ok = 0;
 
@@ -108,7 +115,7 @@ async function main() {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
   writeFileSync(OUT, JSON.stringify(result, null, 0));
-  console.log(`\n✅ Saved ${ok}/${KANJI_LIST.length} kanji stroke sets → src/data/kanjivg-strokes.json`);
+  console.log(`\nSaved ${ok}/${KANJI_LIST.length} kanji stroke sets → src/data/kanjivg-strokes.json`);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });

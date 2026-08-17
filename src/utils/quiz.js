@@ -19,16 +19,18 @@ export function quiz(container, qs, opts = {}) {
 
   function show() {
     const q = qs[i];
+    // Support both `options` and legacy `o` keys used in some data files
+    const options = q.options || q.o || [];
     container.innerHTML = `
       <div class="qz">
-        ${opts.time ? `<div class="qz-timer" id="tm">⏱ ${fmtTime(timeLeft)}</div>` : ''}
+        ${opts.time ? `<div class="qz-timer" id="tm"><ion-icon name="timer-outline"></ion-icon> ${fmtTime(timeLeft)}</div>` : ''}
         <div class="qz-head">
           <span>Question ${i + 1} / ${qs.length}</span>
           <span>Score <b>${score}</b></span>
         </div>
         <div class="qz-bar"><i id="qbar" style="width:${(i / qs.length) * 100}%"></i></div>
         <div class="qz-q">${q.q}</div>
-        ${q.speak && HAS_TTS ? `<div class="btnrow"><button class="btn" id="sp-btn">🔊 Listen again</button></div>` : ''}
+        ${q.speak && HAS_TTS ? `<div class="btnrow"><button class="btn" id="sp-btn"><ion-icon name="volume-high-outline"></ion-icon> Listen again</button></div>` : ''}
         <div class="qz-opts" id="qopts"></div>
         <div class="qz-fb" id="qfb"></div>
       </div>`;
@@ -41,7 +43,7 @@ export function quiz(container, qs, opts = {}) {
       container.querySelector('#sp-btn').onclick = () => speak(q.speak, opts.rate);
     }
 
-    q.options.forEach((op, idx) => {
+    options.forEach((op, idx) => {
       const b = document.createElement('button');
       b.className = 'qz-opt';
       b.textContent = op;
@@ -51,12 +53,12 @@ export function quiz(container, qs, opts = {}) {
         if (idx === q.a) {
           b.classList.add('correct');
           score++;
-          fb.textContent = '✓ Correct!';
+          fb.innerHTML = '<ion-icon name="checkmark-circle"></ion-icon> Correct!';
           fb.className = 'qz-fb ok';
         } else {
           b.classList.add('wrong');
           box.children[q.a].classList.add('correct');
-          fb.textContent = `✗  ${q.options[q.a]}`;
+          fb.innerHTML = `<ion-icon name="close-circle"></ion-icon>  ${options[q.a]}`;
           fb.className = 'qz-fb err';
         }
         setTimeout(() => { i++; i < qs.length ? show() : finish(); }, 1100);
@@ -91,7 +93,7 @@ export function quiz(container, qs, opts = {}) {
     timer = setInterval(() => {
       timeLeft--;
       const el = container.querySelector('#tm');
-      if (el) el.textContent = '⏱ ' + fmtTime(timeLeft);
+      if (el) el.innerHTML = `<ion-icon name="timer-outline"></ion-icon> ${fmtTime(timeLeft)}`;
       if (timeLeft <= 0) finish();
     }, 1000);
   }

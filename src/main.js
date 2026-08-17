@@ -82,6 +82,30 @@ if (resetBtn) {
   };
 }
 
+// Dark mode
+const THEME_KEY = 'n5-theme';
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  const icon = document.getElementById('themeIcon');
+  if (icon) icon.setAttribute('name', theme === 'dark' ? 'sunny-outline' : 'moon-outline');
+}
+function initTheme() {
+  const saved = localStorage.getItem(THEME_KEY);
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const theme = saved || (prefersDark ? 'dark' : 'light');
+  applyTheme(theme);
+}
+const themeBtn = document.getElementById('themeBtn');
+if (themeBtn) {
+  themeBtn.onclick = () => {
+    const cur = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = cur === 'dark' ? 'light' : 'dark';
+    localStorage.setItem(THEME_KEY, next);
+    applyTheme(next);
+  };
+}
+initTheme();
+
 // Global update trigger for submodules when progress changes
 window.addEventListener('storage', updateMasteredCount);
 

@@ -1,4 +1,5 @@
-import { GRAMMAR, PARTICLE_QUIZ } from '../data/grammar.js';
+import grammar from '../data/grammar.json' with { type: 'json' };
+const { GRAMMAR, PARTICLE_QUIZ } = grammar;
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { updateBest } from '../state.js';

@@ -5,7 +5,7 @@
 
 Interactive study app for the Japanese-Language Proficiency Test **N5**.
 
-Covers kana, kanji (stroke order + tracing), vocabulary, grammar, reading, listening, mock tests, and quick-reference tables.
+Covers kana, kanji (stroke order + tracing), vocabulary, grammar, reading, listening, flashcards, mock tests, and quick-reference tables.
 
 ## Features
 
@@ -14,19 +14,51 @@ Covers kana, kanji (stroke order + tracing), vocabulary, grammar, reading, liste
   - Full stroke-order animation (autoplay watch mode)
   - Trace practice with optional stroke guide and background outline
   - Freehand mode that shakes the canvas on mistakes
-  - “Mark as learned” + dedicated learned-kanji quiz
-- **Vocabulary** — Categorized word cards with TTS; category and all-word quizzes
+  - Separate **Can read** / **Can write** progress (green / yellow tile colors)
+  - Learned-kanji quiz
+- **Vocabulary** — ~700+ N5 words across categories, with:
+  - TTS on every card
+  - Example sentences on expand
+  - Kanji display modes: **All kanji** · **Learned only** · **No kanji**
+  - Optional furigana (`<ruby>` readings)
+  - Learned tracking + learned-only quiz
+  - Kanji forms unlock after you mark those characters as Can read
 - **Grammar** — Core N5 patterns + particle drills
-- **Reading** — 40+ short passages and 90+ comprehension questions, plus mixed quizzes
-- **Listening** — Dynamic quizzes generated from vocabulary (TTS); normal and slow rates
-- **Mock test** — Timed mixed exam (vocab + kanji + grammar)
+- **Reading** — 60+ short passages and 120+ comprehension questions, plus mixed quizzes
+- **Listening** — Word quizzes from vocabulary (TTS) plus scripted dialogues; normal and slow rates
+- **Flashcards** — Vocab, kanji, hiragana, and katakana decks with flip + Know / Don’t-know piles
+- **Mock test** — Multimodal exam (~65 questions, 45 min): kanji reading, vocab, grammar, reading, listening; plus a quick 25-question mode
 - **Reference** — Numbers, counters, days, months, expressions, verb groups
 - **Search** — Instant search across kanji, vocab, and grammar
 - **Dark mode** — Toggle in the header; preference is saved
-- **Progress** — Best scores and learned kanji stored in `localStorage`
+- **Progress** — Best scores, kanji read/write flags, vocab learned list, and flashcard piles stored in `localStorage`
 
 ## Quick start
 
 ```bash
 npm install
 npm run dev
+```
+
+Then open the URL shown in the terminal (usually `http://localhost:5173`).
+
+```bash
+npm run build    # production build → dist/
+npm run preview  # preview the production build
+```
+
+Study content lives as JSON under `src/data/` (`vocab.json`, `kanji.json`, `reading.json`, `grammar.json`, etc.) and is imported directly in components (Vite supports JSON imports natively).
+
+Kanji stroke paths are **not** hand-maintained: `scripts/fetch-kanjivg.js` downloads them from [KanjiVG](https://kanjivg.tagaini.net/) on **every** `npm run dev` and `npm run build`, writing `src/data/kanjivg-strokes.json`.
+
+## Tech
+
+- Vanilla JS (ES modules)
+- [Vite](https://vitejs.dev/)
+- Web Speech API for Japanese TTS
+- [Ionicons](https://ionic.io/ionicons/) for UI icons
+- Kanji stroke paths from KanjiVG
+
+## License
+
+Study content is for personal learning. KanjiVG stroke data is licensed under [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).

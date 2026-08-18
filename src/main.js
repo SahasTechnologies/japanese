@@ -1,8 +1,8 @@
 import './style.css';
-import { getState, resetState } from './state.js';
-import { KANJI } from './data/kanji.js';
-import { ALLVOCAB } from './data/vocab.js';
-import { GRAMMAR } from './data/grammar.js';
+import { getState, resetState, setKanjiReadMap } from './state.js';
+import kanjiData from './data/kanji.json' with { type: 'json' };
+import VOCAB from './data/vocab.json' with { type: 'json' };
+import grammar from './data/grammar.json' with { type: 'json' };
 import { renderHome } from './sections/home.js';
 import { renderKana } from './sections/kana.js';
 import { renderKanji } from './sections/kanji.js';
@@ -13,6 +13,10 @@ import { renderListening } from './sections/listening.js';
 import { renderMock } from './sections/mock.js';
 import { renderRef } from './sections/reference.js';
 import { renderFlashcards } from './sections/flashcards.js';
+
+const { KANJI } = kanjiData;
+const { GRAMMAR } = grammar;
+const ALLVOCAB = Object.values(VOCAB).flat();
 
 const TABS = [
   { id: 'home',      ic: '家', label: 'Home' },
@@ -39,7 +43,7 @@ const routes = {
   listening: renderListening,
   flash: renderFlashcards,
   mock: renderMock,
-  ref: renderRef,
+  ref: () => renderRef(navigateTo),
 };
 
 export function navigateTo(tabId) {

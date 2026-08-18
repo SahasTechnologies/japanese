@@ -1,4 +1,5 @@
-import { VOCAB, ALLVOCAB } from '../data/vocab.js';
+import VOCAB from '../data/vocab.json' with { type: 'json' };
+const ALLVOCAB = Object.values(VOCAB).flat();
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { speak } from '../utils/tts.js';

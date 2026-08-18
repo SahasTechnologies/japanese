@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /**
  * fetch-kanjivg.js
- * Downloads stroke path data for all 103 JLPT N5 kanji from KanjiVG
+ * Downloads stroke path data for all JLPT N5 kanji from KanjiVG
  * and writes them to src/data/kanjivg-strokes.json at build time.
  *
- * Run automatically before `vite dev` and `vite build`.
+ * Always runs on `npm run dev` and `npm run build` (no cache skip).
+ * Source of truth for the character list: src/data/kanji.json
  */
 
 import { writeFileSync, readFileSync, existsSync, mkdirSync } from 'fs';
@@ -13,42 +14,31 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, '../src/data/kanjivg-strokes.json');
-
-// All 103 N5 kanji (must match KANJI array order in src/data/kanji.js)
-const KANJI_LIST = [
-  '一','二','三','四','五','六','七','八','九','十','百','千','万','半',
-  '日','月','火','水','木','金','土','山','川','天','雨','空','花','魚',
-  '東','西','南','北',
-  '上','下','中','外','間','先','前','後','左','右',
-  '人','女','男','子','父','母','友',
-  '手','口','耳','目','足',
-  '見','出','入','来','行','立','休','会','分','買','飲','食','読','書','話','聞','言','語',
-  '年','週','毎','今','時','午',
-  '大','小','少','多','長','高','新','古','安','白','円',
-  '国','校','店','社','道','駅',
-  '車','電','本','名','学','気','生','何',
-];
+const KANJI_JSON = join(__dirname, '../src/data/kanji.json');
 
 const CDN = 'https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg/kanji/';
 const RAW = 'https://raw.githubusercontent.com/KanjiVG/kanjivg/main/kanji/';
+
+function loadKanjiList() {
+  if (!existsSync(KANJI_JSON)) {
+    throw new Error(`Missing ${KANJI_JSON} — cannot determine N5 kanji list`);
+  }
+  const { KANJI } = JSON.parse(readFileSync(KANJI_JSON, 'utf8'));
+  const list = KANJI.map(row => row[0]);
+  return [...new Set(list)];
+}
 
 function codepoint(ch) {
   return ch.codePointAt(0).toString(16).padStart(5, '0');
 }
 
-/**
- * Extract all path `d` attributes from a KanjiVG SVG.
- * Uses a global match so nested <g> elements do not truncate the result.
- */
+/** Extract stroke path `d` attributes from a KanjiVG SVG (handles nested groups). */
 function extractPaths(svgText) {
   const paths = [];
   const pathRegex = /<path[^>]+\bd="([^"]+)"/g;
   let m;
   while ((m = pathRegex.exec(svgText)) !== null) {
-    // Only keep actual stroke path data (coordinates), ignore any id-like values
-    if (/^[Mm][\d\s,.\-]+/.test(m[1])) {
-      paths.push(m[1]);
-    }
+    if (/^[Mm][\d\s,.\-]+/.test(m[1])) paths.push(m[1]);
   }
   return paths;
 }
@@ -71,33 +61,13 @@ async function fetchKanji(ch) {
 }
 
 async function main() {
-  // Force refresh when any entry has incomplete data (old broken cache)
-  let force = false;
-  if (existsSync(OUT)) {
-    try {
-      const data = JSON.parse(readFileSync(OUT, 'utf8'));
-      const keys = Object.keys(data);
-      if (keys.length === KANJI_LIST.length) {
-        // Sanity-check a few multi-stroke kanji that were previously truncated
-        if ((data['二'] || []).length < 2 || (data['三'] || []).length < 3) {
-          force = true;
-          console.log('Incomplete stroke data detected — re-fetching…');
-        } else {
-          console.log('KanjiVG strokes already cached — skipping fetch.');
-          return;
-        }
-      }
-    } catch (_) {
-      force = true;
-    }
-  }
+  const KANJI_LIST = loadKanjiList();
+  console.log(`Fetching KanjiVG stroke data for ${KANJI_LIST.length} kanji (every build)…`);
 
-  console.log(`Fetching KanjiVG stroke data for ${KANJI_LIST.length} kanji…`);
   const result = {};
   let ok = 0;
-
-  // Fetch in small batches to be polite to the CDN
   const BATCH = 8;
+
   for (let i = 0; i < KANJI_LIST.length; i += BATCH) {
     const batch = KANJI_LIST.slice(i, i + BATCH);
     await Promise.all(
@@ -105,17 +75,19 @@ async function main() {
         const paths = await fetchKanji(ch);
         result[ch] = paths;
         if (paths.length) ok++;
-        process.stdout.write(`\r  ${i + batch.length}/${KANJI_LIST.length} fetched…`);
+        process.stdout.write(`\r  ${Math.min(i + batch.length, KANJI_LIST.length)}/${KANJI_LIST.length} fetched…`);
       })
     );
   }
 
-  // Ensure output directory exists
   const dir = dirname(OUT);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
-  writeFileSync(OUT, JSON.stringify(result, null, 0));
+  writeFileSync(OUT, JSON.stringify(result));
   console.log(`\nSaved ${ok}/${KANJI_LIST.length} kanji stroke sets → src/data/kanjivg-strokes.json`);
 }
 
-main().catch((e) => { console.error(e); process.exit(1); });
+main().catch((e) => {
+  console.error(e);
+  process.exit(1);
+});

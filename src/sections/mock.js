@@ -6,10 +6,13 @@
  * - Short reading comprehension
  * - Listening (TTS-based)
  */
-import { ALLVOCAB } from '../data/vocab.js';
-import { KANJI } from '../data/kanji.js';
-import { READING } from '../data/reading.js';
-import { PARTICLE_QUIZ } from '../data/grammar.js';
+import VOCAB from '../data/vocab.json' with { type: 'json' };
+import kanjiData from '../data/kanji.json' with { type: 'json' };
+import READING from '../data/reading.json' with { type: 'json' };
+import grammar from '../data/grammar.json' with { type: 'json' };
+const ALLVOCAB = Object.values(VOCAB).flat();
+const { KANJI } = kanjiData;
+const { PARTICLE_QUIZ } = grammar;
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { HAS_TTS } from '../utils/tts.js';

@@ -1,4 +1,4 @@
-import { READING } from '../data/reading.js';
+import READING from '../data/reading.json' with { type: 'json' };
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { updateBest } from '../state.js';

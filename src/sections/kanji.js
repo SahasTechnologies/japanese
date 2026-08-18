@@ -1,9 +1,10 @@
-import { KANJI, KANJI_GROUPS, RADICALS } from '../data/kanji.js';
+import kanjiData from '../data/kanji.json' with { type: 'json' };
+const { KANJI, KANJI_GROUPS, RADICALS } = kanjiData;
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
-import { updateBest, getState, save, toggleKanjiFlag } from '../state.js';
+import { updateBest, getState, save, toggleKanjiFlag, setVocabKanjiMode, setShowFurigana } from '../state.js';
 // KanjiVG stroke data — pre-fetched at build time
-import STROKES from '../data/kanjivg-strokes.json';
+import STROKES from '../data/kanjivg-strokes.json' with { type: 'json' };
 
 let selKanji = null;
 let strokeMode = 'watch'; // 'watch' | 'trace'
@@ -34,6 +35,7 @@ function renderKanjiList() {
   const main = document.getElementById('main');
   const P = getState();
   const learnedCount = (P.kanjiCanRead || P.kanjiLearned || []).length;
+  const mode = P.vocabKanjiMode || 'learned';
   main.innerHTML = `
     <div class="sec-title">Kanji Trainer</div>
     <div class="sec-sub">103 N5 kanji grouped by theme. Tap a kanji to see stroke order and trace it.</div>
@@ -42,6 +44,23 @@ function renderKanjiList() {
       <button class="btn" id="klqbtn" ${learnedCount < 4 ? 'disabled title="Mark at least 4 kanji as learned"' : ''}>
         <ion-icon name="checkmark-done-outline"></ion-icon> Learned quiz (${learnedCount})
       </button>
+    </div>
+    <div class="vocab-controls card" style="margin-bottom:14px;padding:12px 14px">
+      <div class="vc-row">
+        <span class="vc-label">Kanji display</span>
+        <div class="seg-control" role="group" aria-label="Kanji display mode">
+          <button type="button" class="seg ${mode === 'all' ? 'on' : ''}" data-mode="all">All kanji</button>
+          <button type="button" class="seg ${mode === 'learned' ? 'on' : ''}" data-mode="learned">Learned only</button>
+          <button type="button" class="seg ${mode === 'none' ? 'on' : ''}" data-mode="none">No kanji</button>
+        </div>
+      </div>
+      <div class="vc-row" style="margin-top:10px">
+        <label class="toggle-label" style="border:none;padding:0;background:transparent">
+          <input type="checkbox" id="kfuri-toggle" ${P.showFurigana !== false ? 'checked' : ''}/>
+          <span>Furigana (ruby readings)</span>
+        </label>
+      </div>
+      <p style="font-size:12px;color:var(--ink2);margin-top:8px">Applies to vocabulary and example words across the app. Yellow tile = can read · Green = can read + write.</p>
     </div>
     <div id="kqz" style="margin-bottom:20px"></div>
     <div id="kg"></div>`;
@@ -62,10 +81,11 @@ function renderKanjiList() {
       const canRead = (P.kanjiCanRead || P.kanjiLearned || []).includes(k[0]);
       const canWrite = (P.kanjiCanWrite || []).includes(k[0]);
       // green = can read, yellow = can write, both = green with yellow border
+      // Yellow = can read only; green = can read + can write
       let cls = 'ktile';
       if (canRead && canWrite) cls += ' can-both';
       else if (canRead) cls += ' can-read';
-      else if (canWrite) cls += ' can-write';
+      // write-only without read: no special color (must read first conceptually)
       tile.className = cls;
       tile.innerHTML = `<span class="k">${k[0]}</span>`;
       tile.title = k[3] + (canRead ? ' · can read' : '') + (canWrite ? ' · can write' : '');
@@ -79,6 +99,12 @@ function renderKanjiList() {
     quiz(document.getElementById('kqz'), kanjiQs(12), {
       onDone: (s, t) => updateBest('kanji', s, t),
     });
+
+  document.querySelectorAll('.seg-control .seg').forEach(btn => {
+    btn.onclick = () => { setVocabKanjiMode(btn.dataset.mode); renderKanjiList(); };
+  });
+  const kf = document.getElementById('kfuri-toggle');
+  if (kf) kf.onchange = e => { setShowFurigana(e.target.checked); renderKanjiList(); };
 
   const klq = document.getElementById('klqbtn');
   if (klq && !klq.disabled) {

@@ -1,5 +1,6 @@
-import { ALLVOCAB } from '../data/vocab.js';
-import { LISTENING_SCRIPTS } from '../data/listening.js';
+import VOCAB from '../data/vocab.json' with { type: 'json' };
+import LISTENING_SCRIPTS from '../data/listening.json' with { type: 'json' };
+const ALLVOCAB = Object.values(VOCAB).flat();
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { HAS_TTS, speak } from '../utils/tts.js';

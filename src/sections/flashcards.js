@@ -1,9 +1,12 @@
 /**
  * Flashcard trainer — flip cards, sort into Know / Don't know piles.
  */
-import { HIRA, KATA } from '../data/kana.js';
-import { KANJI } from '../data/kanji.js';
-import { ALLVOCAB } from '../data/vocab.js';
+import kana from '../data/kana.json' with { type: 'json' };
+import kanjiData from '../data/kanji.json' with { type: 'json' };
+import VOCAB from '../data/vocab.json' with { type: 'json' };
+const { HIRA, KATA } = kana;
+const { KANJI } = kanjiData;
+const ALLVOCAB = Object.values(VOCAB).flat();
 import { shuffle } from '../utils/helpers.js';
 import { speak } from '../utils/tts.js';
 import { getState, save, formatVocabWord } from '../state.js';
@@ -78,7 +81,7 @@ export function renderFlashcards() {
   const main = document.getElementById('main');
   main.innerHTML = `
     <div class="sec-title">Flashcards</div>
-    <div class="sec-sub">Flip a card, then sort into <b>Know</b> or <b>Don't know</b>. Review the Don't-know pile anytime.</div>
+    <div class="sec-sub">Flip a card, then sort into <b>Know</b> or <b>Don't know</b>. Keys: ↑/↓ flip · ← don't know · → know.</div>
     <div class="btnrow" style="justify-content:flex-start;flex-wrap:wrap;margin-bottom:14px" id="deck-tabs"></div>
     <div id="fc-area"></div>`;
 
@@ -86,6 +89,7 @@ export function renderFlashcards() {
   Object.entries(DECKS).forEach(([id, d]) => {
     const b = document.createElement('button');
     b.className = 'btn' + (id === deckId ? ' red' : '');
+    b.dataset.deck = id;
     b.textContent = d.label;
     b.onclick = () => { deckId = id; startDeck(); };
     tabs.appendChild(b);
@@ -95,6 +99,11 @@ export function renderFlashcards() {
 }
 
 function startDeck() {
+  // Update deck tab highlight
+  document.querySelectorAll('#deck-tabs .btn').forEach(b => {
+    const id = b.dataset.deck;
+    b.className = 'btn' + (id === deckId ? ' red' : '');
+  });
   const built = DECKS[deckId].build();
   cards = loadPiles(built);
   idx = 0;
@@ -212,4 +221,24 @@ function renderCard() {
     persistPiles();
     renderCard();
   };
+
+  // Keyboard: ← don't know, → know, ↑/↓ flip
+  const onKey = (e) => {
+    if (e.target.matches('input, textarea')) return;
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      flip();
+    } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      if (flipped) document.getElementById('fc-know')?.click();
+      else flip();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      if (flipped) document.getElementById('fc-dont')?.click();
+      else flip();
+    }
+  };
+  window.__fcKeyHandler && window.removeEventListener('keydown', window.__fcKeyHandler);
+  window.__fcKeyHandler = onKey;
+  window.addEventListener('keydown', onKey);
 }

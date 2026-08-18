@@ -1,4 +1,5 @@
-import { HIRA, KATA, HIRA_ROWS, KATA_ROWS } from '../data/kana.js';
+import kana from '../data/kana.json' with { type: 'json' };
+const { HIRA, KATA, HIRA_ROWS, KATA_ROWS } = kana;
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { speak } from '../utils/tts.js';

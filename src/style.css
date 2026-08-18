@@ -113,19 +113,24 @@ button {
   display: none !important;
 }
 
-/* Header */
-header {
+/* Sticky top group: header + nav stick together, sized by their own content
+   (no hard-coded offsets), so the bar never grows to swallow the viewport. */
+.topbar {
   position: sticky;
   top: 0;
   z-index: 50;
   background: var(--header-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+/* Header */
+header {
   border-bottom: 1px solid var(--line);
-  padding: 12px 20px;
+  padding: 10px 20px;
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   flex-wrap: wrap;
 }
 
@@ -181,12 +186,9 @@ nav {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  padding: 10px 18px;
+  padding: 8px 18px;
   border-bottom: 1px solid var(--line);
   background: var(--paper);
-  position: sticky;
-  top: 69px;
-  z-index: 40;
   scrollbar-width: none;
 }
 
@@ -798,6 +800,14 @@ main {
   margin: 12px 0;
 }
 
+.rad-label {
+  font: 700 10.5px var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--red-deep);
+  margin-bottom: 2px;
+}
+
 .rad-glyph {
   width: 48px;
   height: 48px;
@@ -955,15 +965,15 @@ main {
 }
 
 .gcard p {
-  font-size: 13.5px;
+  font-size: 15px;
   color: var(--ink2);
   line-height: 1.6;
   margin-bottom: 8px;
 }
 
 .gex {
-  font-size: 14px;
-  padding: 8px 12px;
+  font-size: 15.5px;
+  padding: 9px 12px;
   background: var(--surface-soft);
   border-radius: 8px;
   margin-top: 6px;
@@ -971,7 +981,7 @@ main {
 
 .gex .tr {
   color: var(--ink2);
-  font-size: 12.5px;
+  font-size: 13.5px;
   display: block;
   margin-top: 2px;
 }
@@ -1012,12 +1022,12 @@ main {
 .reftable {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: 16px;
 }
 
 .reftable th, .reftable td {
   border: 1px solid var(--line);
-  padding: 8px 12px;
+  padding: 11px 14px;
   text-align: left;
 }
 
@@ -1034,8 +1044,10 @@ main {
 /* Responsive */
 @media (max-width: 768px) {
   .kanji-detail { grid-template-columns: 1fr; }
-  header { padding: 10px 14px; }
-  nav { top: 61px; }
+  header { padding: 8px 14px; gap: 10px; }
+  .hdr-sub { display: none; }
+  .streak { display: none; }
+  .search-wrap { order: 3; flex-basis: 100%; }
   .big-kana { font-size: 46px; }
   main { padding: 16px 14px 60px; }
 }
@@ -1045,6 +1057,9 @@ main {
   .dash { grid-template-columns: 1fr 1fr; }
   .sec-title { font-size: 22px; }
   .mock-grid { grid-template-columns: 1fr; }
+  .logo { width: 36px; height: 36px; font-size: 14px; border-radius: 10px; }
+  .hdr-title h1 { font-size: 17px; }
+  nav { padding: 6px 12px; gap: 6px; }
 }
 
 /* ---- Ionicons sizing ---- */
@@ -1497,7 +1512,7 @@ ruby.vw-ruby rt {
 .ref-toc-link {
   color: var(--blue);
   text-decoration: none;
-  font-size: 13.5px;
+  font-size: 15px;
   font-weight: 500;
 }
 .ref-toc-link:hover {
@@ -1505,7 +1520,7 @@ ruby.vw-ruby rt {
   text-decoration: underline;
 }
 .ref-heading {
-  font: 700 16px var(--sans);
+  font: 700 19px var(--sans);
   margin-bottom: 12px;
   color: var(--ink);
   scroll-margin-top: 100px;
@@ -1525,7 +1540,7 @@ ruby.vw-ruby rt {
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface-soft);
-  font-size: 13.5px;
+  font-size: 15px;
   color: var(--ink);
   cursor: pointer;
   transition: border-color 0.15s, transform 0.15s;
@@ -1536,4 +1551,363 @@ ruby.vw-ruby rt {
 }
 .ref-jump strong {
   color: var(--red);
+}
+
+/* ============================================================
+   Coursework
+   ============================================================ */
+.cw-unit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.cw-unit-tile {
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  transition: border-color 0.16s, transform 0.16s;
+}
+
+.cw-unit-tile:hover {
+  border-color: var(--red);
+  transform: translateY(-2px);
+}
+
+.cw-unit-tile.empty {
+  opacity: 0.55;
+}
+
+.cw-unit-num {
+  font: 800 26px var(--serif);
+  color: var(--red);
+  margin-bottom: 6px;
+}
+
+.cw-unit-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.cw-unit-sub {
+  font-size: 12.5px;
+  color: var(--ink2);
+}
+
+/* Full-width kanji cards */
+.cw-kanji-list {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cw-kanji-card {
+  width: 100%;
+}
+
+.cw-kanji-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed var(--line);
+  margin-bottom: 14px;
+}
+
+.cw-kanji-glyph {
+  font: 700 64px var(--serif);
+  line-height: 1;
+  flex: none;
+  color: var(--ink);
+}
+
+.cw-kanji-meta {
+  flex: 1 1 200px;
+  min-width: 200px;
+}
+
+.cw-kanji-meaning {
+  font: 700 20px var(--sans);
+  margin-bottom: 8px;
+}
+
+.cw-kanji-yomi {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.cw-kanji-rad {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink2);
+}
+
+.cw-rad-glyph {
+  font: 700 18px var(--serif);
+  color: var(--red-deep);
+  background: var(--red-soft);
+  border: 1px solid var(--chip-kun-border);
+  border-radius: 6px;
+  padding: 1px 7px;
+}
+
+.cw-sentences {
+  display: grid;
+  gap: 10px;
+}
+
+.cw-sentence-row {
+  background: var(--surface-soft);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.cw-sentence-jp {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font: 600 17px var(--serif);
+}
+
+.cw-sentence-kana {
+  color: var(--ink2);
+  font-weight: 500;
+}
+
+.cw-arrow {
+  color: var(--red);
+  font-weight: 700;
+  flex: none;
+}
+
+.cw-sentence-en {
+  margin-top: 4px;
+  font-size: 13.5px;
+  color: var(--ink2);
+}
+
+.cw-speak {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  margin-left: auto;
+}
+
+/* Q&A cards (shared by qaSections and grammarPractice) */
+.cw-section-list {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.cw-note {
+  font-size: 13.5px;
+  color: var(--ink2);
+  line-height: 1.55;
+  margin-bottom: 12px;
+}
+
+.cw-qa-pair {
+  background: var(--surface-soft);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+}
+
+.cw-qa-pair:last-child {
+  margin-bottom: 0;
+}
+
+.cw-qa-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font: 600 16px var(--serif);
+}
+
+.cw-qa-line.a {
+  margin-top: 8px;
+}
+
+.cw-qa-tag {
+  flex: none;
+  font: 700 11px var(--sans);
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: var(--ink2);
+  border-radius: 6px;
+  padding: 2px 7px;
+}
+
+.cw-qa-line.q .cw-qa-tag {
+  background: var(--red);
+}
+
+.cw-qa-line.a .cw-qa-tag {
+  background: var(--blue);
+}
+
+.cw-qa-jp strong {
+  color: var(--red-deep);
+}
+
+.cw-qa-en {
+  font-size: 13px;
+  color: var(--ink2);
+  margin-left: 34px;
+  margin-top: 2px;
+}
+
+/* Pattern tables inside grammar practice cards */
+.cw-pattern-wrap {
+  overflow-x: auto;
+  margin: 14px 0;
+}
+
+.cw-pattern-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 13.5px;
+}
+
+.cw-pattern-table td {
+  border: 1px solid var(--line);
+  padding: 8px 12px;
+}
+
+.cw-pat-tag {
+  font-weight: 700;
+  color: var(--red-deep);
+  background: var(--surface-soft);
+  width: 34px;
+  text-align: center;
+}
+
+.cw-drills {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.cw-drill-row {
+  font-family: var(--serif);
+  font-size: 14.5px;
+  background: var(--surface-soft);
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.cw-drill-row .cw-arrow {
+  margin: 0 8px;
+}
+
+/* Time-word groups (past/present/future) */
+.cw-timewords {
+  margin-top: 14px;
+}
+
+.cw-timeword-when {
+  font-size: 13.5px;
+  color: var(--ink2);
+  margin-bottom: 10px;
+}
+
+.cw-timeword-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.cw-timeword-group {
+  background: var(--surface-soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.cw-tw-label {
+  font: 700 11px var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 6px;
+}
+
+.cw-tw-row {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 14px;
+  padding: 3px 0;
+  flex-wrap: wrap;
+}
+
+.cw-tw-kana {
+  color: var(--ink2);
+  font-size: 12px;
+}
+
+.cw-tw-en {
+  margin-left: auto;
+  color: var(--ink2);
+  font-size: 12.5px;
+}
+
+/* Inline vocab list used within grammar practice cards (places, verbs) */
+.cw-vocablist-title {
+  font: 700 13px var(--sans);
+  margin: 16px 0 8px;
+  color: var(--ink);
+}
+
+.cw-vocablist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+
+.cw-vocablist-item {
+  background: var(--surface-soft);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: var(--serif);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cw-vocablist-en {
+  font-family: var(--sans);
+  font-size: 11.5px;
+  color: var(--ink2);
+}
+
+.cw-footnote {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--ink2);
+  font-style: italic;
+}
+
+.cw-vocab-card { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .cw-kanji-glyph { font-size: 48px; }
+  .cw-kanji-top { gap: 14px; }
+  .cw-qa-en { margin-left: 0; }
 }

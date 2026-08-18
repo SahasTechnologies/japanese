@@ -1,0 +1,261 @@
+{
+  "UNITS": [
+    {
+      "id": 1,
+      "title": "Unit 1",
+      "subtitle": "Telling the time — 何・時・分・半",
+      "kanji": [
+        {
+          "glyph": "何",
+          "sentences": [
+            { "kanji": "何を しましょうか。", "kana": "なにを しましょうか。", "en": "What shall we do?" },
+            { "kanji": "何で いきますか。", "kana": "なんで いきますか。", "en": "By what transport will you go?" },
+            { "kanji": "何時", "kana": "なんじ", "en": "What time?" },
+            { "kanji": "何曜日", "kana": "なんようび", "en": "What day of the week?" }
+          ]
+        },
+        {
+          "glyph": "時",
+          "sentences": [
+            { "kanji": "いま 六時です。", "kana": "いま ろくじです。", "en": "It is 6 o'clock now." },
+            { "kanji": "四時に", "kana": "よじに", "en": "at 4 o'clock" },
+            { "kanji": "ひまな 時に", "kana": "ひまな ときに", "en": "in my free time" }
+          ]
+        },
+        {
+          "glyph": "分",
+          "sentences": [
+            { "kanji": "十五分", "kana": "じゅうごふん", "en": "15 minutes" },
+            { "kanji": "二十分", "kana": "にじゅっぷん", "en": "20 minutes" },
+            { "kanji": "三時 五十五分に", "kana": "さんじ ごじゅうごふんに", "en": "at 3:55" },
+            { "kanji": "二時 十分です。", "kana": "にじ じゅっぷんです。", "en": "It is 2:10." }
+          ]
+        },
+        {
+          "glyph": "半",
+          "sentences": [
+            { "kanji": "いま 十時半です。", "kana": "いま じゅうじはんです。", "en": "It is now 10:30." },
+            { "kanji": "五時半に いきます。", "kana": "ごじはんに いきます。", "en": "I will go at 5:30." }
+          ]
+        }
+      ],
+      "qaSections": [
+        {
+          "title": "ぶんぽう",
+          "note": "Asking and saying the time",
+          "pairs": [
+            {
+              "q": { "jp": "いま、何時ですか。", "en": "What time is it now?" },
+              "a": { "jp": "いま、ごぜん／ごご 七時です。", "en": "It is 7 a.m./p.m. now." }
+            },
+            {
+              "q": { "jp": "テニスの しあいは 何時ですか。", "en": "What time is the tennis match?" },
+              "a": { "jp": "テニスの しあいは ごご 四時半です。", "en": "The tennis match is (at) 4:30 p.m." }
+            }
+          ]
+        }
+      ],
+      "vocabSections": [
+        {
+          "title": "Telling the time",
+          "words": [
+            ["午前", "ごぜん", "a.m."],
+            ["午後", "ごご", "p.m."],
+            ["一時", "いちじ", "1 o'clock"],
+            ["二時", "にじ", "2 o'clock"],
+            ["三時", "さんじ", "3 o'clock"],
+            ["四時", "よじ", "4 o'clock"],
+            ["五時", "ごじ", "5 o'clock"],
+            ["六時", "ろくじ", "6 o'clock"],
+            ["七時", "しちじ", "7 o'clock"],
+            ["八時", "はちじ", "8 o'clock"],
+            ["九時", "くじ", "9 o'clock"],
+            ["十時", "じゅうじ", "10 o'clock"],
+            ["十一時", "じゅういちじ", "11 o'clock"],
+            ["十二時", "じゅうにじ", "12 o'clock"],
+            ["半", "はん", "half"],
+            ["一時半", "いちじはん", "half-past 1"],
+            ["二時半", "にじはん", "half-past 2"],
+            ["一時五分まえ", "いちじごふんまえ", "5 minutes to 1"]
+          ]
+        },
+        {
+          "title": "Minutes",
+          "words": [
+            ["五分", "ごふん", "5 minutes"],
+            ["十分", "じゅっぷん", "10 minutes"],
+            ["十五分", "じゅうごふん", "15 minutes"],
+            ["二十分", "にじゅっぷん", "20 minutes"],
+            ["二十五分", "にじゅうごふん", "25 minutes"],
+            ["三十分", "さんじゅっぷん", "30 minutes"],
+            ["三十五分", "さんじゅうごふん", "35 minutes"],
+            ["四十分", "よんじゅっぷん", "40 minutes"],
+            ["四十五分", "よんじゅうごふん", "45 minutes"],
+            ["五十分", "ごじゅっぷん", "50 minutes"],
+            ["五十五分", "ごじゅうごふん", "55 minutes"]
+          ]
+        }
+      ],
+      "grammarPractice": [
+        {
+          "title": "ぶんぽう れんしゅう 2",
+          "note": "Asking and saying what time you do an activity",
+          "example": {
+            "q": { "jp": "何時に えいがを みますか。", "en": "What time will you watch the movie?", "bold": ["何時に"] },
+            "a": { "jp": "ごぜん／ごご 七時に えいがを みます。", "en": "At 7:00 a.m./p.m., I will watch the movie.", "bold": ["ごぜん／ごご 七時に"] }
+          },
+          "pattern": {
+            "headers": ["", "", "", "", ""],
+            "rows": [
+              ["Q", "何時", "に", "activity を", "しますか。"],
+              ["A", "a.m./p.m. time", "に", "activity を", "します。"]
+            ]
+          },
+          "drills": [
+            ["何時", "に", "しあいを", "しますか。"],
+            ["ごご 一時", "に", "しあいを", "します。"]
+          ]
+        },
+        {
+          "title": "ぶんぽう れんしゅう 3",
+          "note": "Asking and saying when you do an activity. Non-specific time words do not use the particle に。",
+          "example": {
+            "q": { "jp": "いつ、 キャンプに いきますか。", "en": "When will you go to the camp?", "bold": ["いつ"] },
+            "a": { "jp": "らいしゅう、 キャンプに いきます。", "en": "Next week, I'll go to the camp.", "bold": ["らいしゅう"] }
+          },
+          "pattern": {
+            "headers": ["", "", "", ""],
+            "rows": [
+              ["Q", "いつ、", "activity を", "しますか。"],
+              ["A", "Non-specific time、", "activity を", "します。"]
+            ]
+          },
+          "timeWords": {
+            "いつ": "when",
+            "groups": [
+              {
+                "label": "Past",
+                "words": [
+                  ["きのう", "きのう", "yesterday"],
+                  ["せんしゅう", "せんしゅう", "last week"],
+                  ["せん月", "せんげつ", "last month"],
+                  ["きょねん", "きょねん", "last year"]
+                ]
+              },
+              {
+                "label": "Present",
+                "words": [
+                  ["きょう", "きょう", "today"],
+                  ["こんしゅう", "こんしゅう", "this week"],
+                  ["こん月", "こんげつ", "this month"],
+                  ["ことし", "ことし", "this year"]
+                ]
+              },
+              {
+                "label": "Future",
+                "words": [
+                  ["あした", "あした", "tomorrow"],
+                  ["らいしゅう", "らいしゅう", "next week"],
+                  ["らい月", "らいげつ", "next month"],
+                  ["らいねん", "らいねん", "next year"]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "title": "ぶんぽう れんしゅう 4",
+          "note": "Asking and saying where you do an activity",
+          "example": {
+            "q": { "jp": "どこ で パーティーを しますか。", "en": "Where will you have the party?", "bold": ["どこ"] },
+            "a": { "jp": "レストランで パーティーを します。", "en": "I will have the party at a restaurant.", "bold": ["レストランで"] }
+          },
+          "pattern": {
+            "headers": ["", "", "", ""],
+            "rows": [
+              ["Q", "どこ で", "activity を", "しますか。"],
+              ["A", "place で", "activity を", "します。"]
+            ]
+          },
+          "vocabList": {
+            "title": "Places",
+            "words": [
+              ["うみ", "うみ", "beach"],
+              ["えいがかん", "えいがかん", "movie theatre"],
+              ["えき", "えき", "station"],
+              ["がっこう", "がっこう", "school"],
+              ["カフェ", "カフェ", "cafe/coffee shop"],
+              ["こうえん", "こうえん", "park"],
+              ["としょかん", "としょかん", "library"],
+              ["ともだちの うち", "ともだちの うち", "a friend's house"],
+              ["まち", "まち", "town/city"],
+              ["みせ", "みせ", "shop"],
+              ["レストラン", "レストラン", "restaurant"],
+              ["やま", "やま", "mountains"]
+            ],
+            "footnote": "The original Japanese word for cafe/coffee shop is きっさてん but these days カフェ is used."
+          }
+        },
+        {
+          "title": "ぶんぽう れんしゅう 5",
+          "note": "Inviting someone to do something and responding",
+          "example": {
+            "q": { "jp": "かいものを しませんか。", "en": "Wouldn't you like to do shopping?", "bold": ["しませんか。"] },
+            "a1": { "jp": "はい、 かいものを しましょう。", "en": "Yes, let's do shopping.", "bold": ["しましょう。"] },
+            "a2": { "jp": "すみません。 かいものは ちょっと…。", "en": "Sorry. I'm not really keen on shopping.", "bold": ["は ちょっと…。"] }
+          },
+          "pattern": {
+            "headers": ["", "", ""],
+            "rows": [
+              ["Q", "Activity を", "しませんか。"],
+              ["A1", "はい、activity を", "しましょう。"],
+              ["A2", "すみません、activity は", "ちょっと…。"]
+            ]
+          },
+          "drills": [
+            ["あした、いっしょに えいがを", "みませんか。"],
+            ["はい、", "みましょう。"],
+            ["すみません。えいがは", "ちょっと…。"]
+          ],
+          "vocabList": {
+            "title": "Verbs",
+            "words": [
+              ["たべます", "たべます", "eat"],
+              ["のみます", "のみます", "drink"],
+              ["みます", "みます", "watch/look at"],
+              ["ききます", "ききます", "listen"],
+              ["よみます", "よみます", "read"],
+              ["かきます", "かきます", "write"],
+              ["かいます", "かいます", "buy"],
+              ["つくります", "つくります", "make"],
+              ["とります", "とります", "take (photos)"],
+              ["きます", "きます", "come"],
+              ["かえります", "かえります", "return/go home"],
+              ["うたいます", "うたいます", "sing"],
+              ["します", "します", "do/play"],
+              ["おきます", "おきます", "wake up"],
+              ["ねます", "ねます", "sleep"],
+              ["のります", "のります", "ride"],
+              ["でかけます", "でかけます", "go out"],
+              ["あいます", "あいます", "meet"],
+              ["いきます", "いきます", "go"],
+              ["べんきょう(を) します", "べんきょう(を) します", "study"],
+              ["あそびます", "あそびます", "play/hang out"]
+            ]
+          }
+        }
+      ]
+    },
+    { "id": 2, "title": "Unit 2", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 3, "title": "Unit 3", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 4, "title": "Unit 4", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 5, "title": "Unit 5", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 6, "title": "Unit 6", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 7, "title": "Unit 7", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 8, "title": "Unit 8", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 9, "title": "Unit 9", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 10, "title": "Unit 10", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 11, "title": "Unit 11", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] },
+    { "id": 12, "title": "Unit 12", "subtitle": "Coming soon", "kanji": [], "qaSections": [], "vocabSections": [], "grammarPractice": [] }
+  ]
+}

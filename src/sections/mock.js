@@ -21,10 +21,10 @@ import { getState, updateBest, save } from '../state.js';
 function kanjiReadingQs(n) {
   const pool = shuffle(KANJI.filter(k => k[1] || k[2])).slice(0, n);
   return pool.map(k => {
-    const correct = (k[2] || k[1] || '').split(/[・\/]/)[0].trim() || k[1];
+    const correct = (k[2] || k[1] || '').split(/[・\/、,]/)[0].trim() || k[1];
     // distractors from other readings
     const others = shuffle(KANJI.filter(x => x[0] !== k[0]))
-      .map(x => (x[2] || x[1] || '').split(/[・\/]/)[0].trim())
+      .map(x => (x[2] || x[1] || '').split(/[・\/、,]/)[0].trim())
       .filter(r => r && r !== correct)
       .slice(0, 3);
     const options = shuffle([correct, ...others]);

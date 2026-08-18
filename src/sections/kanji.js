@@ -143,6 +143,7 @@ function renderKanjiDetail() {
       <div class="rad-row">
         <div class="rad-glyph">${k[4]}</div>
         <div>
+          <div class="rad-label">Radical (部首)</div>
           <div style="font-weight:700">${rad[0]}</div>
           <div style="font-size:12.5px;color:var(--ink2)">${rad[1]}</div>
         </div>

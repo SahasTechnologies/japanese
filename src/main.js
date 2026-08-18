@@ -13,6 +13,7 @@ import { renderListening } from './sections/listening.js';
 import { renderMock } from './sections/mock.js';
 import { renderRef } from './sections/reference.js';
 import { renderFlashcards } from './sections/flashcards.js';
+import { renderCoursework } from './sections/coursework.js';
 
 const { KANJI } = kanjiData;
 const { GRAMMAR } = grammar;
@@ -28,6 +29,7 @@ const TABS = [
   { id: 'listening', ic: '聴', label: 'Listening' },
   { id: 'flash',     ic: '札', label: 'Flashcards' },
   { id: 'mock',      ic: '試', label: 'Mock Test' },
+  { id: 'coursework',ic: '級', label: 'Coursework' },
   { id: 'ref',       ic: '本', label: 'Reference' },
 ];
 
@@ -43,6 +45,7 @@ const routes = {
   listening: renderListening,
   flash: renderFlashcards,
   mock: renderMock,
+  coursework: renderCoursework,
   ref: () => renderRef(navigateTo),
 };
 

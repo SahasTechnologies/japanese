@@ -15,6 +15,7 @@ const TOC = [
   { id: 'go-listening', label: '→ Listening practice', section: 'listening' },
   { id: 'go-flash', label: '→ Flashcards', section: 'flash' },
   { id: 'go-mock', label: '→ Mock test', section: 'mock' },
+  { id: 'go-coursework', label: '→ Coursework', section: 'coursework' },
 ];
 
 function refCard(id, title, body) {
@@ -116,6 +117,7 @@ export function renderRef(navigateTo) {
       <li><button type="button" class="ref-jump" data-go="listening"><strong>Listening</strong> — word quizzes + scripted dialogues (TTS)</button></li>
       <li><button type="button" class="ref-jump" data-go="flash"><strong>Flashcards</strong> — vocab, kanji, kana with know / don’t-know piles</button></li>
       <li><button type="button" class="ref-jump" data-go="mock"><strong>Mock test</strong> — multimodal timed exam (~65 questions)</button></li>
+      <li><button type="button" class="ref-jump" data-go="coursework"><strong>Coursework</strong> — your class units, with kanji, sentences, grammar Q&amp;A, and vocabulary</button></li>
     </ul>`
   );
 

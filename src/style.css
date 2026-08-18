@@ -1312,18 +1312,146 @@ ion-icon {
   height: 16px;
 }
 
-/* Kanji read/write flags on tiles */
-.ktile .k-flags {
-  display: block;
-  font-size: 10px;
+/* Kanji progress colors: green = can read, yellow = can write */
+.ktile.can-read {
+  background: color-mix(in srgb, #2c7a42 22%, var(--card));
+  border-color: #2c7a42;
+}
+.ktile.can-write {
+  background: color-mix(in srgb, #c9a227 28%, var(--card));
+  border-color: #c9a227;
+}
+.ktile.can-both {
+  background: color-mix(in srgb, #2c7a42 18%, var(--card));
+  border-color: #c9a227;
+  box-shadow: inset 0 0 0 2px color-mix(in srgb, #c9a227 50%, transparent);
+}
+[data-theme="dark"] .ktile.can-read {
+  background: color-mix(in srgb, #5cb87a 25%, var(--card));
+  border-color: #5cb87a;
+}
+[data-theme="dark"] .ktile.can-write {
+  background: color-mix(in srgb, #d4a84b 28%, var(--card));
+  border-color: #d4a84b;
+}
+[data-theme="dark"] .ktile.can-both {
+  background: color-mix(in srgb, #5cb87a 20%, var(--card));
+  border-color: #d4a84b;
+}
+
+/* Segmented control (kanji display mode) */
+.seg-control {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--card);
+}
+.seg-control .seg {
+  border: none;
+  background: transparent;
+  padding: 7px 12px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink2);
+  cursor: pointer;
+  border-right: 1px solid var(--line);
+}
+.seg-control .seg:last-child { border-right: none; }
+.seg-control .seg.on {
+  background: var(--btn-primary-bg);
+  color: var(--btn-primary-fg);
+}
+.seg-control .seg:hover:not(.on) {
+  background: var(--surface-soft);
+  color: var(--ink);
+}
+.vc-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.vc-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink2);
+  min-width: 90px;
+}
+
+/* Furigana ruby */
+ruby.vw-ruby, .vw-ruby {
+  ruby-align: center;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 1.05em;
+}
+ruby.vw-ruby rt, .vw-ruby rt {
+  font-size: 0.45em;
+  font-family: var(--sans);
+  font-weight: 500;
+  color: var(--ink2);
+}
+.vw-kana, .vw-kanji {
+  font-family: var(--serif);
+  font-weight: 600;
+}
+
+/* Vocab detail / examples */
+.vcard.open {
+  grid-column: 1 / -1;
+  border-color: var(--red);
+}
+.vcard-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.v-detail {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--line);
+}
+.v-reading-line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.v-full { font-size: 22px; }
+.v-kana-hint { font-size: 13px; color: var(--ink2); }
+.v-ex-title {
+  font-size: 12px;
   font-weight: 700;
-  color: var(--green);
-  letter-spacing: 0.05em;
-  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink2);
+  margin-bottom: 8px;
 }
-.ktile.can-write .k-flags {
-  color: var(--blue);
+.v-ex {
+  position: relative;
+  padding: 10px 40px 10px 12px;
+  background: var(--surface-soft);
+  border-radius: 10px;
+  margin-bottom: 8px;
 }
-.ktile.learned.can-write .k-flags {
-  color: var(--gold);
+.v-ex-jp {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.v-ex-en {
+  font-size: 13px;
+  color: var(--ink2);
+  margin-top: 4px;
+}
+.v-ex-speak {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px;
+  min-width: auto;
 }

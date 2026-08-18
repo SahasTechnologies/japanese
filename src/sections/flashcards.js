@@ -6,26 +6,17 @@ import { KANJI } from '../data/kanji.js';
 import { ALLVOCAB } from '../data/vocab.js';
 import { shuffle } from '../utils/helpers.js';
 import { speak } from '../utils/tts.js';
-import { getState, save, canShowKanjiForm } from '../state.js';
+import { getState, save, formatVocabWord } from '../state.js';
 
 const DECKS = {
   vocab: {
     label: 'Vocabulary',
-    build: () => {
-      const P = getState();
-      return ALLVOCAB.map(w => {
-        const showKanji = !P.vocabHideKanji && canShowKanjiForm(w[0]);
-        const front = showKanji
-          ? `<span class="fc-jp">${w[0]}</span><div class="fc-sub">${w[1]}</div>`
-          : `<span class="fc-jp">${w[1]}</span>`;
-        return {
-          front,
-          back: `<span class="fc-en">${w[2]}</span>` + (showKanji ? '' : `<div class="fc-sub">${w[0]}</div>`),
-          speak: w[0],
-          key: w[0],
-        };
-      });
-    },
+    build: () => ALLVOCAB.map(w => ({
+      front: `<span class="fc-jp">${formatVocabWord(w[0], w[1])}</span>`,
+      back: `<span class="fc-en">${w[2]}</span><div class="fc-sub">${w[1]}</div>`,
+      speak: w[0],
+      key: w[0],
+    })),
   },
   kanji: {
     label: 'Kanji',

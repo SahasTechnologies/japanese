@@ -5,14 +5,16 @@
 const KEY = 'n5app';
 
 const DEFAULTS = {
-  best: {},              // { sectionId: pct }
-  kanjiLearned: [],      // legacy: treated as can-read
-  kanjiCanRead: [],      // characters user can read
-  kanjiCanWrite: [],     // characters user can write
-  vocabLearned: [],      // word keys (expression) marked learned
-  vocabHideKanji: false, // show kana-only in vocabulary
+  best: {},
+  kanjiLearned: [],
+  kanjiCanRead: [],
+  kanjiCanWrite: [],
+  vocabLearned: [],
+  // 'all' | 'learned' | 'none'
+  vocabKanjiMode: 'learned',
+  showFurigana: true,
   mockBest: 0,
-  flashPiles: {},        // { deckId: { know: [], dont: [] } }
+  flashPiles: {},
 };
 
 let P = { ...DEFAULTS };
@@ -20,10 +22,14 @@ let P = { ...DEFAULTS };
 try {
   const raw = localStorage.getItem(KEY);
   if (raw) {
-    P = Object.assign({ ...DEFAULTS }, JSON.parse(raw));
-    // migrate legacy kanjiLearned → kanjiCanRead
+    const parsed = JSON.parse(raw);
+    P = Object.assign({ ...DEFAULTS }, parsed);
+    // migrate legacy
     if (P.kanjiLearned?.length && !P.kanjiCanRead?.length) {
       P.kanjiCanRead = [...P.kanjiLearned];
+    }
+    if (typeof parsed.vocabHideKanji === 'boolean' && parsed.vocabKanjiMode == null) {
+      P.vocabKanjiMode = parsed.vocabHideKanji ? 'none' : 'learned';
     }
   }
 } catch (_) {}
@@ -42,13 +48,13 @@ export function resetState() {
     kanjiCanRead: [],
     kanjiCanWrite: [],
     vocabLearned: [],
-    vocabHideKanji: false,
+    vocabKanjiMode: 'learned',
+    showFurigana: true,
     flashPiles: {},
   };
   save();
 }
 
-/** Update best score for a section if higher, then save */
 export function updateBest(id, score, total) {
   const pct = Math.round((score / total) * 100);
   P.best[id] = Math.max(P.best[id] || 0, pct);
@@ -56,16 +62,12 @@ export function updateBest(id, score, total) {
 }
 
 export function toggleKanjiFlag(char, flag) {
-  // flag: 'read' | 'write'
   const key = flag === 'write' ? 'kanjiCanWrite' : 'kanjiCanRead';
   const arr = P[key];
   const idx = arr.indexOf(char);
   if (idx >= 0) arr.splice(idx, 1);
   else arr.push(char);
-  // keep legacy in sync for read
-  if (flag === 'read') {
-    P.kanjiLearned = [...P.kanjiCanRead];
-  }
+  if (flag === 'read') P.kanjiLearned = [...P.kanjiCanRead];
   save();
 }
 
@@ -76,15 +78,53 @@ export function toggleVocabLearned(word) {
   save();
 }
 
-export function setVocabHideKanji(on) {
-  P.vocabHideKanji = !!on;
+export function setVocabKanjiMode(mode) {
+  if (['all', 'learned', 'none'].includes(mode)) {
+    P.vocabKanjiMode = mode;
+    save();
+  }
+}
+
+export function setShowFurigana(on) {
+  P.showFurigana = !!on;
   save();
 }
 
-/** Does every kanji in `text` appear in kanjiCanRead? (kana-only words always ok) */
+/** Every kanji in text is in kanjiCanRead (kana-only → true) */
 export function canShowKanjiForm(text) {
   const kanjiChars = [...text].filter(ch => /[\u4e00-\u9faf]/.test(ch));
   if (!kanjiChars.length) return true;
   const known = new Set(P.kanjiCanRead || []);
   return kanjiChars.every(ch => known.has(ch));
+}
+
+/**
+ * Format a word for display based on kanji mode + furigana setting.
+ * Returns HTML string.
+ */
+export function formatVocabWord(expr, reading) {
+  const mode = P.vocabKanjiMode || 'learned';
+  const furi = P.showFurigana !== false;
+  const hasKanji = /[\u4e00-\u9faf]/.test(expr);
+
+  let showKanji = false;
+  if (mode === 'all') showKanji = hasKanji;
+  else if (mode === 'learned') showKanji = hasKanji && canShowKanjiForm(expr);
+  // mode === 'none' → always kana
+
+  if (!showKanji) {
+    return `<span class="vw-kana">${escapeHtml(reading)}</span>`;
+  }
+  if (furi && reading && reading !== expr) {
+    return `<ruby class="vw-ruby">${escapeHtml(expr)}<rt>${escapeHtml(reading)}</rt></ruby>`;
+  }
+  return `<span class="vw-kanji">${escapeHtml(expr)}</span>`;
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }

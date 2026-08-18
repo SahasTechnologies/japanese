@@ -61,11 +61,13 @@ function renderKanjiList() {
       const tile = document.createElement('div');
       const canRead = (P.kanjiCanRead || P.kanjiLearned || []).includes(k[0]);
       const canWrite = (P.kanjiCanWrite || []).includes(k[0]);
-      tile.className = 'ktile' + (canRead ? ' learned' : '') + (canWrite ? ' can-write' : '');
-      tile.innerHTML = `<span class="k">${k[0]}</span>` +
-        (canRead || canWrite
-          ? `<span class="k-flags">${canRead ? '読' : ''}${canWrite ? '書' : ''}</span>`
-          : '');
+      // green = can read, yellow = can write, both = green with yellow border
+      let cls = 'ktile';
+      if (canRead && canWrite) cls += ' can-both';
+      else if (canRead) cls += ' can-read';
+      else if (canWrite) cls += ' can-write';
+      tile.className = cls;
+      tile.innerHTML = `<span class="k">${k[0]}</span>`;
       tile.title = k[3] + (canRead ? ' · can read' : '') + (canWrite ? ' · can write' : '');
       tile.onclick = () => { selKanji = k; strokeMode = 'watch'; renderKanji(); };
       grid.appendChild(tile);

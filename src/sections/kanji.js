@@ -1,7 +1,7 @@
 import { KANJI, KANJI_GROUPS, RADICALS } from '../data/kanji.js';
 import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
-import { updateBest, getState, save } from '../state.js';
+import { updateBest, getState, save, toggleKanjiFlag } from '../state.js';
 // KanjiVG stroke data — pre-fetched at build time
 import STROKES from '../data/kanjivg-strokes.json';
 
@@ -13,7 +13,7 @@ export function kanjiQs(n, onlyLearned = false) {
   const P = getState();
   let source = KANJI;
   if (onlyLearned) {
-    source = KANJI.filter(k => P.kanjiLearned.includes(k[0]));
+    source = KANJI.filter(k => (P.kanjiCanRead || P.kanjiLearned || []).includes(k[0]));
     if (source.length < 4) return [];
   }
   const pool = shuffle(source).slice(0, Math.min(n, source.length));
@@ -33,7 +33,7 @@ export function renderKanji() {
 function renderKanjiList() {
   const main = document.getElementById('main');
   const P = getState();
-  const learnedCount = P.kanjiLearned.length;
+  const learnedCount = (P.kanjiCanRead || P.kanjiLearned || []).length;
   main.innerHTML = `
     <div class="sec-title">Kanji Trainer</div>
     <div class="sec-sub">103 N5 kanji grouped by theme. Tap a kanji to see stroke order and trace it.</div>
@@ -59,9 +59,14 @@ function renderKanjiList() {
     for (let j = 0; j < g.n; j++) {
       const k = KANJI[idx++];
       const tile = document.createElement('div');
-      tile.className = 'ktile' + (P.kanjiLearned.includes(k[0]) ? ' learned' : '');
-      tile.innerHTML = `<span class="k">${k[0]}</span>`;
-      tile.title = k[3];
+      const canRead = (P.kanjiCanRead || P.kanjiLearned || []).includes(k[0]);
+      const canWrite = (P.kanjiCanWrite || []).includes(k[0]);
+      tile.className = 'ktile' + (canRead ? ' learned' : '') + (canWrite ? ' can-write' : '');
+      tile.innerHTML = `<span class="k">${k[0]}</span>` +
+        (canRead || canWrite
+          ? `<span class="k-flags">${canRead ? '読' : ''}${canWrite ? '書' : ''}</span>`
+          : '');
+      tile.title = k[3] + (canRead ? ' · can read' : '') + (canWrite ? ' · can write' : '');
       tile.onclick = () => { selKanji = k; strokeMode = 'watch'; renderKanji(); };
       grid.appendChild(tile);
     }
@@ -132,9 +137,18 @@ function renderKanjiDetail() {
         <div>
           <h4 style="margin-bottom:10px;font-size:14px">Example words</h4>
           <div id="exw"></div>
-          <button class="btn primary" id="learn-btn" style="margin-top:12px">
-            ${P.kanjiLearned.includes(k[0]) ? '<ion-icon name="checkmark-circle"></ion-icon> Learned' : 'Mark as learned'}
-          </button>
+          <div class="btnrow" style="margin-top:12px;justify-content:flex-start;flex-wrap:wrap">
+            <button class="btn ${(P.kanjiCanRead || P.kanjiLearned || []).includes(k[0]) ? 'red' : 'primary'}" id="read-btn">
+              ${(P.kanjiCanRead || P.kanjiLearned || []).includes(k[0])
+                ? '<ion-icon name="checkmark-circle"></ion-icon> Can read'
+                : 'Mark can read'}
+            </button>
+            <button class="btn ${(P.kanjiCanWrite || []).includes(k[0]) ? 'red' : ''}" id="write-btn">
+              ${(P.kanjiCanWrite || []).includes(k[0])
+                ? '<ion-icon name="checkmark-circle"></ion-icon> Can write'
+                : 'Mark can write'}
+            </button>
+          </div>
         </div>
       </div>
     </div>`;
@@ -152,15 +166,9 @@ function renderKanjiDetail() {
     exw.appendChild(row);
   });
 
-  // Learn toggle
-  document.getElementById('learn-btn').onclick = () => {
-    const state = getState();
-    const idx = state.kanjiLearned.indexOf(k[0]);
-    if (idx >= 0) state.kanjiLearned.splice(idx, 1);
-    else state.kanjiLearned.push(k[0]);
-    save();
-    renderKanjiDetail();
-  };
+  // Read / write toggles
+  document.getElementById('read-btn').onclick = () => { toggleKanjiFlag(k[0], 'read'); renderKanjiDetail(); };
+  document.getElementById('write-btn').onclick = () => { toggleKanjiFlag(k[0], 'write'); renderKanjiDetail(); };
 
   loadKanjiStrokes(k[0]);
 }

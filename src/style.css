@@ -1205,3 +1205,125 @@ ion-icon {
   .search-wrap { min-width: 120px; max-width: 160px; }
   .hdr-sub { display: none; }
 }
+
+/* Flashcards */
+.fc-stats {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  align-items: center;
+  font-size: 13px;
+  color: var(--ink2);
+  margin-bottom: 14px;
+}
+.fc-pile-ok { color: var(--green); display: inline-flex; align-items: center; gap: 4px; }
+.fc-pile-no { color: var(--red); display: inline-flex; align-items: center; gap: 4px; }
+
+.fc-card {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  aspect-ratio: 4 / 3;
+  perspective: 1000px;
+  cursor: pointer;
+  user-select: none;
+}
+.fc-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow-md);
+  padding: 24px;
+  backface-visibility: hidden;
+  transition: transform 0.45s ease;
+}
+.fc-front { transform: rotateY(0deg); }
+.fc-back { transform: rotateY(180deg); }
+.fc-card.flipped .fc-front { transform: rotateY(180deg); }
+.fc-card.flipped .fc-back { transform: rotateY(0deg); }
+
+.fc-jp {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 42px;
+  line-height: 1.2;
+}
+.fc-jp.big { font-size: 64px; }
+.fc-en {
+  font-size: 22px;
+  font-weight: 600;
+  text-align: center;
+}
+.fc-sub {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--ink2);
+}
+.fc-done {
+  text-align: center;
+  padding: 32px 20px;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.mock-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink2);
+  margin-bottom: 8px;
+}
+
+/* Vocab learned + toggle */
+.vcard.learned {
+  border-color: var(--green);
+  background: color-mix(in srgb, var(--green) 8%, var(--card));
+}
+.vcard .v-learn {
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+.toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink2);
+  cursor: pointer;
+  user-select: none;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+}
+.toggle-label input {
+  accent-color: var(--red);
+  width: 16px;
+  height: 16px;
+}
+
+/* Kanji read/write flags on tiles */
+.ktile .k-flags {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+.ktile.can-write .k-flags {
+  color: var(--blue);
+}
+.ktile.learned.can-write .k-flags {
+  color: var(--gold);
+}

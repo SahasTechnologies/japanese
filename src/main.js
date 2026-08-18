@@ -12,6 +12,7 @@ import { renderReading } from './sections/reading.js';
 import { renderListening } from './sections/listening.js';
 import { renderMock } from './sections/mock.js';
 import { renderRef } from './sections/reference.js';
+import { renderFlashcards } from './sections/flashcards.js';
 
 const TABS = [
   { id: 'home',      ic: '家', label: 'Home' },
@@ -21,6 +22,7 @@ const TABS = [
   { id: 'grammar',   ic: '文', label: 'Grammar' },
   { id: 'reading',   ic: '読', label: 'Reading' },
   { id: 'listening', ic: '聴', label: 'Listening' },
+  { id: 'flash',     ic: '札', label: 'Flashcards' },
   { id: 'mock',      ic: '試', label: 'Mock Test' },
   { id: 'ref',       ic: '本', label: 'Reference' },
 ];
@@ -35,6 +37,7 @@ const routes = {
   grammar: renderGrammar,
   reading: renderReading,
   listening: renderListening,
+  flash: renderFlashcards,
   mock: renderMock,
   ref: renderRef,
 };

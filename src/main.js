@@ -14,24 +14,41 @@ import { renderMock } from './sections/mock.js';
 import { renderRef } from './sections/reference.js';
 import { renderFlashcards } from './sections/flashcards.js';
 import { renderCoursework } from './sections/coursework.js';
+import { renderWriting } from './sections/writing.js';
+import { renderPlacement } from './sections/placement.js';
 
 const { KANJI } = kanjiData;
 const { GRAMMAR } = grammar;
 const ALLVOCAB = Object.values(VOCAB).flat();
 
-const TABS = [
-  { id: 'home',      ic: '家', label: 'Home' },
-  { id: 'kana',      ic: 'あ', label: 'Kana' },
-  { id: 'kanji',     ic: '漢', label: 'Kanji' },
-  { id: 'vocab',     ic: '語', label: 'Vocabulary' },
-  { id: 'grammar',   ic: '文', label: 'Grammar' },
-  { id: 'reading',   ic: '読', label: 'Reading' },
-  { id: 'listening', ic: '聴', label: 'Listening' },
-  { id: 'flash',     ic: '札', label: 'Flashcards' },
-  { id: 'mock',      ic: '試', label: 'Mock Test' },
-  { id: 'coursework',ic: '級', label: 'Coursework' },
-  { id: 'ref',       ic: '本', label: 'Reference' },
+/** Two-tier navigation: top-level groups, each (optionally) with its own sub-tabs. */
+const GROUPS = [
+  { id: 'home', ic: '家', label: 'Home' },
+  {
+    id: 'jlpt', ic: '日', label: 'JLPT N5',
+    tabs: [
+      { id: 'kana',      ic: 'あ', label: 'Kana' },
+      { id: 'kanji',     ic: '漢', label: 'Kanji' },
+      { id: 'vocab',     ic: '語', label: 'Vocabulary' },
+      { id: 'grammar',   ic: '文', label: 'Grammar' },
+      { id: 'writing',   ic: '書', label: 'Writing' },
+      { id: 'reading',   ic: '読', label: 'Reading' },
+      { id: 'listening', ic: '聴', label: 'Listening' },
+      { id: 'flash',     ic: '札', label: 'Flashcards' },
+      { id: 'mock',      ic: '試', label: 'Mock Test' },
+      { id: 'placement', ic: '検', label: 'Placement Test' },
+      { id: 'ref',       ic: '本', label: 'Reference' },
+    ],
+  },
+  { id: 'coursework', ic: '級', label: 'Coursework' },
 ];
+
+// Flat lookup: tab id -> { group, ic, label }
+const TAB_INDEX = {};
+GROUPS.forEach(g => {
+  TAB_INDEX[g.id] = { group: g.id, ic: g.ic, label: g.label };
+  (g.tabs || []).forEach(t => { TAB_INDEX[t.id] = { group: g.id, ic: t.ic, label: t.label }; });
+});
 
 let curTab = 'home';
 
@@ -41,11 +58,13 @@ const routes = {
   kanji: renderKanji,
   vocab: renderVocab,
   grammar: renderGrammar,
+  writing: renderWriting,
   reading: renderReading,
   listening: renderListening,
   flash: renderFlashcards,
   mock: renderMock,
-  coursework: renderCoursework,
+  placement: () => renderPlacement(navigateTo),
+  coursework: () => renderCoursework(navigateTo),
   ref: () => renderRef(navigateTo),
 };
 
@@ -58,15 +77,38 @@ export function navigateTo(tabId) {
 }
 
 function renderNav() {
+  const cur = TAB_INDEX[curTab] || TAB_INDEX.home;
   const nav = document.getElementById('nav');
+  const navsub = document.getElementById('navsub');
+
+  // Primary row: top-level groups
   nav.innerHTML = '';
-  TABS.forEach(t => {
+  GROUPS.forEach(g => {
     const btn = document.createElement('button');
-    btn.className = 'tab' + (t.id === curTab ? ' on' : '');
-    btn.innerHTML = `<span class="ic">${t.ic}</span>${t.label}`;
-    btn.onclick = () => navigateTo(t.id);
+    btn.className = 'tab' + (cur.group === g.id ? ' on' : '');
+    btn.innerHTML = `<span class="ic">${g.ic}</span>${g.label}`;
+    btn.onclick = () => {
+      if (g.tabs && g.tabs.length) navigateTo(g.tabs[0].id);
+      else navigateTo(g.id);
+    };
     nav.appendChild(btn);
   });
+
+  // Secondary row: sub-tabs of the current group (if any)
+  const group = GROUPS.find(g => g.id === cur.group);
+  navsub.innerHTML = '';
+  if (group && group.tabs && group.tabs.length) {
+    navsub.style.display = '';
+    group.tabs.forEach(t => {
+      const btn = document.createElement('button');
+      btn.className = 'tab sub' + (t.id === curTab ? ' on' : '');
+      btn.innerHTML = `<span class="ic">${t.ic}</span>${t.label}`;
+      btn.onclick = () => navigateTo(t.id);
+      navsub.appendChild(btn);
+    });
+  } else {
+    navsub.style.display = 'none';
+  }
 }
 
 function updateMasteredCount() {
@@ -88,7 +130,7 @@ function route() {
 const resetBtn = document.getElementById('resetBtn');
 if (resetBtn) {
   resetBtn.onclick = () => {
-    if (window.confirm('Reset all your JLPT N5 study progress?')) {
+    if (window.confirm('Reset all your Japanese study progress (JLPT N5 + Coursework)?')) {
       resetState();
       route();
     }

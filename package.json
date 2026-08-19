@@ -2,7 +2,7 @@
   "name": "japanese",
   "version": "1.0.0",
   "type": "module",
-  "description": "Japanese study app \u2014 JLPT N5 (Kana, Kanji, Vocab, Grammar, Reading, Listening) plus personal coursework units",
+  "description": "Japanese study app — JLPT N5 (Kana, Kanji, Vocab, Grammar, Reading, Listening) plus personal coursework units",
   "scripts": {
     "dev": "node scripts/fetch-kanjivg.js && vite",
     "build": "node scripts/fetch-kanjivg.js && vite build",
@@ -10,5 +10,8 @@
   },
   "devDependencies": {
     "vite": "^5.4.0"
+  },
+  "dependencies": {
+    "wanakana": "^5.3.1"
   }
 }

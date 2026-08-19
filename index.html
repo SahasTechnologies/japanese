@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Japanese Study — 日本語能力試験 &amp; Coursework</title>
-<meta name="description" content="Interactive Japanese study app covering JLPT N5 (Kana, Kanji, Vocabulary, Grammar, Reading, Listening) plus personal coursework units, with quizzes and stroke-order practice.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c73e2e'/%3E%3Ctext x='32' y='46' font-size='32' text-anchor='middle' fill='white' font-family='serif' font-weight='bold'%3EN5%3C/text%3E%3C/svg%3E">
+<title>Japanese Study — JLPT N5 &amp; Coursework</title>
+<meta name="description" content="Interactive Japanese study app: JLPT N5 (Kana, Kanji, Vocabulary, Grammar, Reading, Listening) plus your own class coursework units, writing practice, and a placement test.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c73e2e'/%3E%3Ctext x='32' y='46' font-size='34' text-anchor='middle' fill='white' font-family='serif' font-weight='bold'%3E日%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/shippori-mincho@5/600.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/shippori-mincho@5/800.css">
@@ -20,10 +20,10 @@
 
 <div class="topbar">
   <header>
-    <div class="logo" aria-label="N5">N5</div>
+    <div class="logo" aria-label="Japanese Study">日</div>
     <div class="hdr-title">
       <h1>Japanese Study</h1>
-      <div class="hdr-sub">日本語能力試験 N5 &amp; Coursework · Scripts · Vocab · Grammar · Reading · Listening</div>
+      <div class="hdr-sub">JLPT N5 &amp; Coursework · Scripts · Vocab · Grammar · Reading · Listening · Writing</div>
     </div>
     <div class="hdr-right">
       <div class="search-wrap">
@@ -37,7 +37,8 @@
       <button class="btn icon-btn" id="resetBtn" title="Reset all progress" aria-label="Reset all progress"><ion-icon name="refresh-outline"></ion-icon></button>
     </div>
   </header>
-  <nav id="nav" role="navigation" aria-label="Study sections"></nav>
+  <nav id="nav" role="navigation" aria-label="Top-level sections"></nav>
+  <nav id="navsub" role="navigation" aria-label="Sub sections"></nav>
 </div>
 <main id="main" role="main"></main>
 

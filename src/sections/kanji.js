@@ -9,6 +9,12 @@ import STROKES from '../data/kanjivg-strokes.json' with { type: 'json' };
 let selKanji = null;
 let strokeMode = 'watch'; // 'watch' | 'trace'
 
+/** Allow other sections (e.g. Coursework) to jump straight into tracing a kanji */
+export function focusKanjiForTrace(glyph) {
+  const k = KANJI.find(x => x[0] === glyph);
+  if (k) { selKanji = k; strokeMode = 'trace'; }
+}
+
 /** Build meaning quiz questions from kanji pool (or learned-only) */
 export function kanjiQs(n, onlyLearned = false) {
   const P = getState();
@@ -213,11 +219,13 @@ function svgEl(tag, attrs) {
 }
 
 const GUIDES = `
-  <rect class="guide-rect" x="0" y="0" width="109" height="109" fill="none" stroke-width="1" rx="2"/>
-  <line class="guide-mid" x1="54.5" y1="0" x2="54.5" y2="109" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
-  <line class="guide-mid" x1="0" y1="54.5" x2="109" y2="54.5" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
-  <line class="guide-diag" x1="0" y1="0" x2="109" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>
-  <line class="guide-diag" x1="109" y1="0" x2="0" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>`;
+  <g class="grid-group">
+    <rect class="guide-rect" x="0" y="0" width="109" height="109" fill="none" stroke-width="1" rx="2"/>
+    <line class="guide-mid" x1="54.5" y1="0" x2="54.5" y2="109" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
+    <line class="guide-mid" x1="0" y1="54.5" x2="109" y2="54.5" stroke-width=".7" stroke-dasharray="3.5 3.5"/>
+    <line class="guide-diag" x1="0" y1="0" x2="109" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>
+    <line class="guide-diag" x1="109" y1="0" x2="0" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>
+  </g>`;
 
 function loadKanjiStrokes(ch) {
   const svg  = document.getElementById('stage');
@@ -272,7 +280,7 @@ function loadKanjiStrokes(ch) {
   });
 
   if (strokeMode === 'watch') setupWatch(paths, ctl, msg);
-  else setupTrace(paths, svg, cw, ctl, msg);
+  else setupTrace(paths, svg, cw, ctl, msg, numG);
 }
 
 /* ---- Watch mode ---- */
@@ -379,10 +387,13 @@ function distStats(a, b) {
   return { mean: s / a.length, max: mx };
 }
 
-function setupTrace(paths, svg, cw, ctl, msg) {
+function setupTrace(paths, svg, cw, ctl, msg, numG) {
   cw.classList.add('trace');
   let showGuide = true;
   let showGhost = true;
+  let showGrid = true;
+  let showNums = true;
+  const gridGroup = svg.querySelector('.grid-group');
 
   ctl.innerHTML = `
     <div class="btnrow" style="margin-top:12px;flex-wrap:wrap">
@@ -393,7 +404,12 @@ function setupTrace(paths, svg, cw, ctl, msg) {
     <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
       <button class="btn" id="guide-btn"><ion-icon name="locate-outline"></ion-icon> Guide: On</button>
       <button class="btn" id="ghost-btn"><ion-icon name="layers-outline"></ion-icon> Outline: On</button>
-    </div>`;
+    </div>
+    <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
+      <button class="btn" id="grid-btn"><ion-icon name="grid-outline"></ion-icon> Grid lines: On</button>
+      <button class="btn" id="num-btn"><ion-icon name="list-outline"></ion-icon> Numbers: On</button>
+    </div>
+    <p style="font-size:12px;color:var(--ink2);margin-top:8px">Turn everything off for a completely freehand challenge.</p>`;
 
   const targetG = svgEl('g', {});
   const doneG   = svgEl('g', {});
@@ -611,6 +627,18 @@ function setupTrace(paths, svg, cw, ctl, msg) {
 
   document.getElementById('guide-btn').onclick = () => setGuideVisible(!showGuide);
   document.getElementById('ghost-btn').onclick = () => setGhostVisible(!showGhost);
+  document.getElementById('grid-btn').onclick = () => {
+    showGrid = !showGrid;
+    if (gridGroup) gridGroup.style.display = showGrid ? '' : 'none';
+    document.getElementById('grid-btn').innerHTML =
+      `<ion-icon name="grid-outline"></ion-icon> Grid lines: ${showGrid ? 'On' : 'Off'}`;
+  };
+  document.getElementById('num-btn').onclick = () => {
+    showNums = !showNums;
+    if (numG) numG.style.display = showNums ? '' : 'none';
+    document.getElementById('num-btn').innerHTML =
+      `<ion-icon name="list-outline"></ion-icon> Numbers: ${showNums ? 'On' : 'Off'}`;
+  };
 
   showTarget();
   updMsg();

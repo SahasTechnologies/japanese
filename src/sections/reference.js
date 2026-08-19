@@ -11,10 +11,12 @@ const TOC = [
   { id: 'go-kanji', label: '→ Kanji (103 characters)', section: 'kanji' },
   { id: 'go-vocab', label: '→ Vocabulary (~700 words)', section: 'vocab' },
   { id: 'go-grammar', label: '→ Grammar & particles', section: 'grammar' },
+  { id: 'go-writing', label: '→ Writing practice', section: 'writing' },
   { id: 'go-reading', label: '→ Reading practice', section: 'reading' },
   { id: 'go-listening', label: '→ Listening practice', section: 'listening' },
   { id: 'go-flash', label: '→ Flashcards', section: 'flash' },
   { id: 'go-mock', label: '→ Mock test', section: 'mock' },
+  { id: 'go-placement', label: '→ Placement test', section: 'placement' },
   { id: 'go-coursework', label: '→ Coursework', section: 'coursework' },
 ];
 
@@ -113,10 +115,12 @@ export function renderRef(navigateTo) {
       <li><button type="button" class="ref-jump" data-go="kanji"><strong>Kanji</strong> — 103 N5 characters, stroke order, trace, can-read / can-write</button></li>
       <li><button type="button" class="ref-jump" data-go="vocab"><strong>Vocabulary</strong> — 700+ N5 words, example sentences, kana/kanji modes</button></li>
       <li><button type="button" class="ref-jump" data-go="grammar"><strong>Grammar</strong> — core patterns and particle drills</button></li>
+      <li><button type="button" class="ref-jump" data-go="writing"><strong>Writing</strong> — type rōmaji, watch it become kana, kanji accepted too</button></li>
       <li><button type="button" class="ref-jump" data-go="reading"><strong>Reading</strong> — 60+ passages, 120+ questions</button></li>
       <li><button type="button" class="ref-jump" data-go="listening"><strong>Listening</strong> — word quizzes + scripted dialogues (TTS)</button></li>
       <li><button type="button" class="ref-jump" data-go="flash"><strong>Flashcards</strong> — vocab, kanji, kana with know / don’t-know piles</button></li>
       <li><button type="button" class="ref-jump" data-go="mock"><strong>Mock test</strong> — multimodal timed exam (~65 questions)</button></li>
+      <li><button type="button" class="ref-jump" data-go="placement"><strong>Placement test</strong> — optional diagnostic to mark what you already know</button></li>
       <li><button type="button" class="ref-jump" data-go="coursework"><strong>Coursework</strong> — your class units, with kanji, sentences, grammar Q&amp;A, and vocabulary</button></li>
     </ul>`
   );

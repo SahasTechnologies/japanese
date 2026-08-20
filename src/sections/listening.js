@@ -1,7 +1,7 @@
 import VOCAB from '../data/vocab.json' with { type: 'json' };
 import LISTENING_SCRIPTS from '../data/listening.json' with { type: 'json' };
 const ALLVOCAB = Object.values(VOCAB).flat();
-import { quiz } from '../utils/quiz.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { HAS_TTS, speak } from '../utils/tts.js';
 import { updateBest } from '../state.js';
@@ -59,15 +59,15 @@ export function renderListening() {
       <button class="btn" id="lscript-btn"><ion-icon name="chatbubbles-outline"></ion-icon> Dialogues · ${scriptCount} q</button>
       <button class="btn" id="lslow-btn"><ion-icon name="speedometer-outline"></ion-icon> Slow words (0.7×)</button>
     </div>
-    <div id="lqz" style="margin-top:24px"></div>`;
+`;
 
   const onDone = (s, t) => updateBest('listening', s, t);
 
   document.getElementById('lq-btn').onclick = () =>
-    quiz(document.getElementById('lqz'), listeningQs(20), { onDone });
+    runFullQuiz(listeningQs(20), { onDone, onExit: renderListening, backLabel: '← Listening' });
 
   document.getElementById('lmany-btn').onclick = () =>
-    quiz(document.getElementById('lqz'), listeningQs(50), { onDone });
+    runFullQuiz(listeningQs(50), { onDone, onExit: renderListening, backLabel: '← Listening' });
 
   document.getElementById('lscript-btn').onclick = () => {
     const qs = shuffle(scriptQs()).map(q => {
@@ -80,9 +80,9 @@ export function renderListening() {
       }
       return q;
     });
-    quiz(document.getElementById('lqz'), qs, { onDone, rate: 0.9 });
+    runFullQuiz(qs, { onDone, rate: 0.9, onExit: renderListening, backLabel: '← Listening' });
   };
 
   document.getElementById('lslow-btn').onclick = () =>
-    quiz(document.getElementById('lqz'), listeningQs(20), { rate: 0.7, onDone });
+    runFullQuiz(listeningQs(20), { rate: 0.7, onDone, onExit: renderListening, backLabel: '← Listening' });
 }

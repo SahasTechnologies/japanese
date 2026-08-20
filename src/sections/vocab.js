@@ -1,6 +1,6 @@
 import VOCAB from '../data/vocab.json' with { type: 'json' };
 const ALLVOCAB = Object.values(VOCAB).flat();
-import { quiz } from '../utils/quiz.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { speak } from '../utils/tts.js';
 import {
@@ -13,7 +13,7 @@ let vcat = Object.keys(VOCAB)[0];
 let selectedWord = null; // [expr, reading, meaning] currently expanded
 
 /** Simple N5-style example sentences for a word */
-function exampleSentences(expr, reading, meaning) {
+export function exampleSentences(expr, reading, meaning) {
   const m = (meaning || '').toLowerCase();
   const w = expr;
   const r = reading;
@@ -140,8 +140,7 @@ export function renderVocab() {
     </div>
 
     <div class="vcat-tabs" id="vct"></div>
-    <div class="vlist" id="vl"></div>
-    <div id="vqz" style="margin-top:24px"></div>`;
+    <div class="vlist" id="vl"></div>`;
 
   // Segmented control
   main.querySelectorAll('.seg-control .seg').forEach(btn => {
@@ -242,14 +241,14 @@ export function renderVocab() {
 
   const onDone = (s, t) => updateBest('vocab', s, t);
   document.getElementById('vq-btn').onclick = () =>
-    quiz(document.getElementById('vqz'), vocabQs(VOCAB[vcat], Math.min(12, VOCAB[vcat].length)), { onDone });
+    runFullQuiz(vocabQs(VOCAB[vcat], Math.min(12, VOCAB[vcat].length)), { onDone, onExit: renderVocab, backLabel: '← Vocabulary' });
   document.getElementById('vqa-btn').onclick = () =>
-    quiz(document.getElementById('vqz'), vocabQs(ALLVOCAB, 20), { onDone });
+    runFullQuiz(vocabQs(ALLVOCAB, 20), { onDone, onExit: renderVocab, backLabel: '← Vocabulary' });
   const vql = document.getElementById('vql-btn');
   if (vql && !vql.disabled) {
     vql.onclick = () => {
       const learnedWords = ALLVOCAB.filter(w => P.vocabLearned.includes(w[0]));
-      quiz(document.getElementById('vqz'), vocabQs(learnedWords, Math.min(15, learnedWords.length)), { onDone });
+      runFullQuiz(vocabQs(learnedWords, Math.min(15, learnedWords.length)), { onDone, onExit: renderVocab, backLabel: '← Vocabulary' });
     };
   }
 }

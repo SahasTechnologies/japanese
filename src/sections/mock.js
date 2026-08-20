@@ -13,7 +13,7 @@ import grammar from '../data/grammar.json' with { type: 'json' };
 const ALLVOCAB = Object.values(VOCAB).flat();
 const { KANJI } = kanjiData;
 const { PARTICLE_QUIZ } = grammar;
-import { quiz } from '../utils/quiz.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { HAS_TTS } from '../utils/tts.js';
 import { getState, updateBest, save } from '../state.js';
@@ -139,14 +139,14 @@ export function renderMock() {
       <button class="btn" id="m-quick">
         <ion-icon name="flash-outline"></ion-icon> Quick mock · 25 questions · 15 min
       </button>
-    </div>
-    <div id="mq" style="margin-top:24px"></div>`;
+    </div>`;
 
   const run = (builder, seconds) => {
     const qs = builder();
-    quiz(document.getElementById('mq'), qs, {
+    runFullQuiz(qs, {
       time: seconds,
-      back: renderMock,
+      onExit: renderMock,
+      backLabel: '← Mock Test',
       onDone: (s, t) => {
         const pct = Math.round((s / t) * 100);
         const state = getState();

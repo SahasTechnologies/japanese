@@ -2001,47 +2001,2844 @@
   {
    "id": 4,
    "title": "Unit 4",
-   "subtitle": "Coming soon",
-   "kanji": [],
+   "subtitle": "きせつ — Seasons, seasonal activities & weather",
+   "kanji": [
+    {
+     "glyph": "春",
+     "sentences": [
+      {
+       "kanji": "春休み",
+       "kana": "はるやすみ",
+       "en": "spring holiday"
+      },
+      {
+       "kanji": "春が すきです。",
+       "kana": "はるが すきです。",
+       "en": "I like spring."
+      }
+     ]
+    },
+    {
+     "glyph": "夏",
+     "sentences": [
+      {
+       "kanji": "夏休み",
+       "kana": "なつやすみ",
+       "en": "summer holiday"
+      },
+      {
+       "kanji": "夏は あついです。",
+       "kana": "なつは あついです。",
+       "en": "Summer is hot."
+      }
+     ]
+    },
+    {
+     "glyph": "秋",
+     "sentences": [
+      {
+       "kanji": "秋まつり",
+       "kana": "あきまつり",
+       "en": "autumn festival"
+      },
+      {
+       "kanji": "秋は きれいです。",
+       "kana": "あきは きれいです。",
+       "en": "Autumn is pretty."
+      }
+     ]
+    },
+    {
+     "glyph": "冬",
+     "sentences": [
+      {
+       "kanji": "冬休み",
+       "kana": "ふゆやすみ",
+       "en": "winter holiday"
+      },
+      {
+       "kanji": "冬は さむいです。",
+       "kana": "ふゆは さむいです。",
+       "en": "Winter is cold."
+      }
+     ]
+    }
+   ],
    "qaSections": [],
-   "vocabSections": [],
-   "grammarPractice": []
+   "phraseChevrons": [],
+   "vocabSections": [
+    {
+     "title": "Seasonal activities",
+     "words": [
+      [
+       "はなみを します",
+       "はなみを します",
+       "to do/go flower viewing (spring)"
+      ],
+      [
+       "はな火を みます",
+       "はなびを みます",
+       "to see the fireworks (summer)"
+      ],
+      [
+       "つりを します",
+       "つりを します",
+       "to fish/go fishing (summer)"
+      ],
+      [
+       "およぎます",
+       "およぎます",
+       "to swim (summer)"
+      ],
+      [
+       "水えいを します",
+       "すいえいを します",
+       "to have a swim (summer)"
+      ],
+      [
+       "こうようを みます",
+       "こうようを みます",
+       "to view the autumn leaves"
+      ],
+      [
+       "お月みを します",
+       "おつきみを します",
+       "to do/go moon-viewing (autumn)"
+      ],
+      [
+       "スキーを します",
+       "スキーを します",
+       "to ski (winter)"
+      ],
+      [
+       "スノーボードを します",
+       "スノーボードを します",
+       "to snowboard (winter)"
+      ],
+      [
+       "ゆきだるまを つくります",
+       "ゆきだるまを つくります",
+       "to make a snowman (winter)"
+      ]
+     ]
+    },
+    {
+     "title": "General activities",
+     "words": [
+      [
+       "あそびます",
+       "あそびます",
+       "to play/hang out"
+      ],
+      [
+       "でかけます",
+       "でかけます",
+       "to go out (e.g. with friends)"
+      ],
+      [
+       "さんぽを します",
+       "さんぽを します",
+       "to take a walk"
+      ],
+      [
+       "ハイキングを します",
+       "ハイキングを します",
+       "to hike"
+      ],
+      [
+       "サイクリングを します",
+       "サイクリングを します",
+       "to go cycling"
+      ],
+      [
+       "ドライブを します",
+       "ドライブを します",
+       "to go for a drive"
+      ],
+      [
+       "りょこうを します",
+       "りょこうを します",
+       "to travel"
+      ],
+      [
+       "まつりに いきます",
+       "まつりに いきます",
+       "to go to a festival"
+      ],
+      [
+       "やまのぼりを します",
+       "やまのぼりを します",
+       "to climb a mountain"
+      ],
+      [
+       "トランプを します",
+       "トランプを します",
+       "to play cards"
+      ],
+      [
+       "ピアノを ひきます",
+       "ピアノを ひきます",
+       "to play the piano"
+      ],
+      [
+       "おんせんに はいります",
+       "おんせんに はいります",
+       "to get into a hot spring"
+      ]
+     ]
+    },
+    {
+     "title": "Weather & temperature",
+     "words": [
+      [
+       "てんき",
+       "てんき",
+       "weather"
+      ],
+      [
+       "てんきよほう",
+       "てんきよほう",
+       "weather report"
+      ],
+      [
+       "はれ",
+       "はれ",
+       "sunny"
+      ],
+      [
+       "くもり",
+       "くもり",
+       "cloudy"
+      ],
+      [
+       "あめ",
+       "あめ",
+       "rain/rainy"
+      ],
+      [
+       "ゆき",
+       "ゆき",
+       "snow/snowy"
+      ],
+      [
+       "あめ ときどき ゆき",
+       "あめ ときどき ゆき",
+       "rain and occasional snow"
+      ],
+      [
+       "はれ のち くもり",
+       "はれ のち くもり",
+       "sunny, then cloudy"
+      ],
+      [
+       "たいふう",
+       "たいふう",
+       "typhoon"
+      ],
+      [
+       "あらし",
+       "あらし",
+       "stormy"
+      ],
+      [
+       "ふぶき",
+       "ふぶき",
+       "blizzard"
+      ],
+      [
+       "かぜが つよい",
+       "かぜが つよい",
+       "strong wind"
+      ],
+      [
+       "さいこう きおん",
+       "さいこう きおん",
+       "maximum temperature"
+      ],
+      [
+       "さいてい きおん",
+       "さいてい きおん",
+       "minimum temperature"
+      ],
+      [
+       "何ど",
+       "なんど",
+       "what temperature?"
+      ],
+      [
+       "ど",
+       "ど",
+       "degrees (Celsius)"
+      ],
+      [
+       "れいど",
+       "れいど",
+       "zero degrees"
+      ],
+      [
+       "むしあつい",
+       "むしあつい",
+       "hot and humid"
+      ],
+      [
+       "あつい",
+       "あつい",
+       "hot"
+      ],
+      [
+       "あたたかい",
+       "あたたかい",
+       "warm"
+      ],
+      [
+       "すずしい",
+       "すずしい",
+       "cool"
+      ],
+      [
+       "さむい",
+       "さむい",
+       "cold"
+      ],
+      [
+       "いや（な）",
+       "いや（な）",
+       "awful"
+      ]
+     ]
+    }
+   ],
+   "grammarPractice": [
+    {
+     "title": "れんしゅう 1 — Talking about seasonal activities",
+     "note": "Option: に can be used after the season, but only when you need to emphasise it (like わたし — don't over-use it).",
+     "example": {
+      "q": {
+       "jp": "春、 はなみを します。",
+       "en": "In spring, I go flower viewing."
+      },
+      "a": {
+       "jp": "夏、 はな火を みます。",
+       "en": "In summer, I watch fireworks."
+      },
+      "qTag": "1",
+      "aTag": "2"
+     },
+     "drills": [
+      [
+       "夏に サーフィンを します。",
+       "→",
+       "In summer, I go surfing. (emphasised with に)"
+      ]
+     ]
+    },
+    {
+     "title": "れんしゅう 2 — Going to a place to do an activity",
+     "note": "The activity can be a noun (かいもの) or a verb stem (あそび from あそびます).",
+     "example": {
+      "q": {
+       "jp": "まちに えいがを みに いきます。",
+       "en": "I will go to the city to see a movie.",
+       "bold": [
+        "みに"
+       ]
+      },
+      "a": {
+       "jp": "やまに ハイキングに いきます。",
+       "en": "We will go to the mountains to hike.",
+       "bold": [
+        "ハイキングに"
+       ]
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "",
+        "Place に",
+        "activity / verb stem",
+        "に",
+        "いきます。"
+       ]
+      ]
+     },
+     "drills": [
+      [
+       "やまに ドライブに いきます。",
+       "→",
+       "I am going to the mountains for a drive."
+      ],
+      [
+       "うみに およぎに いきます。",
+       "→",
+       "I am going to the beach to swim."
+      ]
+     ]
+    },
+    {
+     "title": "れんしゅう 3 — Describing the weather",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "きょうの てんきは どうですか。",
+       "en": "What's today's weather like?",
+       "bold": [
+        "どう"
+       ]
+      },
+      "a": {
+       "jp": "きょうは あめです。 いやな てんきです。",
+       "en": "Today it's rainy. It is awful weather."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 4 — Saying what the weather was like",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "きのうの てんきは どうでしたか。",
+       "en": "What was the weather like yesterday?",
+       "bold": [
+        "どうでしたか"
+       ]
+      },
+      "a": {
+       "jp": "きのうは はれ ときどき あめ でした。 あつかったです。",
+       "en": "Yesterday it was sunny, sometimes rainy. It was hot."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 5 — Predicting the weather",
+     "note": "どうですか＝what is it like? どうでしたか＝what was it like? どうでしょうか＝what will it be like?",
+     "example": {
+      "q": {
+       "jp": "あしたの てんきは どうでしょうか。",
+       "en": "What will the weather be like tomorrow?",
+       "bold": [
+        "どうでしょうか"
+       ]
+      },
+      "a": {
+       "jp": "あしたは くもり のち あめ でしょう。 すずしい でしょう。",
+       "en": "Tomorrow it will probably be cloudy, then rainy. It will probably be cool."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 6 — Discussing temperature",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "きょうの さいこう きおんは 何どですか。",
+       "en": "What is the maximum temperature today?",
+       "bold": [
+        "何ど"
+       ]
+      },
+      "a": {
+       "jp": "きょうの さいこう きおんは 35どです。 あついですね。",
+       "en": "Today's maximum temperature is 35 degrees. It's hot, isn't it."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 7 — Saying what you want to do",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "はれですね。 何を したいですか。",
+       "en": "It's sunny, isn't it. What do you want to do?",
+       "bold": [
+        "したいですか"
+       ]
+      },
+      "a": {
+       "jp": "ともだちと でかけたいです。 しゅくだいを したくないです。",
+       "en": "I want to go out with friends. I don't want to do homework.",
+       "bold": [
+        "でかけたいです",
+        "したくないです"
+       ]
+      }
+     },
+     "table": {
+      "headers": [
+       "Pattern",
+       "Japanese",
+       "English"
+      ],
+      "rows": [
+       [
+        "Want to",
+        "いきたいです。",
+        "I want to go."
+       ],
+       [
+        "Don't want to",
+        "いきたくないです。",
+        "I don't want to go."
+       ],
+       [
+        "Wanted to",
+        "いきたかったです。",
+        "I wanted to go."
+       ],
+       [
+        "Didn't want to",
+        "いきたくなかったです。",
+        "I didn't want to go."
+       ]
+      ]
+     }
+    },
+    {
+     "title": "い adjectives vs な adjectives — present/past/negative",
+     "note": "",
+     "table": {
+      "headers": [
+       "Pattern",
+       "い adj (あつい)",
+       "な adj (いや)"
+      ],
+      "rows": [
+       [
+        "Present affirmative",
+        "あついです — is hot",
+        "いやです — is awful"
+       ],
+       [
+        "Present negative",
+        "あつくないです — is not hot",
+        "いやじゃないです — is not awful"
+       ],
+       [
+        "Past affirmative",
+        "あつかったです — was hot",
+        "いやでした — was awful"
+       ],
+       [
+        "Past negative",
+        "あつくなかったです — was not hot",
+        "いやじゃなかったです — was not awful"
+       ]
+      ]
+     }
+    }
+   ],
+   "grammarNotes": [
+    {
+     "title": "The many faces of に",
+     "paragraphs": [
+      "You've used に to express a specific time (六時に おきます), to express going to a place (やまに いきます), and to say where something is (へやに あります).",
+      "に can also be used when going to a place to do an activity, in the pattern: place に activity に いきます。"
+     ],
+     "examples": [
+      {
+       "jp": "やまに ドライブに いきます。",
+       "en": "I am going to the mountains for a drive."
+      },
+      {
+       "jp": "うみに およぎに いきます。",
+       "en": "I am going to the beach to swim."
+      }
+     ]
+    },
+    {
+     "title": "です／でした／でしょう",
+     "paragraphs": [
+      "です says the situation 'is'. でした says the situation 'was'. でしょう says the situation 'probably will be' — it expresses uncertainty."
+     ],
+     "examples": [
+      {
+       "jp": "きょうは あめです。",
+       "en": "It is rainy today."
+      },
+      {
+       "jp": "きのうは あめでした。",
+       "en": "It was rainy yesterday."
+      },
+      {
+       "jp": "あしたは あめでしょう。",
+       "en": "It will probably rain tomorrow."
+      }
+     ]
+    },
+    {
+     "title": "Past and negative adjectives",
+     "paragraphs": [
+      "Both い and な adjectives use ない for negative and なかった for past negative, and all past endings have た. Compare the two patterns below."
+     ],
+     "examples": []
+    }
+   ]
   },
   {
    "id": 5,
    "title": "Unit 5",
-   "subtitle": "Coming soon",
+   "subtitle": "かいもの — Shopping, large numbers & requests",
    "kanji": [],
    "qaSections": [],
-   "vocabSections": [],
-   "grammarPractice": []
+   "phraseChevrons": [],
+   "vocabSections": [
+    {
+     "title": "Large numbers",
+     "words": [
+      [
+       "百",
+       "ひゃく",
+       "100"
+      ],
+      [
+       "三百",
+       "さんびゃく",
+       "300 (sound changes)"
+      ],
+      [
+       "四百",
+       "よんひゃく",
+       "400"
+      ],
+      [
+       "六百",
+       "ろっぴゃく",
+       "600 (sound changes)"
+      ],
+      [
+       "八百",
+       "はっぴゃく",
+       "800 (sound changes)"
+      ],
+      [
+       "何百ですか",
+       "なんびゃくですか",
+       "how many hundreds?"
+      ],
+      [
+       "千",
+       "せん",
+       "1000"
+      ],
+      [
+       "三千",
+       "さんぜん",
+       "3000 (sound changes)"
+      ],
+      [
+       "六千",
+       "ろくせん",
+       "6000"
+      ],
+      [
+       "八千",
+       "はっせん",
+       "8000"
+      ],
+      [
+       "何千ですか",
+       "なんぜんですか",
+       "how many thousands?"
+      ],
+      [
+       "一万",
+       "いちまん",
+       "10 000"
+      ],
+      [
+       "五万",
+       "ごまん",
+       "50 000"
+      ],
+      [
+       "百万",
+       "ひゃくまん",
+       "1 000 000"
+      ],
+      [
+       "何万ですか",
+       "なんまんですか",
+       "how many tens of thousands?"
+      ],
+      [
+       "九十円",
+       "きゅうじゅうえん",
+       "¥90"
+      ],
+      [
+       "二百十円",
+       "にひゃくじゅうえん",
+       "¥210"
+      ],
+      [
+       "千二百円",
+       "せんにひゃくえん",
+       "¥1200"
+      ],
+      [
+       "百万円",
+       "ひゃくまんえん",
+       "¥1 000 000"
+      ]
+     ]
+    },
+    {
+     "title": "Shop expressions",
+     "words": [
+      [
+       "いらっしゃいませ",
+       "いらっしゃいませ",
+       "welcome, may I help you?"
+      ],
+      [
+       "ありがとうございました",
+       "ありがとうございました",
+       "thank you very much"
+      ],
+      [
+       "いくらですか",
+       "いくらですか",
+       "how much is it?"
+      ],
+      [
+       "〜を ください",
+       "〜を ください",
+       "may I take ~? / please give me ~"
+      ],
+      [
+       "ぜんぶ",
+       "ぜんぶ",
+       "all"
+      ],
+      [
+       "ぜんぶで",
+       "ぜんぶで",
+       "in total"
+      ],
+      [
+       "おみやげ",
+       "おみやげ",
+       "souvenir"
+      ],
+      [
+       "おつり",
+       "おつり",
+       "change"
+      ]
+     ]
+    },
+    {
+     "title": "こそあど — demonstratives",
+     "words": [
+      [
+       "これ",
+       "これ",
+       "this one"
+      ],
+      [
+       "それ",
+       "それ",
+       "that one"
+      ],
+      [
+       "あれ",
+       "あれ",
+       "that one over there"
+      ],
+      [
+       "どれ",
+       "どれ",
+       "which one?"
+      ],
+      [
+       "この",
+       "この",
+       "this (+ noun)"
+      ],
+      [
+       "その",
+       "その",
+       "that (+ noun)"
+      ],
+      [
+       "あの",
+       "あの",
+       "that over there (+ noun)"
+      ],
+      [
+       "どの",
+       "どの",
+       "which? (+ noun)"
+      ]
+     ]
+    }
+   ],
+   "grammarPractice": [
+    {
+     "title": "Large number counting system",
+     "note": "In Japanese, the comma moves one digit to the left compared to English — a large number is grouped in 万 (10,000s), not 1,000s.",
+     "table": {
+      "headers": [
+       "Number",
+       "万 grouping",
+       "Japanese"
+      ],
+      "rows": [
+       [
+        "420,000",
+        "42 ten-thousand",
+        "42万 （よんじゅうにまん）"
+       ],
+       [
+        "1,000,000",
+        "100 ten-thousand",
+        "100万 （ひゃくまん）"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 1 — Asking and saying how much something is",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "ざっしは いくらですか。",
+       "en": "How much is the magazine?",
+       "bold": [
+        "いくら"
+       ]
+      },
+      "a": {
+       "jp": "ざっしは 十二ドルです。",
+       "en": "The magazine is $12.00."
+      }
+     },
+     "table": {
+      "headers": [
+       "Item",
+       "Price"
+      ],
+      "rows": [
+       [
+        "ざっし",
+        "二十二ドル ($22.00)"
+       ],
+       [
+        "おべんとう",
+        "二百九十八円 (¥298)"
+       ],
+       [
+        "けいたいでんわ",
+        "九万円 (¥90,000)"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 2 — Asking for and pointing to an item",
+     "note": "これ/それ/あれ/どれ are used by themselves (stand-alone pronouns).",
+     "example": {
+      "q": {
+       "jp": "どれですか。",
+       "en": "Which one is it?",
+       "bold": [
+        "どれ"
+       ]
+      },
+      "a": {
+       "jp": "これです。",
+       "en": "It is this one."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 3 — Asking and saying which one",
+     "note": "この/その/あの/どの need a noun straight after them (noun modifiers).",
+     "example": {
+      "q": {
+       "jp": "どの ざっしが おもしろいですか。",
+       "en": "Which magazine is interesting?",
+       "bold": [
+        "どの"
+       ]
+      },
+      "a": {
+       "jp": "その ざっしが おもしろいです。",
+       "en": "That magazine is interesting."
+      }
+     },
+     "example2": {
+      "q": {
+       "jp": "どの ぬいぐるみを かいましたか。",
+       "en": "Which soft toy did you buy?",
+       "bold": [
+        "どの"
+       ]
+      },
+      "a": {
+       "jp": "あの ぬいぐるみを かいました。",
+       "en": "I bought that soft toy over there."
+      }
+     },
+     "table": {
+      "headers": [
+       "Type",
+       "Pattern"
+      ],
+      "rows": [
+       [
+        "Describing an item",
+        "Q: どの＋item＋が＋adjective＋ですか。 A: こ／そ／あ＋の＋item＋が＋adjective＋です。"
+       ],
+       [
+        "Doing an action to an item",
+        "Q: どの＋item＋を＋verb＋ますか。 A: こ／そ／あ＋の＋item＋を＋verb＋ます。"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "Asking someone to do something (て form + ください)",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "その しゃしんを みせて ください。",
+       "en": "Please show (me) that photo.",
+       "bold": [
+        "みせて ください"
+       ]
+      },
+      "a": {
+       "jp": "はい、どうぞ。",
+       "en": "Sure, here you go."
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "",
+        "Item を",
+        "verb て",
+        "ください。"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "Group 1 / Godan verbs — て form",
+     "note": "い, ち, り → って ／ び, み, に → んで ／ き → いて ／ ぎ → いで ／ everything else → て. Exception: いきます → いって.",
+     "table": {
+      "headers": [
+       "ます form",
+       "て form",
+       "English"
+      ],
+      "rows": [
+       [
+        "あそびます",
+        "あそんで",
+        "to play/muck around"
+       ],
+       [
+        "いいます",
+        "いって",
+        "to say/tell"
+       ],
+       [
+        "いきます",
+        "いって",
+        "to go"
+       ],
+       [
+        "およぎます",
+        "およいで",
+        "to swim"
+       ],
+       [
+        "かきます",
+        "かいて",
+        "to write"
+       ],
+       [
+        "かいます",
+        "かって",
+        "to buy"
+       ],
+       [
+        "かします",
+        "かして",
+        "to lend"
+       ],
+       [
+        "ききます",
+        "きいて",
+        "to listen"
+       ],
+       [
+        "すわります",
+        "すわって",
+        "to sit down"
+       ],
+       [
+        "たちます",
+        "たって",
+        "to stand up"
+       ],
+       [
+        "つかいます",
+        "つかって",
+        "to use"
+       ],
+       [
+        "つくります",
+        "つくって",
+        "to make"
+       ],
+       [
+        "のみます",
+        "のんで",
+        "to drink"
+       ],
+       [
+        "はいります",
+        "はいって",
+        "to enter"
+       ],
+       [
+        "はなします",
+        "はなして",
+        "to talk"
+       ],
+       [
+        "まちます",
+        "まって",
+        "to wait"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "Group 2 / Ichidan verbs — て form",
+     "note": "Remove ます and add て.",
+     "table": {
+      "headers": [
+       "ます form",
+       "て form",
+       "English"
+      ],
+      "rows": [
+       [
+        "あけます",
+        "あけて",
+        "to open"
+       ],
+       [
+        "いれます",
+        "いれて",
+        "to put in"
+       ],
+       [
+        "しめます",
+        "しめて",
+        "to close/shut"
+       ],
+       [
+        "たべます",
+        "たべて",
+        "to eat"
+       ],
+       [
+        "みせます",
+        "みせて",
+        "to show"
+       ],
+       [
+        "みます",
+        "みて",
+        "to look/see/watch"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "Group 3 / Irregular verbs — て form",
+     "note": "",
+     "table": {
+      "headers": [
+       "ます form",
+       "て form",
+       "English"
+      ],
+      "rows": [
+       [
+        "きます",
+        "きて",
+        "to come"
+       ],
+       [
+        "します",
+        "して",
+        "to do/play"
+       ]
+      ]
+     }
+    }
+   ],
+   "grammarNotes": [
+    {
+     "title": "こそあど",
+     "paragraphs": [
+      "こ = near the speaker, そ = near the listener, あ = far from both, ど = question.",
+      "こ/そ/あ/ど + れ stand alone. こ/そ/あ/ど + の need a noun straight after, e.g. この本 (this book)."
+     ],
+     "examples": [
+      {
+       "jp": "これ／この本",
+       "en": "this one / this book"
+      },
+      {
+       "jp": "それ／その本",
+       "en": "that one / that book"
+      },
+      {
+       "jp": "あれ／あの本",
+       "en": "that one over there / that book over there"
+      },
+      {
+       "jp": "どれ／どの本",
+       "en": "which one? / which book?"
+      }
+     ]
+    },
+    {
+     "title": "Verb groups overview",
+     "paragraphs": [
+      "All Japanese verbs have an i-sound or e-sound right before ます (のみます = i-sound, たべます = e-sound).",
+      "There are three verb groups: Group 1 / Godan (most verbs), Group 2 / Ichidan (e-sound + ます, or a single hiragana + ます, with exceptions), and Group 3 / Irregular (します, きます).",
+      "て form is used for many expressions — this unit introduces 〜て ください, meaning 'please do'."
+     ],
+     "examples": []
+    }
+   ]
   },
   {
    "id": 6,
    "title": "Unit 6",
-   "subtitle": "Coming soon",
-   "kanji": [],
+   "subtitle": "いただきます — Ordering food, counters & the て form",
+   "kanji": [
+    {
+     "glyph": "食",
+     "sentences": [
+      {
+       "kanji": "食べたいです。",
+       "kana": "たべたいです。",
+       "en": "I want to eat."
+      },
+      {
+       "kanji": "食べもの",
+       "kana": "たべもの",
+       "en": "food"
+      },
+      {
+       "kanji": "ケーキを 食べましょう。",
+       "kana": "ケーキを たべましょう。",
+       "en": "Let's eat cake."
+      }
+     ]
+    },
+    {
+     "glyph": "飲",
+     "sentences": [
+      {
+       "kanji": "飲みもの",
+       "kana": "のみもの",
+       "en": "drinks"
+      },
+      {
+       "kanji": "コーラを 飲みませんか。",
+       "kana": "コーラを のみませんか。",
+       "en": "Won't you drink cola?"
+      },
+      {
+       "kanji": "飲んで ください。",
+       "kana": "のんで ください。",
+       "en": "Please drink (it)."
+      }
+     ]
+    },
+    {
+     "glyph": "行",
+     "sentences": [
+      {
+       "kanji": "いっしょに 行きましょう。",
+       "kana": "いっしょに いきましょう。",
+       "en": "Let's go together."
+      },
+      {
+       "kanji": "バスで 行きます。",
+       "kana": "バスで いきます。",
+       "en": "I will go by bus."
+      }
+     ]
+    },
+    {
+     "glyph": "買",
+     "sentences": [
+      {
+       "kanji": "買いもの",
+       "kana": "かいもの",
+       "en": "shopping"
+      },
+      {
+       "kanji": "買いました。",
+       "kana": "かいました。",
+       "en": "I bought (it)."
+      },
+      {
+       "kanji": "買って ください。",
+       "kana": "かって ください。",
+       "en": "Please buy (it)."
+      }
+     ]
+    },
+    {
+     "glyph": "安",
+     "sentences": [
+      {
+       "kanji": "安い レストラン",
+       "kana": "やすい レストラン",
+       "en": "cheap restaurant"
+      },
+      {
+       "kanji": "これは 安いです。",
+       "kana": "これは やすいです。",
+       "en": "This is cheap."
+      },
+      {
+       "kanji": "安かったです。",
+       "kana": "やすかったです。",
+       "en": "It was cheap."
+      }
+     ]
+    },
+    {
+     "glyph": "高",
+     "sentences": [
+      {
+       "kanji": "それは 高いです。",
+       "kana": "それは たかいです。",
+       "en": "That is expensive."
+      },
+      {
+       "kanji": "高かったです。",
+       "kana": "たかかったです。",
+       "en": "It was expensive."
+      },
+      {
+       "kanji": "高校",
+       "kana": "こうこう",
+       "en": "senior high school"
+      }
+     ]
+    }
+   ],
    "qaSections": [],
-   "vocabSections": [],
-   "grammarPractice": []
+   "phraseChevrons": [],
+   "vocabSections": [
+    {
+     "title": "Restaurant phrases — staff",
+     "words": [
+      [
+       "いらっしゃいませ",
+       "いらっしゃいませ",
+       "welcome"
+      ],
+      [
+       "かしこまりました",
+       "かしこまりました",
+       "certainly"
+      ],
+      [
+       "しょうしょう おまちください",
+       "しょうしょう おまちください",
+       "please wait one moment"
+      ],
+      [
+       "おまたせしました",
+       "おまたせしました",
+       "sorry to keep you waiting"
+      ]
+     ]
+    },
+    {
+     "title": "Restaurant phrases — customers",
+     "words": [
+      [
+       "おなかが ペコペコです",
+       "おなかが ペコペコです",
+       "I am starving"
+      ],
+      [
+       "おなかが すきました",
+       "おなかが すきました",
+       "I am hungry"
+      ],
+      [
+       "かんぱい！",
+       "かんぱい！",
+       "cheers!"
+      ],
+      [
+       "いただきます",
+       "いただきます",
+       "let's eat!"
+      ],
+      [
+       "ごちそうさま（でした）",
+       "ごちそうさま（でした）",
+       "I have finished eating"
+      ],
+      [
+       "おなかが いっぱいです",
+       "おなかが いっぱいです",
+       "I am full"
+      ]
+     ]
+    },
+    {
+     "title": "Counting general items — 〜つ",
+     "words": [
+      [
+       "一つ",
+       "ひとつ",
+       "1"
+      ],
+      [
+       "二つ",
+       "ふたつ",
+       "2"
+      ],
+      [
+       "三つ",
+       "みっつ",
+       "3"
+      ],
+      [
+       "四つ",
+       "よっつ",
+       "4"
+      ],
+      [
+       "五つ",
+       "いつつ",
+       "5"
+      ],
+      [
+       "六つ",
+       "むっつ",
+       "6"
+      ],
+      [
+       "七つ",
+       "ななつ",
+       "7"
+      ],
+      [
+       "八つ",
+       "やっつ",
+       "8"
+      ],
+      [
+       "九つ",
+       "ここのつ",
+       "9"
+      ],
+      [
+       "十",
+       "とお",
+       "10"
+      ]
+     ]
+    }
+   ],
+   "grammarPractice": [
+    {
+     "title": "れんしゅう 1 — Talking about what someone is doing now",
+     "note": "て form + います = an ongoing action. て form + ください = a request.",
+     "example": {
+      "q": {
+       "jp": "何を して いますか。",
+       "en": "What are you doing?",
+       "bold": [
+        "して いますか"
+       ]
+      },
+      "a": {
+       "jp": "本を よんで います。",
+       "en": "I'm reading a book.",
+       "bold": [
+        "よんで います"
+       ]
+      }
+     },
+     "table": {
+      "headers": [
+       "Ending before ます",
+       "Changes to"
+      ],
+      "rows": [
+       [
+        "い, ち, り",
+        "って"
+       ],
+       [
+        "び, に, み",
+        "んで"
+       ],
+       [
+        "き",
+        "いて"
+       ],
+       [
+        "ぎ",
+        "いで"
+       ],
+       [
+        "everything else",
+        "て"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 2 — Saying what you've decided to order",
+     "note": "何に します＝deciding what to order (uses に). 何を します＝explaining actions (uses を). You can also use 〜を ください or 〜を おねがいします to order politely.",
+     "example": {
+      "q": {
+       "jp": "何に しますか。",
+       "en": "What have you decided to order?",
+       "bold": [
+        "何に"
+       ]
+      },
+      "a": {
+       "jp": "ぼくは カレーうどんに します。",
+       "en": "I've decided to order curry udon."
+      }
+     },
+     "example2": {
+      "q": {
+       "jp": "何を しますか。",
+       "en": "What do you do?",
+       "bold": [
+        "何を"
+       ]
+      },
+      "a": {
+       "jp": "すしを 食べます。",
+       "en": "I eat sushi."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 3 — Asking and saying numbers of general items",
+     "note": "General items (〜つ) is the original Japanese counting system, used for up to 10.",
+     "example": {
+      "q": {
+       "jp": "いくつですか。",
+       "en": "How many (are there/do you want)?",
+       "bold": [
+        "いくつ"
+       ]
+      },
+      "a": {
+       "jp": "アイスクリームを 三つ ください。",
+       "en": "Could I have three ice-creams please."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 4 — Asking and saying numbers of items in glasses/cups/bowls",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "いくつ／何ばいですか。",
+       "en": "How many cupfuls do you want?",
+       "bold": [
+        "何ばい"
+       ]
+      },
+      "a": {
+       "jp": "おちゃを 三ばい ください。",
+       "en": "Could I have three cups of tea please."
+      }
+     }
+    },
+    {
+     "title": "Counter table — common HSC counters",
+     "note": "",
+     "table": {
+      "headers": [
+       "#",
+       "〜本 long",
+       "〜杯 cups",
+       "〜匹 animals",
+       "〜つ general",
+       "〜個 small items",
+       "〜枚 flat",
+       "〜人 people"
+      ],
+      "rows": [
+       [
+        "1",
+        "いっぽん",
+        "いっぱい",
+        "いっぴき",
+        "ひとつ",
+        "いっこ",
+        "いちまい",
+        "ひとり"
+       ],
+       [
+        "2",
+        "にほん",
+        "にはい",
+        "にひき",
+        "ふたつ",
+        "にこ",
+        "にまい",
+        "ふたり"
+       ],
+       [
+        "3",
+        "さんぼん",
+        "さんばい",
+        "さんびき",
+        "みっつ",
+        "さんこ",
+        "さんまい",
+        "さんにん"
+       ],
+       [
+        "4",
+        "よんほん",
+        "よんはい",
+        "よんひき",
+        "よっつ",
+        "よんこ",
+        "よんまい",
+        "よにん"
+       ],
+       [
+        "5",
+        "ごほん",
+        "ごはい",
+        "ごひき",
+        "いつつ",
+        "ごこ",
+        "ごまい",
+        "ごにん"
+       ],
+       [
+        "6",
+        "ろっぽん",
+        "ろっぱい",
+        "ろっぴき",
+        "むっつ",
+        "ろっこ",
+        "ろくまい",
+        "ろくにん"
+       ],
+       [
+        "7",
+        "ななほん",
+        "ななはい",
+        "ななひき",
+        "ななつ",
+        "ななこ",
+        "ななまい",
+        "しちにん／ななにん"
+       ],
+       [
+        "8",
+        "はっぽん／はちほん",
+        "はっぱい／はちはい",
+        "はっぴき／はちひき",
+        "やっつ",
+        "はっこ／はちこ",
+        "はちまい",
+        "はちにん"
+       ],
+       [
+        "9",
+        "きゅうほん",
+        "きゅうはい",
+        "きゅうひき",
+        "ここのつ",
+        "きゅうこ",
+        "きゅうまい",
+        "きゅうにん"
+       ],
+       [
+        "10",
+        "じゅっぽん",
+        "じゅっぱい",
+        "じゅっぴき",
+        "とお",
+        "じゅっこ",
+        "じゅうまい",
+        "じゅうにん"
+       ]
+      ]
+     }
+    }
+   ],
+   "grammarNotes": [
+    {
+     "title": "て form conjugation — Group 1 / Godan",
+     "paragraphs": [
+      "Step 1: take away ます. Step 2: take away the last hiragana. Step 3: add the ending from the rhyme (い/ち/り→って, び/み/に→んで, き→いて, ぎ→いで, し→して).",
+      "Special case: いきます (to go) is irregular → いって."
+     ],
+     "examples": [
+      {
+       "jp": "かいます → かって",
+       "en": "to buy → (buying, please buy)"
+      },
+      {
+       "jp": "よみます → よんで",
+       "en": "to read → (reading, please read)"
+      },
+      {
+       "jp": "ききます → きいて",
+       "en": "to listen → (listening, please listen)"
+      },
+      {
+       "jp": "およぎます → およいで",
+       "en": "to swim → (swimming, please swim)"
+      },
+      {
+       "jp": "はなします → はなして",
+       "en": "to talk → (talking, please talk)"
+      }
+     ]
+    },
+    {
+     "title": "Counters — the common ones for HSC",
+     "paragraphs": [
+      "Japanese uses different counting words depending on what's being counted: 〜本／ほん for long cylindrical items, 〜杯／はい for cups/bowls of liquid, 〜匹／ひき for small animals, 〜軒／けん for houses/shops, 〜つ or 〜個／こ for general/small items, 〜冊／さつ for bound items like books, 〜枚／まい for thin flat items, and 〜人／にん for people.",
+      "Sound changes are common: 1, 3, 6, 8 and 10 often shift the following consonant (いっぽん, さんぼん, ろっぽん, はっぽん/はちほん, じゅっぽん)."
+     ],
+     "examples": [
+      {
+       "jp": "一本／二本／三本",
+       "en": "いっぽん／にほん／さんぼん — 1/2/3 long items"
+      },
+      {
+       "jp": "一杯／二杯／三杯",
+       "en": "いっぱい／にはい／さんばい — 1/2/3 cups"
+      },
+      {
+       "jp": "一匹／二匹／三匹",
+       "en": "いっぴき／にひき／さんびき — 1/2/3 small animals"
+      },
+      {
+       "jp": "一枚／二枚／三枚",
+       "en": "いちまい／にまい／さんまい — 1/2/3 flat items"
+      },
+      {
+       "jp": "一人／二人／三人",
+       "en": "ひとり／ふたり／さんにん — 1/2/3 people"
+      }
+     ]
+    }
+   ]
   },
   {
    "id": 7,
    "title": "Unit 7",
-   "subtitle": "Coming soon",
-   "kanji": [],
+   "subtitle": "どんな人 — Describing people: appearance, personality & clothing",
+   "kanji": [
+    {
+     "glyph": "手",
+     "sentences": [
+      {
+       "kanji": "手紙",
+       "kana": "てがみ",
+       "en": "letter"
+      },
+      {
+       "kanji": "下手",
+       "kana": "へた",
+       "en": "bad at / not skilled"
+      },
+      {
+       "kanji": "上手",
+       "kana": "じょうず",
+       "en": "good at / skilled"
+      }
+     ]
+    },
+    {
+     "glyph": "目",
+     "sentences": [
+      {
+       "kanji": "目の 前",
+       "kana": "めの まえ",
+       "en": "right in front of your eyes"
+      },
+      {
+       "kanji": "目が 大きいです。",
+       "kana": "めが おおきいです。",
+       "en": "His/her eyes are big."
+      },
+      {
+       "kanji": "一時間目",
+       "kana": "いちじかんめ",
+       "en": "period 1"
+      }
+     ]
+    },
+    {
+     "glyph": "耳",
+     "sentences": [
+      {
+       "kanji": "耳が 小さいです。",
+       "kana": "みみが ちいさいです。",
+       "en": "His/her ears are small."
+      }
+     ]
+    },
+    {
+     "glyph": "口",
+     "sentences": [
+      {
+       "kanji": "口の 中",
+       "kana": "くちの なか",
+       "en": "inside the mouth"
+      },
+      {
+       "kanji": "口が 大きいです。",
+       "kana": "くちが おおきいです。",
+       "en": "His/her mouth is big."
+      }
+     ]
+    },
+    {
+     "glyph": "大",
+     "sentences": [
+      {
+       "kanji": "大きい",
+       "kana": "おおきい",
+       "en": "big/large"
+      },
+      {
+       "kanji": "大すき",
+       "kana": "だいすき",
+       "en": "(I) love"
+      },
+      {
+       "kanji": "大学",
+       "kana": "だいがく",
+       "en": "university"
+      }
+     ]
+    },
+    {
+     "glyph": "小",
+     "sentences": [
+      {
+       "kanji": "小さい いす",
+       "kana": "ちいさい いす",
+       "en": "small chair"
+      },
+      {
+       "kanji": "小学校",
+       "kana": "しょうがっこう",
+       "en": "primary school"
+      }
+     ]
+    }
+   ],
    "qaSections": [],
-   "vocabSections": [],
-   "grammarPractice": []
+   "phraseChevrons": [],
+   "vocabSections": [
+    {
+     "title": "Body",
+     "words": [
+      [
+       "からだ",
+       "からだ",
+       "body"
+      ],
+      [
+       "あし",
+       "あし",
+       "legs/feet"
+      ],
+      [
+       "あたま",
+       "あたま",
+       "head"
+      ],
+      [
+       "うで",
+       "うで",
+       "arms"
+      ],
+      [
+       "おしり",
+       "おしり",
+       "bottom"
+      ],
+      [
+       "おなか",
+       "おなか",
+       "stomach"
+      ],
+      [
+       "かみ（のけ）",
+       "かみ（のけ）",
+       "hair"
+      ],
+      [
+       "手",
+       "て",
+       "hands"
+      ],
+      [
+       "ゆび",
+       "ゆび",
+       "fingers"
+      ]
+     ]
+    },
+    {
+     "title": "Face",
+     "words": [
+      [
+       "かお",
+       "かお",
+       "face"
+      ],
+      [
+       "口",
+       "くち",
+       "mouth"
+      ],
+      [
+       "はな",
+       "はな",
+       "nose"
+      ],
+      [
+       "耳",
+       "みみ",
+       "ears"
+      ],
+      [
+       "目",
+       "め",
+       "eyes"
+      ]
+     ]
+    },
+    {
+     "title": "Physical appearance",
+     "words": [
+      [
+       "ながい",
+       "ながい",
+       "long"
+      ],
+      [
+       "みじかい",
+       "みじかい",
+       "short (length)"
+      ],
+      [
+       "ふとい",
+       "ふとい",
+       "fat/thick"
+      ],
+      [
+       "ほそい",
+       "ほそい",
+       "skinny/thin"
+      ],
+      [
+       "ふとって います",
+       "ふとって います",
+       "fat"
+      ],
+      [
+       "やせて います",
+       "やせて います",
+       "skinny/thin"
+      ],
+      [
+       "ハンサム（な）",
+       "ハンサム（な）",
+       "handsome"
+      ],
+      [
+       "かっこいい",
+       "かっこいい",
+       "attractive/trendy/cool"
+      ],
+      [
+       "せが 高い",
+       "せが たかい",
+       "tall"
+      ],
+      [
+       "せが ひくい",
+       "せが ひくい",
+       "short (height)"
+      ]
+     ]
+    },
+    {
+     "title": "Personality",
+     "words": [
+      [
+       "せいかく",
+       "せいかく",
+       "personality"
+      ],
+      [
+       "きびしい",
+       "きびしい",
+       "strict"
+      ],
+      [
+       "やさしい",
+       "やさしい",
+       "kind/gentle"
+      ],
+      [
+       "あかるい",
+       "あかるい",
+       "bright"
+      ],
+      [
+       "こわい",
+       "こわい",
+       "scary"
+      ],
+      [
+       "あたまが いい",
+       "あたまが いい",
+       "intelligent"
+      ],
+      [
+       "せいかくが いい",
+       "せいかくが いい",
+       "nice-natured"
+      ],
+      [
+       "げんき（な）",
+       "げんき（な）",
+       "lively/energetic"
+      ],
+      [
+       "わがまま（な）",
+       "わがまま（な）",
+       "spoilt/selfish"
+      ],
+      [
+       "のんき（な）",
+       "のんき（な）",
+       "easygoing"
+      ],
+      [
+       "へん（な）",
+       "へん（な）",
+       "strange"
+      ],
+      [
+       "まじめ（な）",
+       "まじめ（な）",
+       "serious"
+      ],
+      [
+       "しずか（な）",
+       "しずか（な）",
+       "quiet"
+      ]
+     ]
+    },
+    {
+     "title": "Colours — い type",
+     "words": [
+      [
+       "あかい",
+       "あかい",
+       "red"
+      ],
+      [
+       "あおい",
+       "あおい",
+       "blue"
+      ],
+      [
+       "くろい",
+       "くろい",
+       "black"
+      ],
+      [
+       "しろい",
+       "しろい",
+       "white"
+      ],
+      [
+       "きいろい",
+       "きいろい",
+       "yellow"
+      ],
+      [
+       "ちゃいろい",
+       "ちゃいろい",
+       "brown"
+      ]
+     ]
+    },
+    {
+     "title": "Colours — の type",
+     "words": [
+      [
+       "みどりの",
+       "みどりの",
+       "green"
+      ],
+      [
+       "はいいろの",
+       "はいいろの",
+       "grey"
+      ],
+      [
+       "むらさきの",
+       "むらさきの",
+       "purple"
+      ],
+      [
+       "ピンクの",
+       "ピンクの",
+       "pink"
+      ],
+      [
+       "オレンジの",
+       "オレンジの",
+       "orange"
+      ],
+      [
+       "きいろの",
+       "きいろの",
+       "yellow"
+      ],
+      [
+       "ちゃいろの",
+       "ちゃいろの",
+       "brown"
+      ]
+     ]
+    }
+   ],
+   "grammarPractice": [
+    {
+     "title": "れんしゅう 1a — Describing someone's physical appearance",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "せんせいは どんな 人ですか。",
+       "en": "What is your teacher like?",
+       "bold": [
+        "どんな"
+       ]
+      },
+      "a": {
+       "jp": "せんせいは かみが みじかいです。",
+       "en": "My teacher has short hair."
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "Q",
+        "どんな",
+        "人ですか。"
+       ],
+       [
+        "A",
+        "Person は body part が",
+        "description です。"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 1b — Describing appearance with colours",
+     "note": "金いろ is the colour 'gold', but 金ぱつ is used to describe blonde hair.",
+     "example": {
+      "q": {
+       "jp": "ははは 目が あおいです。",
+       "en": "My mother has blue eyes."
+      },
+      "a": {
+       "jp": "おとうとは かみが 金ぱつです。",
+       "en": "My younger brother has blond hair."
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 2 — Describing someone's personality",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "せんせいは どんな 人ですか。",
+       "en": "What is your teacher like?",
+       "bold": [
+        "どんな"
+       ]
+      },
+      "a": {
+       "jp": "せんせいは まじめです。／せんせいは まじめな 人です。",
+       "en": "My teacher is serious. / My teacher is a serious person."
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "",
+        "Person は",
+        "adjective です。"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 3 — Joining い adjectives (くて)",
+     "note": "い adjective 1 (drop い, add くて)、adjective 2 です。 Exception: いい → よくて.",
+     "example": {
+      "q": {
+       "jp": "おとうとは どんな 人ですか。",
+       "en": "What is your younger brother like?"
+      },
+      "a": {
+       "jp": "おとうとは せが 高くて、あしが ながいです。",
+       "en": "My younger brother is tall and has long legs.",
+       "bold": [
+        "高くて"
+       ]
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 4 — Joining な adjectives (で)",
+     "note": "な adjective 1 で、adjective 2 です。 If the first description is a noun/な-adjective, change です to で and continue.",
+     "example": {
+      "q": {
+       "jp": "おとうさんは どんな 人ですか。",
+       "en": "What kind of person is your dad?",
+       "bold": [
+        "どんな"
+       ]
+      },
+      "a": {
+       "jp": "ちちは しずかで、やさしい 人です。",
+       "en": "My dad is a quiet and gentle person.",
+       "bold": [
+        "しずかで"
+       ]
+      }
+     }
+    },
+    {
+     "title": "れんしゅう 5 — Describing contrasting characteristics",
+     "note": "が (more formal) and けど (more casual, for friends) both mean 'but'.",
+     "example": {
+      "q": {
+       "jp": "いもうとは どんな 人ですか。",
+       "en": "What is your younger sister like?"
+      },
+      "a": {
+       "jp": "いもうとは かわいいですが／けど、わがままです。",
+       "en": "My younger sister is cute but selfish.",
+       "bold": [
+        "ですが／けど"
+       ]
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "",
+        "Person は description 1",
+        "ですが／けど",
+        "description 2 です。"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 6 — Describing what someone is wearing",
+     "note": "Upper body/jackets → きて います。 Lower body/shoes → はいて います。 Accessories → して います。 Glasses → かけて います。",
+     "example": {
+      "q": {
+       "jp": "ゆきさんは 何を きて いますか。",
+       "en": "What is Yuki wearing?",
+       "bold": [
+        "何を きて"
+       ]
+      },
+      "a": {
+       "jp": "あかい ドレスを きて います。 ジーンズを はいて います。 ピアスを して います。",
+       "en": "She's wearing a red dress. She's wearing jeans. She's wearing earrings."
+      }
+     }
+    }
+   ],
+   "grammarNotes": [
+    {
+     "title": "いい — irregular adjective",
+     "paragraphs": [
+      "いい has its own rules: negative → よくない, past → よかった. When joining sentences with くて, use よくて.",
+      "e.g. あたまが いい → あたまが よくて／せいかくが いい → せいかくが よくて／かっこいい → かっこよくて"
+     ],
+     "examples": []
+    },
+    {
+     "title": "Joining descriptions: くて vs で",
+     "paragraphs": [
+      "If the first description is an い adjective, drop the い and add くて, then continue with the second description.",
+      "If the first description is a な adjective or noun, change です to で, then continue with the second description."
+     ],
+     "examples": [
+      {
+       "jp": "せが ひくいです。＋ かみが みじかいです。 → せが ひくくて、かみが みじかいです。",
+       "en": "They are short and have short hair."
+      },
+      {
+       "jp": "目が 大きいです。＋ きれいです。 → 目が 大きくて、きれいです。",
+       "en": "Their eyes are big, and they are pretty."
+      },
+      {
+       "jp": "しずかです。＋ やさしいです。 → しずかで、やさしいです。",
+       "en": "They are quiet and gentle."
+      }
+     ]
+    }
+   ]
   },
   {
    "id": 8,
    "title": "Unit 8",
-   "subtitle": "Coming soon",
-   "kanji": [],
+   "subtitle": "ホームステイ — Homestay: permission, prohibition & reasons",
+   "kanji": [
+    {
+     "glyph": "私",
+     "sentences": [
+      {
+       "kanji": "私の",
+       "kana": "わたしの",
+       "en": "my / mine"
+      },
+      {
+       "kanji": "私たち",
+       "kana": "わたしたち",
+       "en": "we"
+      },
+      {
+       "kanji": "私立学校",
+       "kana": "しりつがっこう",
+       "en": "private school"
+      }
+     ]
+    },
+    {
+     "glyph": "男",
+     "sentences": [
+      {
+       "kanji": "男の人",
+       "kana": "おとこのひと",
+       "en": "man"
+      },
+      {
+       "kanji": "男の子",
+       "kana": "おとこのこ",
+       "en": "boy"
+      }
+     ]
+    },
+    {
+     "glyph": "女",
+     "sentences": [
+      {
+       "kanji": "女の人",
+       "kana": "おんなのひと",
+       "en": "woman"
+      },
+      {
+       "kanji": "女の子",
+       "kana": "おんなのこ",
+       "en": "girl"
+      }
+     ]
+    },
+    {
+     "glyph": "書",
+     "sentences": [
+      {
+       "kanji": "手がみを 書きます。",
+       "kana": "てがみを かきます。",
+       "en": "I (will) write a letter."
+      },
+      {
+       "kanji": "書いて います。",
+       "kana": "かいて います。",
+       "en": "I am writing."
+      },
+      {
+       "kanji": "書道",
+       "kana": "しょどう",
+       "en": "calligraphy"
+      }
+     ]
+    },
+    {
+     "glyph": "見",
+     "sentences": [
+      {
+       "kanji": "テレビを 見ます。",
+       "kana": "テレビを みます。",
+       "en": "I (will) watch TV."
+      },
+      {
+       "kanji": "見えます。",
+       "kana": "みえます。",
+       "en": "It is visible."
+      },
+      {
+       "kanji": "見せます。",
+       "kana": "みせます。",
+       "en": "I will show (it)."
+      }
+     ]
+    },
+    {
+     "glyph": "聞",
+     "sentences": [
+      {
+       "kanji": "CDを 聞きます。",
+       "kana": "CDを ききます。",
+       "en": "I (will) listen to a CD."
+      },
+      {
+       "kanji": "聞こえます。",
+       "kana": "きこえます。",
+       "en": "It is audible."
+      },
+      {
+       "kanji": "聞いて います。",
+       "kana": "きいて います。",
+       "en": "I am listening."
+      }
+     ]
+    },
+    {
+     "glyph": "父",
+     "sentences": [
+      {
+       "kanji": "お父さん",
+       "kana": "おとうさん",
+       "en": "father/dad (polite)"
+      },
+      {
+       "kanji": "父",
+       "kana": "ちち",
+       "en": "my father (humble)"
+      }
+     ]
+    },
+    {
+     "glyph": "母",
+     "sentences": [
+      {
+       "kanji": "お母さん",
+       "kana": "おかあさん",
+       "en": "mother/mum (polite)"
+      },
+      {
+       "kanji": "母",
+       "kana": "はは",
+       "en": "my mother (humble)"
+      }
+     ]
+    }
+   ],
    "qaSections": [],
-   "vocabSections": [],
-   "grammarPractice": []
+   "phraseChevrons": [
+    {
+     "title": "Before and after",
+     "groups": [
+      {
+       "label": "前に (まえに) — before",
+       "items": [
+        {
+         "jp": "あさごはんの 前に",
+         "kana": "あさごはんの まえに",
+         "en": "before breakfast"
+        }
+       ]
+      },
+      {
+       "label": "あとで — after",
+       "items": [
+        {
+         "jp": "ばんごはんの あとで",
+         "kana": "ばんごはんの あとで",
+         "en": "after dinner"
+        },
+        {
+         "jp": "ほうかご",
+         "kana": "ほうかご",
+         "en": "after school (special word — no need for 学校のあとで)"
+        }
+       ]
+      }
+     ]
+    }
+   ],
+   "vocabSections": [
+    {
+     "title": "Places & rules",
+     "words": [
+      [
+       "きょうしつ",
+       "きょうしつ",
+       "classroom"
+      ],
+      [
+       "げんかん",
+       "げんかん",
+       "entrance"
+      ],
+      [
+       "校てい",
+       "こうてい",
+       "schoolyard"
+      ],
+      [
+       "たたみの へや",
+       "たたみの へや",
+       "tatami room"
+      ],
+      [
+       "じゅぎょう",
+       "じゅぎょう",
+       "lessons"
+      ],
+      [
+       "じゅぎょう中",
+       "じゅぎょうちゅう",
+       "during lessons / in class"
+      ],
+      [
+       "きそく",
+       "きそく",
+       "rules"
+      ],
+      [
+       "こうそく",
+       "こうそく",
+       "school rules"
+      ],
+      [
+       "けいたいでんわ",
+       "けいたいでんわ",
+       "mobile phone"
+      ],
+      [
+       "けしょう",
+       "けしょう",
+       "make-up"
+      ],
+      [
+       "げたばこ／くつばこ",
+       "げたばこ／くつばこ",
+       "shoe box"
+      ],
+      [
+       "せいふく",
+       "せいふく",
+       "uniform"
+      ],
+      [
+       "マニキュア",
+       "マニキュア",
+       "nail polish"
+      ]
+     ]
+    },
+    {
+     "title": "Family (polite / humble)",
+     "words": [
+      [
+       "お父さん",
+       "おとうさん",
+       "father/dad (polite)"
+      ],
+      [
+       "父",
+       "ちち",
+       "my father (humble)"
+      ],
+      [
+       "お母さん",
+       "おかあさん",
+       "mother/mum (polite)"
+      ],
+      [
+       "母",
+       "はは",
+       "my mother (humble)"
+      ]
+     ]
+    },
+    {
+     "title": "Verbs",
+     "words": [
+      [
+       "洗います",
+       "あらいます",
+       "to wash"
+      ],
+      [
+       "いれます",
+       "いれます",
+       "to put in"
+      ],
+      [
+       "おきます",
+       "おきます",
+       "to get up"
+      ],
+      [
+       "おふろに はいります",
+       "おふろに はいります",
+       "to have a bath"
+      ],
+      [
+       "おしえます",
+       "おしえます",
+       "to teach"
+      ],
+      [
+       "しゃべります",
+       "しゃべります",
+       "to chat"
+      ],
+      [
+       "そうじ（を）します",
+       "そうじ（を）します",
+       "to clean"
+      ],
+      [
+       "ちこく（を）します",
+       "ちこく（を）します",
+       "to be late"
+      ],
+      [
+       "つかいます",
+       "つかいます",
+       "to use"
+      ],
+      [
+       "ドキドキします",
+       "ドキドキします",
+       "to be nervous/excited"
+      ],
+      [
+       "はいります",
+       "はいります",
+       "to enter"
+      ],
+      [
+       "シャワーを あびます",
+       "シャワーを あびます",
+       "to have a shower"
+      ],
+      [
+       "つかれます",
+       "つかれます",
+       "to be tired"
+      ],
+      [
+       "かみます",
+       "かみます",
+       "to chew"
+      ],
+      [
+       "きを つけます",
+       "きを つけます",
+       "to be aware of / be careful"
+      ],
+      [
+       "ねます",
+       "ねます",
+       "to sleep"
+      ],
+      [
+       "かえます",
+       "かえます",
+       "to change"
+      ]
+     ]
+    },
+    {
+     "title": "Everyday expressions",
+     "words": [
+      [
+       "いってきます",
+       "いってきます",
+       "I'm leaving / off"
+      ],
+      [
+       "いってらっしゃい",
+       "いってらっしゃい",
+       "see you later / take care (said to the person leaving)"
+      ],
+      [
+       "ただいま",
+       "ただいま",
+       "I'm home"
+      ],
+      [
+       "おかえりなさい",
+       "おかえりなさい",
+       "welcome home/back"
+      ],
+      [
+       "ごめんなさい",
+       "ごめんなさい",
+       "I am sorry"
+      ],
+      [
+       "すみません",
+       "すみません",
+       "I am sorry / excuse me / thank you"
+      ],
+      [
+       "しつれいします",
+       "しつれいします",
+       "excuse me / goodbye"
+      ],
+      [
+       "もちろん",
+       "もちろん",
+       "of course"
+      ],
+      [
+       "あぶない",
+       "あぶない",
+       "dangerous"
+      ],
+      [
+       "うれしい",
+       "うれしい",
+       "happy/glad"
+      ],
+      [
+       "きたない",
+       "きたない",
+       "dirty"
+      ],
+      [
+       "しんせつ（な）",
+       "しんせつ（な）",
+       "kind"
+      ],
+      [
+       "わかい",
+       "わかい",
+       "young"
+      ],
+      [
+       "すばらしい",
+       "すばらしい",
+       "amazing"
+      ]
+     ]
+    }
+   ],
+   "grammarPractice": [
+    {
+     "title": "れんしゅう 1 — Asking for permission and responding",
+     "note": "て form + も いいですか asks permission. Responses range from a plain いいです to どうぞ (go ahead) or だめです (must not).",
+     "example": {
+      "q": {
+       "jp": "ばんごはんの あとで、 ジョギングに 行っても いいですか。",
+       "en": "May I go jogging after dinner?",
+       "bold": [
+        "行っても いいですか"
+       ]
+      },
+      "a": {
+       "jp": "はい、 いいです。／はい、 行っても いいです。／はい、 どうぞ。／いいえ、 だめです。",
+       "en": "Yes, you may. / Yes, you may go. / Yes, go ahead. / No, you must not."
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "Q",
+        "Verb て も",
+        "いいですか。"
+       ],
+       [
+        "A",
+        "はい、 (Verb て も) いい／どうぞ。 いいえ、 だめです。",
+        ""
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 2 — Prohibiting someone from doing something",
+     "note": "",
+     "example": {
+      "q": {
+       "jp": "この にわに はいっては だめです。",
+       "en": "You must not enter this garden.",
+       "bold": [
+        "はいっては だめです"
+       ]
+      },
+      "a": {
+       "jp": "じゅぎょう中に、 けいたいでんわを つかっては だめです。",
+       "en": "You must not use a mobile phone during lessons.",
+       "bold": [
+        "つかっては だめです"
+       ]
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "",
+        "Verb て は",
+        "だめです。"
+       ]
+      ]
+     }
+    },
+    {
+     "title": "れんしゅう 3 — Asking and giving a reason for an action",
+     "note": "から attaches to the reason clause (which stays in plain/polite past or present form).",
+     "example": {
+      "q": {
+       "jp": "どうして しゅうまつに キャンプに 行きませんでしたか。",
+       "en": "Why did you not go camping on the weekend?",
+       "bold": [
+        "どうして"
+       ]
+      },
+      "a": {
+       "jp": "あめでしたから、 キャンプに 行きませんでした。",
+       "en": "Because it was raining, we did not go camping.",
+       "bold": [
+        "から"
+       ]
+      }
+     },
+     "pattern": {
+      "headers": [],
+      "rows": [
+       [
+        "Q",
+        "どうして、",
+        "[consequence]",
+        "か。"
+       ],
+       [
+        "A",
+        "[Reason]",
+        "から、",
+        "[consequence]。"
+       ]
+      ]
+     }
+    }
+   ],
+   "grammarNotes": [
+    {
+     "title": "Ways to use the て form",
+     "paragraphs": [
+      "By this unit you've met several endings that attach to the て form — each one changes the meaning while the verb form itself stays the same."
+     ],
+     "examples": [
+      {
+       "jp": "食べて、…",
+       "en": "I eat, and then… (do something else)"
+      },
+      {
+       "jp": "食べて います。",
+       "en": "I am eating."
+      },
+      {
+       "jp": "食べても いいです。",
+       "en": "You are allowed to eat."
+      },
+      {
+       "jp": "食べては だめです。",
+       "en": "You are not allowed to eat."
+      },
+      {
+       "jp": "食べて ください。",
+       "en": "Please eat."
+      }
+     ]
+    },
+    {
+     "title": "も〜も〜 — both...and / neither...nor",
+     "paragraphs": [
+      "〜も〜も means 'both ... and ...' or '... as well as ...'. With a negative verb it means 'neither ... nor ...'."
+     ],
+     "examples": [
+      {
+       "jp": "男の子も 女の子も います。",
+       "en": "There are both boys and girls."
+      },
+      {
+       "jp": "男の子も 女の子も いません。",
+       "en": "There are neither boys nor girls."
+      }
+     ]
+    },
+    {
+     "title": "Polite vs humble family terms",
+     "paragraphs": [
+      "Japanese uses different words for your own family versus someone else's, or when addressing/referring to your own family politely. お父さん／お母さん are the polite forms (used for other people's parents, or when talking TO your own parents); 父／母 are the humble forms used when talking ABOUT your own parents to someone outside the family."
+     ],
+     "examples": [
+      {
+       "jp": "お父さんは 元気ですか。",
+       "en": "How is your father? (asking someone else)"
+      },
+      {
+       "jp": "父は 元気です。",
+       "en": "My father is well. (talking about your own father)"
+      }
+     ]
+    }
+   ]
   },
   {
    "id": 9,

@@ -4,41 +4,31 @@ const { UNITS } = courseworkData;
 const { KANJI, RADICALS } = kanjiData;
 import { speak } from '../utils/tts.js';
 import { shuffle } from '../utils/helpers.js';
-import { quiz } from '../utils/quiz.js';
 import { writingPractice } from '../utils/writing.js';
-import { updateBest } from '../state.js';
-import { focusKanjiForTrace } from './kanji.js';
+import { exampleSentences } from './vocab.js';
+import { updateBest, getState, toggleCourseworkLearned } from '../state.js';
+import { mountKanjiPractice } from './kanji.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
+import { unitHasContent, unitVocabPool } from '../utils/courseworkPool.js';
+import { renderUnitMockTest } from '../utils/unitMockTest.js';
 
 const kanjiByGlyph = {};
 KANJI.forEach(k => { kanjiByGlyph[k[0]] = k; });
 
 let selUnit = null;
 let navigate = null; // set by renderCoursework(navigate)
+let openVocabWord = null; // [expr, reading, meaning] currently expanded, coursework vocab
+
+/** Allow Home (or anywhere) to jump straight to a specific unit */
+export function openUnit(id) {
+  selUnit = UNITS.find(u => u.id === id) || null;
+  openVocabWord = null;
+}
 
 export function renderCoursework(nav) {
   if (nav) navigate = nav;
   if (selUnit === null) renderUnitList();
   else renderUnitDetail();
-}
-
-function unitHasContent(u) {
-  return u.kanji.length || u.qaSections.length || (u.vocabSections || []).length ||
-    (u.grammarPractice || []).length || (u.phraseChevrons || []).length;
-}
-
-/** All vocab-style [expr, reading, meaning] triples for a unit, used for quiz/flashcards/writing */
-function unitVocabPool(u) {
-  const pool = [];
-  (u.vocabSections || []).forEach(sec => sec.words.forEach(w => pool.push(w)));
-  (u.kanji || []).forEach(k => {
-    const entry = kanjiByGlyph[k.glyph];
-    if (entry) {
-      const raw = (entry[2] || entry[1] || '').split('、')[0];
-      const reading = raw.replace(/[()]/g, '');
-      if (reading) pool.push([entry[0], reading, entry[3]]);
-    }
-  });
-  return pool;
 }
 
 function unitQuizQuestions(u, n = 10) {
@@ -122,14 +112,13 @@ function kanjiCardHtml(entry) {
             <span class="cw-rad-glyph">${k[4]}</span>
             <span class="cw-rad-name">${rad[0]}</span>
           </div>
-          <button class="btn cw-trace-btn" data-glyph="${esc(k[0])}">
-            <ion-icon name="pencil-outline"></ion-icon> Practice writing (stroke tracing)
-          </button>
         </div>
       </div>
       <div class="cw-sentences">
         ${entry.sentences.map(s => chevRow(s.kanji, s.kana, s.en, s.kanji)).join('')}
       </div>
+      <h4 class="cw-vocablist-title">Practice writing this kanji</h4>
+      <div class="cw-kanji-practice" data-glyph="${esc(k[0])}"></div>
     </div>`;
 }
 
@@ -145,31 +134,77 @@ function phraseChevronsHtml(sec) {
     </div>`;
 }
 
-function qaCardHtml(sec) {
+/** Wrap content in the same expandable accordion card used on the Grammar page, for a consistent feel */
+function accordionWrap(title, subtitle, innerHtml) {
   return `
-    <div class="card cw-qa-card">
-      <h3 class="ref-heading">${esc(sec.title)}</h3>
-      ${sec.note ? `<p class="cw-note">${esc(sec.note)}</p>` : ''}
-      ${sec.pairs.map(p => `
-        <div class="cw-qa-pair">
-          <div class="cw-qa-line q"><span class="cw-qa-tag">Q</span><span class="cw-qa-jp">${boldify(p.q.jp, p.q.bold)}</span></div>
-          <div class="cw-qa-en">${esc(p.q.en)}</div>
-          <div class="cw-qa-line a"><span class="cw-qa-tag">A</span><span class="cw-qa-jp">${boldify(p.a.jp, p.a.bold)}</span></div>
-          <div class="cw-qa-en">${esc(p.a.en)}</div>
-        </div>`).join('')}
+    <div class="gcard cw-gcard">
+      <div class="gcard-header" role="button" tabindex="0" aria-expanded="false">
+        <h4>${esc(title)} ${subtitle ? `<span class="pat">${esc(subtitle)}</span>` : ''}</h4>
+        <span class="gcaret">›</span>
+      </div>
+      <div class="gcard-body">${innerHtml}</div>
     </div>`;
 }
 
-function vocabTableHtml(sec) {
+function qaCardHtml(sec) {
+  const inner = `
+    ${sec.note ? `<p class="cw-note">${esc(sec.note)}</p>` : ''}
+    ${sec.pairs.map(p => `
+      <div class="cw-qa-pair">
+        <div class="cw-qa-line q"><span class="cw-qa-tag">Q</span><span class="cw-qa-jp">${boldify(p.q.jp, p.q.bold)}</span></div>
+        <div class="cw-qa-en">${esc(p.q.en)}</div>
+        <div class="cw-qa-line a"><span class="cw-qa-tag">A</span><span class="cw-qa-jp">${boldify(p.a.jp, p.a.bold)}</span></div>
+        <div class="cw-qa-en">${esc(p.a.en)}</div>
+      </div>`).join('')}`;
+  return accordionWrap(sec.title, sec.note ? '' : '', inner);
+}
+
+function vocabCardsHtml(sec) {
+  const P = getState();
   return `
-    <div class="card cw-vocab-card">
+    <div class="cw-vocab-card card">
       <h3 class="ref-heading">${esc(sec.title)}</h3>
-      <table class="reftable">
-        <thead><tr><th>Kanji</th><th>Reading</th><th>Meaning</th></tr></thead>
-        <tbody>
-          ${sec.words.map(w => `<tr><td>${esc(w[0])}</td><td>${esc(w[1])}</td><td>${esc(w[2])}</td></tr>`).join('')}
-        </tbody>
-      </table>
+      <div class="vlist cw-vlist">
+        ${sec.words.map(w => vocabCardHtml(w, P)).join('')}
+      </div>
+    </div>`;
+}
+
+function vocabCardHtml(w, P) {
+  const learned = (P.courseworkLearned || []).includes(w[0]);
+  const isOpen = openVocabWord && openVocabWord[0] === w[0] && openVocabWord[1] === w[1];
+  let detail = '';
+  if (isOpen) {
+    const exs = exampleSentences(w[0], w[1], w[2]);
+    detail = `
+      <div class="v-detail">
+        <div class="v-examples">
+          <div class="v-ex-title">Example sentences</div>
+          ${exs.map(ex => `
+            <div class="v-ex">
+              <div class="v-ex-jp">${esc(ex.jp)}</div>
+              <div class="v-ex-en">${esc(ex.en)}</div>
+              <button class="btn v-ex-speak" data-say="${esc(ex.jp)}" title="Listen">
+                <ion-icon name="volume-high-outline"></ion-icon>
+              </button>
+            </div>`).join('')}
+        </div>
+      </div>`;
+  }
+  return `
+    <div class="vcard cw-vcard${learned ? ' learned' : ''}${isOpen ? ' open' : ''}" data-expr="${esc(w[0])}" data-reading="${esc(w[1])}">
+      <div class="vcard-top">
+        <span class="w">${esc(w[0])}${w[0] !== w[1] ? `<span class="cw-vcard-reading">（${esc(w[1])}）</span>` : ''}</span>
+        <span class="v-speaker" title="Listen"><ion-icon name="volume-high-outline"></ion-icon></span>
+      </div>
+      <div class="m">${esc(w[2])}</div>
+      ${detail}
+      <div class="vcard-actions">
+        <button class="btn v-learn ${learned ? 'red' : ''}">
+          ${learned ? '<ion-icon name="checkmark-circle"></ion-icon> Learned' : 'Mark learned'}
+        </button>
+        <button class="btn v-more">${isOpen ? 'Hide examples' : 'Examples'}</button>
+      </div>
     </div>`;
 }
 
@@ -215,9 +250,8 @@ function qaExampleHtml(ex) {
 }
 
 function grammarPracticeHtml(gp) {
-  let html = `<div class="card cw-gp-card">
-    <h3 class="ref-heading">${esc(gp.title)}</h3>
-    ${gp.note ? `<p class="cw-note">${esc(gp.note)}</p>` : ''}`;
+  let html = '';
+  if (gp.note) html += `<p class="cw-note">${esc(gp.note)}</p>`;
 
   html += qaExampleHtml(gp.example);
   html += qaExampleHtml(gp.example2);
@@ -253,21 +287,18 @@ function grammarPracticeHtml(gp) {
       ${gp.vocabList.footnote ? `<p class="cw-footnote">${esc(gp.vocabList.footnote)}</p>` : ''}`;
   }
 
-  html += `</div>`;
-  return html;
+  return accordionWrap(gp.title, '', html);
 }
 
 function grammarNoteHtml(note) {
-  return `
-    <div class="card cw-note-card">
-      <h3 class="ref-heading">${esc(note.title)}</h3>
-      ${note.paragraphs.map(p => `<p class="cw-note" style="margin-bottom:8px">${esc(p)}</p>`).join('')}
-      ${(note.examples || []).map(ex => `
-        <div class="cw-drill-row" style="margin-bottom:6px">
-          <span>${esc(ex.jp)}</span>
-          <span class="cw-note-en">${esc(ex.en)}</span>
-        </div>`).join('')}
-    </div>`;
+  const inner = `
+    ${note.paragraphs.map(p => `<p class="cw-note" style="margin-bottom:8px">${esc(p)}</p>`).join('')}
+    ${(note.examples || []).map(ex => `
+      <div class="cw-drill-row" style="margin-bottom:6px">
+        <span>${esc(ex.jp)}</span>
+        <span class="cw-note-en">${esc(ex.en)}</span>
+      </div>`).join('')}`;
+  return accordionWrap(note.title, '', inner);
 }
 
 function renderUnitDetail() {
@@ -277,7 +308,7 @@ function renderUnitDetail() {
   const pool = hasContent ? unitVocabPool(u) : [];
 
   let html = `
-    <button class="btn" id="cw-back">← All units</button>
+    <button class="btn" id="cw-back">← Home</button>
     <div class="sec-title" style="margin-top:14px">${esc(u.title)}</div>
     <div class="sec-sub">${esc(u.subtitle)}</div>`;
 
@@ -292,6 +323,7 @@ function renderUnitDetail() {
         <button class="btn primary" id="cw-quiz-btn"><ion-icon name="help-circle-outline"></ion-icon> Quiz this unit</button>
         <button class="btn" id="cw-flash-btn"><ion-icon name="albums-outline"></ion-icon> Flashcards</button>
         <button class="btn" id="cw-write-btn"><ion-icon name="create-outline"></ion-icon> Writing practice</button>
+        ${pool.length >= 8 ? `<button class="btn red" id="cw-mock-btn"><ion-icon name="school-outline"></ion-icon> Unit mock test</button>` : ''}
       </div>
       <div id="cw-tool-area" style="margin-bottom:24px"></div>`;
     }
@@ -304,48 +336,90 @@ function renderUnitDetail() {
       html += `<div class="kg-label">Key phrases</div>
         <div class="cw-section-list">${u.phraseChevrons.map(phraseChevronsHtml).join('')}</div>`;
     }
-    if (u.qaSections.length) {
-      html += `<div class="kg-label">Grammar</div>
-        <div class="cw-section-list">${u.qaSections.map(qaCardHtml).join('')}</div>`;
-    }
     if ((u.vocabSections || []).length) {
       html += `<div class="kg-label">Vocabulary</div>
-        <div class="cw-section-list">${u.vocabSections.map(vocabTableHtml).join('')}</div>`;
+        <div class="cw-section-list">${u.vocabSections.map(vocabCardsHtml).join('')}</div>`;
     }
-    if ((u.grammarPractice || []).length) {
-      html += `<div class="kg-label">Grammar practice</div>
-        <div class="cw-section-list">${u.grammarPractice.map(grammarPracticeHtml).join('')}</div>`;
-    }
-    if ((u.grammarNotes || []).length) {
-      html += `<div class="kg-label">Notes</div>
-        <div class="cw-section-list">${u.grammarNotes.map(grammarNoteHtml).join('')}</div>`;
+    if (u.qaSections.length || (u.grammarPractice || []).length || (u.grammarNotes || []).length) {
+      html += `<div class="kg-label">Grammar</div>
+        <div class="glist cw-glist">
+          ${u.qaSections.map(qaCardHtml).join('')}
+          ${(u.grammarPractice || []).map(grammarPracticeHtml).join('')}
+          ${(u.grammarNotes || []).map(grammarNoteHtml).join('')}
+        </div>`;
     }
   }
 
   main.innerHTML = html;
 
-  document.getElementById('cw-back').onclick = () => { selUnit = null; renderCoursework(); };
-  main.querySelectorAll('.cw-speak').forEach(btn => {
-    btn.onclick = ev => { ev.stopPropagation(); speak(btn.dataset.say); };
-  });
-  main.querySelectorAll('.cw-trace-btn').forEach(btn => {
-    btn.onclick = () => {
-      focusKanjiForTrace(btn.dataset.glyph);
-      if (navigate) navigate('kanji');
+  document.getElementById('cw-back').onclick = () => { if (navigate) navigate('home'); };
+
+  // TTS speaker buttons (chevron rows, vocab cards)
+  main.querySelectorAll('.cw-speak, .v-speaker, .v-ex-speak').forEach(btn => {
+    btn.onclick = ev => {
+      ev.stopPropagation();
+      const say = btn.dataset.say || btn.closest('.cw-vcard')?.dataset.expr;
+      if (say) speak(say);
     };
+  });
+
+  // Inline kanji tracing widgets
+  main.querySelectorAll('.cw-kanji-practice').forEach(el => {
+    mountKanjiPractice(el, el.dataset.glyph, { mode: 'trace' });
+  });
+
+  // Vocab card interactions (learn toggle + expand examples), matching the JLPT Vocabulary page
+  main.querySelectorAll('.cw-vcard').forEach(card => {
+    const expr = card.dataset.expr, reading = card.dataset.reading;
+    const isOpen = openVocabWord && openVocabWord[0] === expr && openVocabWord[1] === reading;
+    card.querySelector('.v-learn').onclick = ev => {
+      ev.stopPropagation();
+      toggleCourseworkLearned(expr);
+      renderUnitDetail();
+    };
+    const moreBtn = card.querySelector('.v-more');
+    if (moreBtn) moreBtn.onclick = ev => {
+      ev.stopPropagation();
+      openVocabWord = isOpen ? null : [expr, reading];
+      renderUnitDetail();
+    };
+    card.onclick = () => {
+      openVocabWord = isOpen ? null : [expr, reading];
+      renderUnitDetail();
+    };
+  });
+
+  // Grammar accordion cards — same interaction as the JLPT Grammar page
+  main.querySelectorAll('.cw-gcard').forEach(card => {
+    const header = card.querySelector('.gcard-header');
+    const body = card.querySelector('.gcard-body');
+    body.style.display = 'none';
+    const toggle = () => {
+      const open = body.style.display !== 'none';
+      body.style.display = open ? 'none' : 'block';
+      header.setAttribute('aria-expanded', String(!open));
+      card.querySelector('.gcaret').textContent = open ? '›' : '∨';
+    };
+    header.onclick = toggle;
+    header.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') toggle(); };
   });
 
   const toolArea = document.getElementById('cw-tool-area');
   const onDone = (s, t) => updateBest('coursework-' + u.id, s, t);
 
   const quizBtn = document.getElementById('cw-quiz-btn');
-  if (quizBtn) quizBtn.onclick = () => quiz(toolArea, unitQuizQuestions(u), { onDone });
+  if (quizBtn) quizBtn.onclick = () =>
+    runFullQuiz(unitQuizQuestions(u), { onDone, onExit: renderUnitDetail, backLabel: `← ${u.title}` });
 
   const flashBtn = document.getElementById('cw-flash-btn');
   if (flashBtn) flashBtn.onclick = () => renderUnitFlashcards(toolArea, pool);
 
   const writeBtn = document.getElementById('cw-write-btn');
   if (writeBtn) writeBtn.onclick = () => writingPractice(toolArea, pool, { onDone });
+
+  const mockBtn = document.getElementById('cw-mock-btn');
+  if (mockBtn) mockBtn.onclick = () =>
+    renderUnitMockTest(u, { onDone: (s, t) => updateBest('coursework-mock-' + u.id, s, t), onExit: renderUnitDetail });
 }
 
 /** Lightweight flip-card viewer for a unit's vocab pool (reuses the global .fc-card styles). */

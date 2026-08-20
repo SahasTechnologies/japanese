@@ -1,19 +1,14 @@
 import kanjiData from '../data/kanji.json' with { type: 'json' };
 const { KANJI, KANJI_GROUPS, RADICALS } = kanjiData;
-import { quiz } from '../utils/quiz.js';
 import { shuffle } from '../utils/helpers.js';
-import { updateBest, getState, save, toggleKanjiFlag, setVocabKanjiMode, setShowFurigana } from '../state.js';
+import { updateBest, getState, toggleKanjiFlag, setVocabKanjiMode, setShowFurigana } from '../state.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 // KanjiVG stroke data — pre-fetched at build time
 import STROKES from '../data/kanjivg-strokes.json' with { type: 'json' };
 
 let selKanji = null;
 let strokeMode = 'watch'; // 'watch' | 'trace'
 
-/** Allow other sections (e.g. Coursework) to jump straight into tracing a kanji */
-export function focusKanjiForTrace(glyph) {
-  const k = KANJI.find(x => x[0] === glyph);
-  if (k) { selKanji = k; strokeMode = 'trace'; }
-}
 
 /** Build meaning quiz questions from kanji pool (or learned-only) */
 export function kanjiQs(n, onlyLearned = false) {
@@ -68,7 +63,6 @@ function renderKanjiList() {
       </div>
       <p style="font-size:12px;color:var(--ink2);margin-top:8px">Applies to vocabulary and example words across the app. Yellow tile = can read · Green = can read + write.</p>
     </div>
-    <div id="kqz" style="margin-bottom:20px"></div>
     <div id="kg"></div>`;
 
   const kg = document.getElementById('kg');
@@ -86,12 +80,9 @@ function renderKanjiList() {
       const tile = document.createElement('div');
       const canRead = (P.kanjiCanRead || P.kanjiLearned || []).includes(k[0]);
       const canWrite = (P.kanjiCanWrite || []).includes(k[0]);
-      // green = can read, yellow = can write, both = green with yellow border
-      // Yellow = can read only; green = can read + can write
       let cls = 'ktile';
       if (canRead && canWrite) cls += ' can-both';
       else if (canRead) cls += ' can-read';
-      // write-only without read: no special color (must read first conceptually)
       tile.className = cls;
       tile.innerHTML = `<span class="k">${k[0]}</span>`;
       tile.title = k[3] + (canRead ? ' · can read' : '') + (canWrite ? ' · can write' : '');
@@ -102,8 +93,10 @@ function renderKanjiList() {
   });
 
   document.getElementById('kqbtn').onclick = () =>
-    quiz(document.getElementById('kqz'), kanjiQs(12), {
+    runFullQuiz(kanjiQs(12), {
       onDone: (s, t) => updateBest('kanji', s, t),
+      onExit: renderKanjiList,
+      backLabel: '← Kanji Trainer',
     });
 
   document.querySelectorAll('.seg-control .seg').forEach(btn => {
@@ -117,8 +110,10 @@ function renderKanjiList() {
     klq.onclick = () => {
       const qs = kanjiQs(12, true);
       if (!qs.length) return;
-      quiz(document.getElementById('kqz'), qs, {
+      runFullQuiz(qs, {
         onDone: (s, t) => updateBest('kanji', s, t),
+        onExit: renderKanjiList,
+        backLabel: '← Kanji Trainer',
       });
     };
   }
@@ -161,14 +156,7 @@ function renderKanjiDetail() {
       </div>
 
       <div class="kanji-detail">
-        <div>
-          <div class="canvas-wrap" id="cw">
-            <svg id="stage" viewBox="-8 -8 125 125"></svg>
-            <div class="stamp" id="stamp">完</div>
-          </div>
-          <div id="ctl"></div>
-          <div class="tp-msg" id="tpmsg"></div>
-        </div>
+        <div id="kp-mount"></div>
         <div>
           <h4 style="margin-bottom:10px;font-size:14px">Example words</h4>
           <div id="exw"></div>
@@ -205,11 +193,14 @@ function renderKanjiDetail() {
   document.getElementById('read-btn').onclick = () => { toggleKanjiFlag(k[0], 'read'); renderKanjiDetail(); };
   document.getElementById('write-btn').onclick = () => { toggleKanjiFlag(k[0], 'write'); renderKanjiDetail(); };
 
-  loadKanjiStrokes(k[0]);
+  mountKanjiPractice(document.getElementById('kp-mount'), k[0], { mode: strokeMode });
 }
 
 /* ============================================================
-   Stroke animation (build-time bundled KanjiVG data)
+   Reusable kanji stroke/trace widget — mounts into ANY container,
+   fully self-contained (scoped queries, no global IDs), so several
+   instances can exist on the page at once (e.g. one per Coursework
+   kanji card).
    ============================================================ */
 const NS = 'http://www.w3.org/2000/svg';
 function svgEl(tag, attrs) {
@@ -227,15 +218,46 @@ const GUIDES = `
     <line class="guide-diag" x1="109" y1="0" x2="0" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>
   </g>`;
 
-function loadKanjiStrokes(ch) {
-  const svg  = document.getElementById('stage');
-  const cw   = document.getElementById('cw');
-  const ctl  = document.getElementById('ctl');
-  const msg  = document.getElementById('tpmsg');
+/**
+ * Mount the stroke-order/trace widget into `root`.
+ * @param {HTMLElement} root - empty container to render into
+ * @param {string} glyph - the kanji character
+ * @param {{mode?: 'watch'|'trace', onModeChange?: (mode:string)=>void}} opts
+ */
+export function mountKanjiPractice(root, glyph, opts = {}) {
+  let mode = opts.mode || 'watch';
+
+  function paint() {
+    root.innerHTML = `
+      <div class="mode-tabs" style="display:flex;gap:8px;margin-bottom:12px">
+        <button class="btn ${mode === 'watch' ? 'red' : ''}" data-role="mw"><ion-icon name="play-outline"></ion-icon> Watch</button>
+        <button class="btn ${mode === 'trace' ? 'red' : ''}" data-role="mt"><ion-icon name="pencil-outline"></ion-icon> Trace</button>
+      </div>
+      <div class="canvas-wrap" data-role="cw">
+        <svg data-role="stage" viewBox="-8 -8 125 125"></svg>
+        <div class="stamp" data-role="stamp">完</div>
+      </div>
+      <div data-role="ctl"></div>
+      <div class="tp-msg" data-role="tpmsg"></div>`;
+
+    root.querySelector('[data-role="mw"]').onclick = () => { mode = 'watch'; opts.onModeChange?.(mode); paint(); };
+    root.querySelector('[data-role="mt"]').onclick = () => { mode = 'trace'; opts.onModeChange?.(mode); paint(); };
+
+    loadKanjiStrokes(root, glyph, mode);
+  }
+
+  paint();
+}
+
+function loadKanjiStrokes(root, ch, mode) {
+  const svg  = root.querySelector('[data-role="stage"]');
+  const cw   = root.querySelector('[data-role="cw"]');
+  const ctl  = root.querySelector('[data-role="ctl"]');
+  const msg  = root.querySelector('[data-role="tpmsg"]');
 
   svg.innerHTML = '';
   cw.classList.remove('trace');
-  document.getElementById('stamp').classList.remove('show');
+  root.querySelector('[data-role="stamp"]')?.classList.remove('show');
 
   const ds = STROKES[ch];
   if (!ds || ds.length === 0) {
@@ -279,16 +301,16 @@ function loadKanjiStrokes(ch) {
     paths.push({ el: sp, len, d, sx, sy });
   });
 
-  if (strokeMode === 'watch') setupWatch(paths, ctl, msg);
-  else setupTrace(paths, svg, cw, ctl, msg, numG);
+  if (mode === 'watch') setupWatch(root, paths, ctl, msg);
+  else setupTrace(root, paths, svg, cw, ctl, msg, numG);
 }
 
 /* ---- Watch mode ---- */
-function setupWatch(paths, ctl, msg) {
+function setupWatch(root, paths, ctl, msg) {
   ctl.innerHTML = `
     <div class="btnrow" style="margin-top:12px">
-      <button class="btn primary" id="play-btn"><ion-icon name="play-outline"></ion-icon> Replay</button>
-      <button class="btn" id="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Restart</button>
+      <button class="btn primary" data-role="play-btn"><ion-icon name="play-outline"></ion-icon> Replay</button>
+      <button class="btn" data-role="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Restart</button>
     </div>`;
 
   let i = 0, playing = false, raf = null;
@@ -296,13 +318,13 @@ function setupWatch(paths, ctl, msg) {
   function reset() {
     paths.forEach(p => { p.el.style.strokeDashoffset = p.len; p.el.classList.remove('current'); });
     i = 0;
-    document.getElementById('stamp')?.classList.remove('show');
+    root.querySelector('[data-role="stamp"]')?.classList.remove('show');
   }
 
   function finishStroke(j) {
     paths[j].el.style.strokeDashoffset = 0;
     paths[j].el.classList.remove('current');
-    if (j + 1 >= paths.length) document.getElementById('stamp')?.classList.add('show');
+    if (j + 1 >= paths.length) root.querySelector('[data-role="stamp"]')?.classList.add('show');
   }
 
   function step() {
@@ -337,17 +359,14 @@ function setupWatch(paths, ctl, msg) {
     step();
   }
 
-  document.getElementById('play-btn').onclick = () => play();
-  document.getElementById('rst-btn').onclick = () => {
+  ctl.querySelector('[data-role="play-btn"]').onclick = () => play();
+  ctl.querySelector('[data-role="rst-btn"]').onclick = () => {
     playing = false;
     if (raf) cancelAnimationFrame(raf);
     reset();
-    // Auto-play again after restart
     setTimeout(play, 80);
   };
 
-  // Autoplay on load: entire kanji is already shown as light ghost paths;
-  // strokes animate on top of the full background outline.
   reset();
   setTimeout(play, 180);
 }
@@ -387,7 +406,7 @@ function distStats(a, b) {
   return { mean: s / a.length, max: mx };
 }
 
-function setupTrace(paths, svg, cw, ctl, msg, numG) {
+function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
   cw.classList.add('trace');
   let showGuide = true;
   let showGhost = true;
@@ -397,24 +416,23 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
 
   ctl.innerHTML = `
     <div class="btnrow" style="margin-top:12px;flex-wrap:wrap">
-      <button class="btn" id="undo-btn"><ion-icon name="arrow-undo-outline"></ion-icon> Undo</button>
-      <button class="btn" id="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Reset</button>
-      <button class="btn" id="show-btn"><ion-icon name="eye-outline"></ion-icon> Show order</button>
+      <button class="btn" data-role="undo-btn"><ion-icon name="arrow-undo-outline"></ion-icon> Undo</button>
+      <button class="btn" data-role="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Reset</button>
+      <button class="btn" data-role="show-btn"><ion-icon name="eye-outline"></ion-icon> Show order</button>
     </div>
     <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
-      <button class="btn" id="guide-btn"><ion-icon name="locate-outline"></ion-icon> Guide: On</button>
-      <button class="btn" id="ghost-btn"><ion-icon name="layers-outline"></ion-icon> Outline: On</button>
+      <button class="btn" data-role="guide-btn"><ion-icon name="locate-outline"></ion-icon> Guide: On</button>
+      <button class="btn" data-role="ghost-btn"><ion-icon name="layers-outline"></ion-icon> Outline: On</button>
     </div>
     <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
-      <button class="btn" id="grid-btn"><ion-icon name="grid-outline"></ion-icon> Grid lines: On</button>
-      <button class="btn" id="num-btn"><ion-icon name="list-outline"></ion-icon> Numbers: On</button>
+      <button class="btn" data-role="grid-btn"><ion-icon name="grid-outline"></ion-icon> Grid lines: On</button>
+      <button class="btn" data-role="num-btn"><ion-icon name="list-outline"></ion-icon> Numbers: On</button>
     </div>
     <p style="font-size:12px;color:var(--ink2);margin-top:8px">Turn everything off for a completely freehand challenge.</p>`;
 
   const targetG = svgEl('g', {});
   const doneG   = svgEl('g', {});
   const drawG   = svgEl('g', {});
-  // Stable start-dot that we only update position/visibility on — never destroy/recreate
   const startDot = svgEl('circle', { r: 3.4, class: 'trace-dot', visibility: 'hidden' });
   const startNum = svgEl('text', {
     'text-anchor': 'middle',
@@ -428,12 +446,7 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
   svg.appendChild(doneG);
   svg.appendChild(drawG);
 
-  // Ghost group is already in the SVG from loadKanjiStrokes; toggle its visibility
-  const ghostG = svg.querySelector('g'); // first g is ghost
-  // Actually order: guides, ghostG, strokeG, numG — then we append target/done/draw
-  // Safer: find by looking for .ghost paths
   const allGs = [...svg.querySelectorAll(':scope > g')];
-  // ghostG was appended first among content groups
   let ghostGroup = null;
   for (const g of allGs) {
     if (g.querySelector('path.ghost')) { ghostGroup = g; break; }
@@ -454,20 +467,18 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
   function setGhostVisible(on) {
     showGhost = on;
     if (ghostGroup) ghostGroup.style.display = on ? '' : 'none';
-    // Also hide finished stroke numbers if desired? keep numbers
-    document.getElementById('ghost-btn').innerHTML =
+    ctl.querySelector('[data-role="ghost-btn"]').innerHTML =
       `<ion-icon name="layers-outline"></ion-icon> Outline: ${on ? 'On' : 'Off'}`;
   }
 
   function setGuideVisible(on) {
     showGuide = on;
-    document.getElementById('guide-btn').innerHTML =
+    ctl.querySelector('[data-role="guide-btn"]').innerHTML =
       `<ion-icon name="locate-outline"></ion-icon> Guide: ${on ? 'On' : 'Off'}`;
     showTarget();
   }
 
   function showTarget() {
-    // Clear only the guide path (not the stable dot)
     [...targetG.querySelectorAll('path.trace-target')].forEach(el => el.remove());
     if (cur >= paths.length) {
       startDot.setAttribute('visibility', 'hidden');
@@ -493,7 +504,7 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
     if (cur >= paths.length) {
       msg.textContent = 'Complete! Beautiful.';
       msg.className = 'tp-msg ok';
-      document.getElementById('stamp')?.classList.add('show');
+      root.querySelector('[data-role="stamp"]')?.classList.add('show');
     } else if (showGuide) {
       msg.textContent = `Stroke ${cur + 1} of ${paths.length} — start at the red dot`;
       msg.className = 'tp-msg';
@@ -505,7 +516,7 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
 
   function shakeCanvas() {
     cw.classList.remove('shake');
-    void cw.offsetWidth; // reflow
+    void cw.offsetWidth;
     cw.classList.add('shake');
   }
 
@@ -521,7 +532,6 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
     const fwd = distStats(u, s.pts);
     const rev = distStats([...u].reverse(), s.pts);
     if (rev.mean < fwd.mean * 0.8) return { ok: false, msg: 'Wrong direction.' };
-    // When guide is on, enforce start position more strictly
     if (showGuide) {
       const sd = Math.hypot(u[0][0] - s.pts[0][0], u[0][1] - s.pts[0][1]);
       if (sd > 15) return { ok: false, msg: 'Start closer to the red dot.' };
@@ -583,26 +593,26 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
   svg.onpointerup = end;
   svg.onpointercancel = end;
 
-  document.getElementById('undo-btn').onclick = () => {
+  ctl.querySelector('[data-role="undo-btn"]').onclick = () => {
     if (busy || cur === 0) return;
     cur--;
     doneG.lastElementChild?.remove();
-    document.getElementById('stamp')?.classList.remove('show');
+    root.querySelector('[data-role="stamp"]')?.classList.remove('show');
     showTarget();
     updMsg();
   };
 
-  document.getElementById('rst-btn').onclick = () => {
+  ctl.querySelector('[data-role="rst-btn"]').onclick = () => {
     if (busy) return;
     drawG.innerHTML = '';
     doneG.innerHTML = '';
     cur = 0;
-    document.getElementById('stamp')?.classList.remove('show');
+    root.querySelector('[data-role="stamp"]')?.classList.remove('show');
     showTarget();
     updMsg();
   };
 
-  document.getElementById('show-btn').onclick = () => {
+  ctl.querySelector('[data-role="show-btn"]').onclick = () => {
     if (busy || !paths.length) return;
     busy = true;
     [...targetG.querySelectorAll('path.trace-target')].forEach(el => el.remove());
@@ -625,18 +635,18 @@ function setupTrace(paths, svg, cw, ctl, msg, numG) {
     }, paths.length * 550 + 680);
   };
 
-  document.getElementById('guide-btn').onclick = () => setGuideVisible(!showGuide);
-  document.getElementById('ghost-btn').onclick = () => setGhostVisible(!showGhost);
-  document.getElementById('grid-btn').onclick = () => {
+  ctl.querySelector('[data-role="guide-btn"]').onclick = () => setGuideVisible(!showGuide);
+  ctl.querySelector('[data-role="ghost-btn"]').onclick = () => setGhostVisible(!showGhost);
+  ctl.querySelector('[data-role="grid-btn"]').onclick = () => {
     showGrid = !showGrid;
     if (gridGroup) gridGroup.style.display = showGrid ? '' : 'none';
-    document.getElementById('grid-btn').innerHTML =
+    ctl.querySelector('[data-role="grid-btn"]').innerHTML =
       `<ion-icon name="grid-outline"></ion-icon> Grid lines: ${showGrid ? 'On' : 'Off'}`;
   };
-  document.getElementById('num-btn').onclick = () => {
+  ctl.querySelector('[data-role="num-btn"]').onclick = () => {
     showNums = !showNums;
     if (numG) numG.style.display = showNums ? '' : 'none';
-    document.getElementById('num-btn').innerHTML =
+    ctl.querySelector('[data-role="num-btn"]').innerHTML =
       `<ion-icon name="list-outline"></ion-icon> Numbers: ${showNums ? 'On' : 'Off'}`;
   };
 

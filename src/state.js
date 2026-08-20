@@ -10,6 +10,7 @@ const DEFAULTS = {
   kanjiCanRead: [],
   kanjiCanWrite: [],
   vocabLearned: [],
+  courseworkLearned: [],
   // 'all' | 'learned' | 'none'
   vocabKanjiMode: 'learned',
   showFurigana: true,
@@ -48,6 +49,7 @@ export function resetState() {
     kanjiCanRead: [],
     kanjiCanWrite: [],
     vocabLearned: [],
+    courseworkLearned: [],
     vocabKanjiMode: 'learned',
     showFurigana: true,
     flashPiles: {},
@@ -75,6 +77,14 @@ export function toggleVocabLearned(word) {
   const idx = P.vocabLearned.indexOf(word);
   if (idx >= 0) P.vocabLearned.splice(idx, 1);
   else P.vocabLearned.push(word);
+  save();
+}
+
+export function toggleCourseworkLearned(word) {
+  if (!P.courseworkLearned) P.courseworkLearned = [];
+  const idx = P.courseworkLearned.indexOf(word);
+  if (idx >= 0) P.courseworkLearned.splice(idx, 1);
+  else P.courseworkLearned.push(word);
   save();
 }
 

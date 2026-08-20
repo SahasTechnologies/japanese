@@ -1,6 +1,6 @@
 import kana from '../data/kana.json' with { type: 'json' };
 const { HIRA, KATA, HIRA_ROWS, KATA_ROWS } = kana;
-import { quiz } from '../utils/quiz.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { speak } from '../utils/tts.js';
 import { updateBest } from '../state.js';
@@ -45,8 +45,7 @@ export function renderKana() {
       <button class="btn primary" id="qz1-btn">Kana → Reading</button>
       <button class="btn" id="qz2-btn">Reading → Kana</button>
     </div>
-    <div id="kgrid-wrap"></div>
-    <div id="kq" style="margin-top:24px"></div>`;
+    <div id="kgrid-wrap"></div>`;
 
   document.getElementById('th-btn').onclick = () => { kanaSet = 'hira'; renderKana(); };
   document.getElementById('tk-btn').onclick = () => { kanaSet = 'kata'; renderKana(); };
@@ -77,7 +76,7 @@ export function renderKana() {
 
   const onDone = (s, t) => { updateBest('kana', s, t); };
   document.getElementById('qz1-btn').onclick = () =>
-    quiz(document.getElementById('kq'), kanaQs(set, 12, false), { onDone });
+    runFullQuiz(kanaQs(set, 12, false), { onDone, onExit: renderKana, backLabel: '← Kana Trainer' });
   document.getElementById('qz2-btn').onclick = () =>
-    quiz(document.getElementById('kq'), kanaQs(set, 12, true), { onDone });
+    runFullQuiz(kanaQs(set, 12, true), { onDone, onExit: renderKana, backLabel: '← Kana Trainer' });
 }

@@ -1,5 +1,6 @@
 import READING from '../data/reading.json' with { type: 'json' };
 import { quiz } from '../utils/quiz.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { updateBest } from '../state.js';
 
@@ -14,7 +15,6 @@ export function renderReading() {
       <button class="btn primary" id="rq-all"><ion-icon name="documents-outline"></ion-icon> Mixed quiz · 20 questions</button>
       <button class="btn" id="rq-long"><ion-icon name="library-outline"></ion-icon> Full practice · all questions</button>
     </div>
-    <div id="rqz" style="margin-bottom:20px"></div>
     <div id="rd"></div>`;
 
   const allQs = READING.flatMap(p =>
@@ -25,13 +25,17 @@ export function renderReading() {
   );
 
   document.getElementById('rq-all').onclick = () =>
-    quiz(document.getElementById('rqz'), shuffle(allQs).slice(0, 20), {
+    runFullQuiz(shuffle(allQs).slice(0, 20), {
       onDone: (s, t) => updateBest('reading', s, t),
+      onExit: renderReading,
+      backLabel: '← Reading',
     });
 
   document.getElementById('rq-long').onclick = () =>
-    quiz(document.getElementById('rqz'), shuffle(allQs), {
+    runFullQuiz(shuffle(allQs), {
       onDone: (s, t) => updateBest('reading', s, t),
+      onExit: renderReading,
+      backLabel: '← Reading',
     });
 
   const rd = document.getElementById('rd');

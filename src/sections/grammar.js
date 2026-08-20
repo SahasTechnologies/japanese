@@ -1,6 +1,6 @@
 import grammar from '../data/grammar.json' with { type: 'json' };
 const { GRAMMAR, PARTICLE_QUIZ } = grammar;
-import { quiz } from '../utils/quiz.js';
+import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { updateBest } from '../state.js';
 
@@ -21,8 +21,7 @@ export function renderGrammar() {
     <div class="btnrow" style="justify-content:flex-start;margin-bottom:16px">
       <button class="btn primary" id="gq-btn">Particle &amp; form drill</button>
     </div>
-    <div class="glist" id="gl"></div>
-    <div id="gqz" style="margin-top:24px"></div>`;
+    <div class="glist" id="gl"></div>`;
 
   const gl = document.getElementById('gl');
   GRAMMAR.forEach(g => {
@@ -59,7 +58,9 @@ export function renderGrammar() {
   });
 
   document.getElementById('gq-btn').onclick = () =>
-    quiz(document.getElementById('gqz'), grammarQs(), {
+    runFullQuiz(grammarQs(), {
       onDone: (s, t) => updateBest('grammar', s, t),
+      onExit: renderGrammar,
+      backLabel: '← Grammar',
     });
 }

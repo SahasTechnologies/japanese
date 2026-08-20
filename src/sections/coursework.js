@@ -265,6 +265,22 @@ function grammarPracticeHtml(gp) {
     </div>`;
   }
 
+  if (gp.practice && gp.practice.items && gp.practice.items.length) {
+    html += `<div class="cw-practice">
+      ${gp.practice.title ? `<h4 class="cw-vocablist-title">${esc(gp.practice.title)}</h4>` : ''}
+      ${gp.practice.note ? `<p class="cw-note" style="margin-bottom:8px">${esc(gp.practice.note)}</p>` : ''}
+      ${gp.practice.items.map((it, idx) => `
+        <div class="cw-practice-item">
+          <div class="cw-practice-prompt"><b>${idx + 1}.</b> ${esc(it.prompt)}</div>
+          <button class="btn cw-practice-reveal" data-role="reveal">Show suggested answer</button>
+          <div class="cw-practice-answer" data-role="answer" style="display:none">
+            <div class="cw-practice-answer-jp">${esc(it.answer)}</div>
+            ${it.en ? `<div class="cw-practice-answer-en">${esc(it.en)}</div>` : ''}
+          </div>
+        </div>`).join('')}
+    </div>`;
+  }
+
   if (gp.timeWords) {
     html += `<div class="cw-timewords">
       <div class="cw-timeword-when"><span class="cw-qa-tag">いつ</span> ${esc(gp.timeWords['いつ'])}</div>
@@ -402,6 +418,19 @@ function renderUnitDetail() {
     };
     header.onclick = toggle;
     header.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') toggle(); };
+  });
+
+  // Fill-in practice items — reveal a suggested answer, self-checked
+  main.querySelectorAll('.cw-practice-item').forEach(item => {
+    const btn = item.querySelector('[data-role="reveal"]');
+    const ans = item.querySelector('[data-role="answer"]');
+    if (!btn || !ans) return;
+    btn.onclick = ev => {
+      ev.stopPropagation();
+      const open = ans.style.display !== 'none';
+      ans.style.display = open ? 'none' : 'block';
+      btn.textContent = open ? 'Show suggested answer' : 'Hide answer';
+    };
   });
 
   const toolArea = document.getElementById('cw-tool-area');

@@ -747,7 +747,83 @@
    "id": 2,
    "title": "Unit 2",
    "subtitle": "ひっこし — Rooms, furniture & where things are",
-   "kanji": [],
+   "kanji": [
+    {
+     "glyph": "上",
+     "sentences": [
+      {
+       "kanji": "テーブルの 上に",
+       "kana": "テーブルの うえに",
+       "en": "on top of the table"
+      },
+      {
+       "kanji": "はこの 上に",
+       "kana": "はこの うえに",
+       "en": "above the box"
+      },
+      {
+       "kanji": "上手",
+       "kana": "じょうず",
+       "en": "good at / skilled"
+      }
+     ]
+    },
+    {
+     "glyph": "下",
+     "sentences": [
+      {
+       "kanji": "ベッドの 下に",
+       "kana": "ベッドの したに",
+       "en": "below the bed"
+      },
+      {
+       "kanji": "つくえの 下に あります。",
+       "kana": "つくえの したに あります。",
+       "en": "It is under the desk."
+      },
+      {
+       "kanji": "下手",
+       "kana": "へた",
+       "en": "bad at / not skilled"
+      }
+     ]
+    },
+    {
+     "glyph": "中",
+     "sentences": [
+      {
+       "kanji": "はこの 中に",
+       "kana": "はこの なかに",
+       "en": "inside the box"
+      },
+      {
+       "kanji": "じゅぎょう中に",
+       "kana": "じゅぎょうちゅうに",
+       "en": "during lessons"
+      }
+     ]
+    },
+    {
+     "glyph": "前",
+     "sentences": [
+      {
+       "kanji": "うちの 前に",
+       "kana": "うちのまえに",
+       "en": "in front of the house"
+      },
+      {
+       "kanji": "あさごはんの 前に",
+       "kana": "あさごはんのまえに",
+       "en": "before breakfast"
+      },
+      {
+       "kanji": "午前",
+       "kana": "ごぜん",
+       "en": "a.m."
+      }
+     ]
+    }
+   ],
    "qaSections": [],
    "phraseChevrons": [
     {
@@ -1482,7 +1558,83 @@
    "id": 3,
    "title": "Unit 3",
    "subtitle": "わたしの学校 — School life, subjects & comparisons",
-   "kanji": [],
+   "kanji": [
+    {
+     "glyph": "年",
+     "sentences": [
+      {
+       "kanji": "一年",
+       "kana": "いちねん",
+       "en": "one year"
+      },
+      {
+       "kanji": "二年半",
+       "kana": "にねんはん",
+       "en": "two and a half years"
+      },
+      {
+       "kanji": "何年生",
+       "kana": "なんねんせい",
+       "en": "what school grade?"
+      },
+      {
+       "kanji": "九年生",
+       "kana": "きゅうねんせい",
+       "en": "year 9"
+      }
+     ]
+    },
+    {
+     "glyph": "今",
+     "sentences": [
+      {
+       "kanji": "今年",
+       "kana": "ことし",
+       "en": "this year"
+      },
+      {
+       "kanji": "今、何時ですか。",
+       "kana": "いま、なんじですか。",
+       "en": "What time is it now?"
+      }
+     ]
+    },
+    {
+     "glyph": "学",
+     "sentences": [
+      {
+       "kanji": "学校",
+       "kana": "がっこう",
+       "en": "school"
+      },
+      {
+       "kanji": "小学校",
+       "kana": "しょうがっこう",
+       "en": "primary school"
+      },
+      {
+       "kanji": "大学",
+       "kana": "だいがく",
+       "en": "university"
+      }
+     ]
+    },
+    {
+     "glyph": "校",
+     "sentences": [
+      {
+       "kanji": "高校",
+       "kana": "こうこう",
+       "en": "senior high school"
+      },
+      {
+       "kanji": "中学校",
+       "kana": "ちゅうがっこう",
+       "en": "junior high school"
+      }
+     ]
+    }
+   ],
    "qaSections": [],
    "phraseChevrons": [],
    "vocabSections": [
@@ -1719,7 +1871,6 @@
      "drills": [
       [
        "ジェマさんは 何年生ですか。",
-       "→",
        "高校 一年生 です。"
       ]
      ]
@@ -1743,7 +1894,6 @@
      "drills": [
       [
        "びじゅつや れきしや 日本ご などを べんきょうして います。",
-       "→",
        "I am studying art, history, and Japanese, etc."
       ]
      ]
@@ -1767,12 +1917,10 @@
      "drills": [
       [
        "学校は 何時から 何時までですか。",
-       "→",
        "学校は 九時から 三時半までです。"
       ],
       [
        "そうじは ごご 三時十五分から ごご 三時三十五分まで です。",
-       "→",
        "Cleaning is from 3:15 p.m. to 3:35 p.m."
       ]
      ]
@@ -1894,12 +2042,10 @@
      "drills": [
       [
        "一番 おもしろい かもくは 日本ごです。",
-       "→",
        "The most interesting subject is Japanese."
       ],
       [
        "一番 ゆうめいな 日本の たべものは すしです。",
-       "→",
        "The most famous Japanese food is sushi."
       ]
      ]
@@ -1926,7 +2072,6 @@
      "drills": [
       [
        "ゲームを します。 だから、 日本ごが すきです。",
-       "→",
        "We play games. That's why I like Japanese."
       ]
      ]
@@ -1985,12 +2130,10 @@
      "drills": [
       [
        "ケーキを あまり たべません。",
-       "→",
        "I don't eat cakes much."
       ],
       [
        "ケーキを ぜんぜん たべません。",
-       "→",
        "I don't eat cakes at all."
       ]
      ]
@@ -2327,7 +2470,6 @@
      "drills": [
       [
        "夏に サーフィンを します。",
-       "→",
        "In summer, I go surfing. (emphasised with に)"
       ]
      ]
@@ -2366,12 +2508,10 @@
      "drills": [
       [
        "やまに ドライブに いきます。",
-       "→",
        "I am going to the mountains for a drive."
       ],
       [
        "うみに およぎに いきます。",
-       "→",
        "I am going to the beach to swim."
       ]
      ]
@@ -2579,7 +2719,108 @@
    "id": 5,
    "title": "Unit 5",
    "subtitle": "かいもの — Shopping, large numbers & requests",
-   "kanji": [],
+   "kanji": [
+    {
+     "glyph": "百",
+     "sentences": [
+      {
+       "kanji": "三百",
+       "kana": "さんびゃく",
+       "en": "300 (sound change)"
+      },
+      {
+       "kanji": "六百",
+       "kana": "ろっぴゃく",
+       "en": "600 (sound change)"
+      },
+      {
+       "kanji": "八百",
+       "kana": "はっぴゃく",
+       "en": "800 (sound change)"
+      },
+      {
+       "kanji": "何百ですか。",
+       "kana": "なんびゃくですか。",
+       "en": "How many hundreds?"
+      }
+     ]
+    },
+    {
+     "glyph": "千",
+     "sentences": [
+      {
+       "kanji": "三千",
+       "kana": "さんぜん",
+       "en": "3000 (sound change)"
+      },
+      {
+       "kanji": "六千",
+       "kana": "ろくせん",
+       "en": "6000"
+      },
+      {
+       "kanji": "八千",
+       "kana": "はっせん",
+       "en": "8000"
+      },
+      {
+       "kanji": "何千ですか。",
+       "kana": "なんぜんですか。",
+       "en": "How many thousands?"
+      }
+     ]
+    },
+    {
+     "glyph": "万",
+     "sentences": [
+      {
+       "kanji": "一万",
+       "kana": "いちまん",
+       "en": "10,000"
+      },
+      {
+       "kanji": "五万",
+       "kana": "ごまん",
+       "en": "50,000"
+      },
+      {
+       "kanji": "百万",
+       "kana": "ひゃくまん",
+       "en": "1,000,000"
+      },
+      {
+       "kanji": "何万ですか。",
+       "kana": "なんまんですか。",
+       "en": "How many tens of thousands?"
+      }
+     ]
+    },
+    {
+     "glyph": "円",
+     "sentences": [
+      {
+       "kanji": "九十円",
+       "kana": "きゅうじゅうえん",
+       "en": "¥90"
+      },
+      {
+       "kanji": "二百十円",
+       "kana": "にひゃくじゅうえん",
+       "en": "¥210"
+      },
+      {
+       "kanji": "千二百円",
+       "kana": "せんにひゃくえん",
+       "en": "¥1,200"
+      },
+      {
+       "kanji": "百万円",
+       "kana": "ひゃくまんえん",
+       "en": "¥1,000,000"
+      }
+     ]
+    }
+   ],
    "qaSections": [],
    "phraseChevrons": [],
    "vocabSections": [
@@ -2850,6 +3091,27 @@
        "jp": "これです。",
        "en": "It is this one."
       }
+     },
+     "practice": {
+      "title": "Image practice — point and answer",
+      "note": "For each numbered picture, say どれ／これ／それ／あれ です as appropriate.",
+      "items": [
+       {
+        "prompt": "それ (pointing to an object near the listener)",
+        "answer": "それです。",
+        "en": "It is that one."
+       },
+       {
+        "prompt": "これ (pointing to an object near the speaker)",
+        "answer": "これです。",
+        "en": "It is this one."
+       },
+       {
+        "prompt": "これ と それ (pointing to both objects)",
+        "answer": "これと それです。",
+        "en": "It is this one and that one."
+       }
+      ]
      }
     },
     {
@@ -4077,6 +4339,27 @@
         "description です。"
        ]
       ]
+     },
+     "practice": {
+      "title": "Practice — describe each person",
+      "note": "Person は body part が description です。",
+      "items": [
+       {
+        "prompt": "みき、かみ、ちゃいろ",
+        "answer": "みきさんは かみが ちゃいろいです。",
+        "en": "Miki has brown hair."
+       },
+       {
+        "prompt": "みき、め、くろい",
+        "answer": "みきさんは めが くろいです。",
+        "en": "Miki has black eyes."
+       },
+       {
+        "prompt": "みき、口、大きい",
+        "answer": "みきさんは 口が 大きいです。",
+        "en": "Miki has a big mouth."
+       }
+      ]
      }
     },
     {
@@ -4118,6 +4401,27 @@
         "adjective です。"
        ]
       ]
+     },
+     "practice": {
+      "title": "Practice — describe each personality",
+      "note": "Person は adjective です。",
+      "items": [
+       {
+        "prompt": "ゆうすけ、げんき",
+        "answer": "ゆうすけさんは げんきです。／げんきな 人です。",
+        "en": "Yuusuke is lively. / a lively person."
+       },
+       {
+        "prompt": "まき、あかるい",
+        "answer": "まきさんは あかるいです。／あかるい 人です。",
+        "en": "Maki is bright. / a bright person."
+       },
+       {
+        "prompt": "けんた、わがまま",
+        "answer": "けんたさんは わがままです。／わがままな 人です。",
+        "en": "Kenta is selfish. / a selfish person."
+       }
+      ]
      }
     },
     {
@@ -4135,6 +4439,40 @@
         "高くて"
        ]
       }
+     },
+     "example2": {
+      "q": {
+       "jp": "いもうとは どんな 人ですか。",
+       "en": "What is your younger sister like?"
+      },
+      "a": {
+       "jp": "いもうとは あかるくて、あたまが いいです。",
+       "en": "My younger sister has a bright personality and is clever.",
+       "bold": [
+        "あかるくて"
+       ]
+      }
+     },
+     "practice": {
+      "title": "Practice — join い adjectives",
+      "note": "い adjective 1 (drop い, add くて)、adjective 2 です。",
+      "items": [
+       {
+        "prompt": "ベン、め、あおい、かみ、金ぱつ",
+        "answer": "ベンさんは 目が あおくて、かみが 金ぱつです。",
+        "en": "Ben has blue eyes and blond hair."
+       },
+       {
+        "prompt": "たかこ、かみ、ながい、くろい",
+        "answer": "たかこさんは かみが ながくて、くろいです。",
+        "en": "Takako has long, black hair."
+       },
+       {
+        "prompt": "しょうた、せが ひくい、ふとって います",
+        "answer": "しょうたさんは せが ひくくて、ふとって います。",
+        "en": "Shouta is short and overweight."
+       }
+      ]
      }
     },
     {
@@ -4155,6 +4493,27 @@
         "しずかで"
        ]
       }
+     },
+     "practice": {
+      "title": "Practice — join な adjectives",
+      "note": "な adjective 1 で、adjective 2 です。",
+      "items": [
+       {
+        "prompt": "おかあさん、まじめ、あたまが いい",
+        "answer": "おかあさんは まじめで、あたまが いいです。",
+        "en": "Mother is serious and clever."
+       },
+       {
+        "prompt": "まき、げんき、あかるい",
+        "answer": "まきさんは げんきで、あかるいです。",
+        "en": "Maki is lively and bright."
+       },
+       {
+        "prompt": "おとうと、のんき、うるさい",
+        "answer": "おとうとは のんきで、うるさいです。",
+        "en": "Younger brother is easygoing and noisy."
+       }
+      ]
      }
     },
     {
@@ -4183,6 +4542,27 @@
         "description 2 です。"
        ]
       ]
+     },
+     "practice": {
+      "title": "Practice — contrasting characteristics",
+      "note": "Person は description 1 ですが／けど、description 2 です。",
+      "items": [
+       {
+        "prompt": "かい、こわい、やさしい",
+        "answer": "かいさんは こわいですが、やさしいです。／こわいですけど、やさしいです。",
+        "en": "(Kai is scary, but kind.)"
+       },
+       {
+        "prompt": "なおみ、ちょっと へん、おかしな",
+        "answer": "なおみさんは ちょっと へんですが、おかしいです。／へんですけど、おかしいです。",
+        "en": "(Naomi is a little strange, but funny.)"
+       },
+       {
+        "prompt": "ココちゃん、小さい、かわいい、うるさい",
+        "answer": "ココちゃんは 小さくて かわいいですが、うるさいです。／小さくて かわいいですけど、うるさいです。",
+        "en": "(Coco-chan is small and cute, but noisy.)"
+       }
+      ]
      }
     },
     {
@@ -4200,6 +4580,47 @@
        "jp": "あかい ドレスを きて います。 ジーンズを はいて います。 ピアスを して います。",
        "en": "She's wearing a red dress. She's wearing jeans. She's wearing earrings."
       }
+     },
+     "practice": {
+      "title": "Practice — describe what they're wearing",
+      "note": "",
+      "items": [
+       {
+        "prompt": "ベン、あおい Tシャツ",
+        "answer": "ベンさんは あおい Tシャツを きて います。",
+        "en": "(Ben is wearing a blue T-shirt.)"
+       },
+       {
+        "prompt": "ベン、ズボン",
+        "answer": "ズボンを はいて います。",
+        "en": "(He is wearing trousers.)"
+       },
+       {
+        "prompt": "たかこ、せいふく",
+        "answer": "たかこさんは せいふくを きて います。",
+        "en": "(Takako is wearing her uniform.)"
+       },
+       {
+        "prompt": "たかこ、くろい くつ",
+        "answer": "くろい くつを はいて います。",
+        "en": "(She is wearing black shoes.)"
+       },
+       {
+        "prompt": "しょうた、しろい Tシャツ",
+        "answer": "しょうたさんは しろい Tシャツを きて います。",
+        "en": "(Shouta is wearing a white T-shirt.)"
+       },
+       {
+        "prompt": "しょうた、ジーンズ",
+        "answer": "ジーンズを はいて います。",
+        "en": "(He is wearing jeans.)"
+       },
+       {
+        "prompt": "しょうた、サングラス",
+        "answer": "サングラスを かけて います（して います）。",
+        "en": "(He is wearing sunglasses.)"
+       }
+      ]
      }
     }
    ],

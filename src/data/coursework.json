@@ -1585,17 +1585,22 @@
      ]
     },
     {
-     "glyph": "今",
+     "glyph": "生",
      "sentences": [
       {
-       "kanji": "今年",
-       "kana": "ことし",
-       "en": "this year"
+       "kanji": "何年生",
+       "kana": "なんねんせい",
+       "en": "what school grade?"
       },
       {
-       "kanji": "今、何時ですか。",
-       "kana": "いま、なんじですか。",
-       "en": "What time is it now?"
+       "kanji": "中学生",
+       "kana": "ちゅうがくせい",
+       "en": "junior high school student"
+      },
+      {
+       "kanji": "先生",
+       "kana": "せんせい",
+       "en": "teacher"
       }
      ]
     },

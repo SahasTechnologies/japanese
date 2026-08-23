@@ -1,7 +1,7 @@
 # Japanese Study
 
 > [!NOTE]
-> I created this app to help me study for the JLPT N5 exam. However, I started N5 study in August, and don't have time to code and also do the actual studying. I also wanted to experiment with different AI tools, and how to use AI to boost my productivity and education. So, this project was created entirely by AI with the exception of this single paragraph, and it has saved me so much time and effort, while also helping me better understand and become more familiar with dedicated AI coding tools. The app has since grown beyond just JLPT N5 — it now also tracks my actual class coursework unit by unit. You can access the application at [Japanese Study](https://jap.shimpi.dev), hosted on GitHub Pages. This website has helped me so, so much to study Japanese, and I hope it will help you too! 頑張ってください！このサイトが日本語の勉強に役立つことを願っています！
+> I created this app to help me study for the JLPT N5 exam. However, I started N5 study in August, and don't have time to code and also do the actual studying. I also wanted to experiment with different AI tools, and how to use AI to boost my productivity and education. So, this project was created entirely by AI with the exception of this single paragraph, and it has saved me so much time and effort, while also helping me better understand and become more familiar with dedicated AI coding tools. The app has since grown beyond just JLPT N5 — it now also tracks my actual class coursework unit by unit. You can access the application at [Japanese Study](https://jap.shimpi.dev), hosted on Cloudflare Pages. This website has helped me so, so much to study Japanese, and I hope it will help you too! 頑張ってください！このサイトが日本語の勉強に役立つことを願っています！
 
 An interactive Japanese study app with two halves:
 
@@ -44,11 +44,11 @@ An interactive Japanese study app with two halves:
 - Kanji introduced in a unit link straight into the same stroke-tracing tool used in the JLPT N5 section
 
 ### App-wide
-- **Home hub** — a single flat dashboard: collapsible **JLPT N5** and **Coursework** sections, each showing every module/unit as its own tile with a progress ring. The header logo always returns Home.
+- **Home hub** — a single flat dashboard: collapsible **Coursework** (first) and **JLPT N5** sections, each showing every module/unit as its own tile with a progress ring. The header logo always returns Home.
 - **Word of the Day** — a daily word fetched live (see [Word of the Day](#word-of-the-day) below)
 - **Full-page quizzes** — every quiz takes over the whole screen with a back button, instead of being squeezed under other content
 - **Search** — Instant search across kanji, vocab, and grammar
-- **Dark mode** — Toggle in the header; preference is saved
+- **Settings** — Header gear opens a panel for light / dark / custom theme (colour pickers for background, cards, text, accent, buttons), Japanese + interface font dropdowns, and a progress reset
 - **Progress** — Best scores, kanji read/write flags, vocab/coursework learned lists, and flashcard piles stored in `localStorage`
 
 ## Quick start
@@ -69,13 +69,21 @@ Study content lives as JSON under `src/data/` (`vocab.json`, `kanji.json`, `read
 
 Kanji stroke paths are **not** hand-maintained: `scripts/fetch-kanjivg.js` downloads them from [KanjiVG](https://kanjivg.tagaini.net/) on **every** `npm run dev` and `npm run build`, writing `src/data/kanjivg-strokes.json`.
 
+### Deploying on Cloudflare Pages
+
+1. In the [Cloudflare dashboard](https://dash.cloudflare.com/) → **Workers & Pages** → **Create** → **Pages** → connect this GitHub repo.
+2. Build settings:
+   - **Framework preset:** Vite
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+3. Cloudflare auto-detects `functions/` (the Word of the Day proxy). No extra config is required; `wrangler.toml` already points at `dist`.
+4. Attach the custom domain `jap.shimpi.dev` in the Pages project's Custom domains tab (update DNS away from GitHub Pages if it still points there).
+
 ### Word of the Day
 
 The Home screen's word-of-the-day card is fetched live from JapanesePod101's public WOTD widget. That endpoint doesn't send CORS headers, so the actual fetch happens server-side in a **Cloudflare Pages Function** — `functions/api/wotd.js` — which the browser calls as a same-origin request (no CORS involved). That function caches the upstream response at Cloudflare's edge for 12 hours, and the browser additionally caches the parsed result in `localStorage` for the rest of the day, so in practice it's called at most once per device per day.
 
-**This only works if the site is deployed on Cloudflare Pages** (which auto-detects the `/functions` directory at build time). The repo's current GitHub Actions workflow (`.github/workflows`) deploys to GitHub Pages instead, which has no server-side execution — if you keep that deployment, `/api/wotd` will 404 and the card just shows "couldn't reach the service" instead of breaking anything. To get the real word of the day working, either:
-- move hosting to **Cloudflare Pages** (connect the repo in the Cloudflare dashboard; it will pick up `functions/api/wotd.js` automatically, no config needed), or
-- deploy `functions/api/wotd.js`'s handler as a **standalone Cloudflare Worker** on its own route/subdomain, and change `WOTD_ENDPOINT` in `src/utils/wotd.js` to that Worker's absolute URL.
+Locally, Vite's `wotd-api` plugin serves the same `/api/wotd` route so the card works in `npm run dev` too.
 
 ### Adding a coursework unit
 

@@ -1,5 +1,6 @@
 import './style.css';
-import { getState, resetState, setKanjiReadMap } from './state.js';
+import { getState } from './state.js';
+import { initSettings } from './settings.js';
 import kanjiData from './data/kanji.json' with { type: 'json' };
 import VOCAB from './data/vocab.json' with { type: 'json' };
 import grammar from './data/grammar.json' with { type: 'json' };
@@ -61,46 +62,11 @@ function route() {
   updateMasteredCount();
 }
 
-// Logo → always returns Home
 const logoBtn = document.getElementById('logoHome');
 if (logoBtn) logoBtn.onclick = () => navigateTo('home');
 
-// Reset button handler
-const resetBtn = document.getElementById('resetBtn');
-if (resetBtn) {
-  resetBtn.onclick = () => {
-    if (window.confirm('Reset all your Japanese study progress (JLPT N5 + Coursework)?')) {
-      resetState();
-      route();
-    }
-  };
-}
+initSettings({ onReset: route });
 
-// Dark mode
-const THEME_KEY = 'n5-theme';
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const icon = document.getElementById('themeIcon');
-  if (icon) icon.setAttribute('name', theme === 'dark' ? 'sunny-outline' : 'moon-outline');
-}
-function initTheme() {
-  const saved = localStorage.getItem(THEME_KEY);
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const theme = saved || (prefersDark ? 'dark' : 'light');
-  applyTheme(theme);
-}
-const themeBtn = document.getElementById('themeBtn');
-if (themeBtn) {
-  themeBtn.onclick = () => {
-    const cur = document.documentElement.getAttribute('data-theme') || 'light';
-    const next = cur === 'dark' ? 'light' : 'dark';
-    localStorage.setItem(THEME_KEY, next);
-    applyTheme(next);
-  };
-}
-initTheme();
-
-// Global search
 const searchInput = document.getElementById('searchInput');
 if (searchInput) {
   let searchTimer = null;
@@ -114,21 +80,18 @@ if (searchInput) {
       }
       const main = document.getElementById('main');
       const hits = [];
-      // Kanji
       KANJI.forEach(k => {
         const hay = (k[0] + ' ' + (k[1]||'') + ' ' + (k[2]||'') + ' ' + k[3]).toLowerCase();
         if (hay.includes(q) || k[0].includes(q)) {
-          hits.push({ type: 'Kanji', title: k[0] + ' — ' + k[3], meta: `ON ${k[1]||'–'} · KUN ${k[2]||'–'}`, go: () => { navigateTo('kanji'); /* detail would need more state */ } });
+          hits.push({ type: 'Kanji', title: k[0] + ' — ' + k[3], meta: `ON ${k[1]||'–'} · KUN ${k[2]||'–'}`, go: () => { navigateTo('kanji'); } });
         }
       });
-      // Vocab
       ALLVOCAB.forEach(w => {
         const hay = (w[0] + ' ' + w[1] + ' ' + w[2]).toLowerCase();
         if (hay.includes(q)) {
           hits.push({ type: 'Vocab', title: w[0] + '（' + w[1] + '）', meta: w[2], go: () => navigateTo('vocab') });
         }
       });
-      // Grammar
       GRAMMAR.forEach(g => {
         const hay = (g.t + ' ' + g.p + ' ' + g.e).toLowerCase();
         if (hay.includes(q)) {
@@ -155,8 +118,6 @@ if (searchInput) {
   });
 }
 
-// Global update trigger for submodules when progress changes
 window.addEventListener('storage', updateMasteredCount);
 
-// Initialize app
 route();

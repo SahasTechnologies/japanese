@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Japanese Study — JLPT N5 &amp; Coursework</title>
-<meta name="description" content="Interactive Japanese study app: JLPT N5 (Kana, Kanji, Vocabulary, Grammar, Reading, Listening) plus your own class coursework units, writing practice, and a placement test.">
+<title>Japanese Study — Coursework & JLPT N5</title>
+<meta name="description" content="Interactive Japanese study app: class coursework units plus JLPT N5 (Kana, Kanji, Vocabulary, Grammar, Reading, Listening), writing practice, and a placement test.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c73e2e'/%3E%3Ctext x='32' y='46' font-size='34' text-anchor='middle' fill='white' font-family='serif' font-weight='bold'%3E日%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/shippori-mincho@5/600.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/shippori-mincho@5/800.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-jp@5/400.css">
@@ -23,7 +24,7 @@
     <button type="button" class="logo" id="logoHome" aria-label="Go to Home">日</button>
     <div class="hdr-title">
       <h1>Japanese Study</h1>
-      <div class="hdr-sub">JLPT N5 &amp; Coursework</div>
+      <div class="hdr-sub">Coursework & JLPT N5</div>
     </div>
     <div class="hdr-right">
       <div class="search-wrap">
@@ -31,10 +32,9 @@
         <input type="search" id="searchInput" placeholder="Search kanji, vocab, grammar…" autocomplete="off" />
       </div>
       <div class="streak">mastered <b id="mastered">0</b></div>
-      <button class="btn icon-btn" id="themeBtn" title="Toggle dark mode" aria-label="Toggle dark mode">
-        <ion-icon name="moon-outline" id="themeIcon"></ion-icon>
+      <button class="btn icon-btn" id="settingsBtn" title="Settings" aria-label="Open settings">
+        <ion-icon name="settings-outline"></ion-icon>
       </button>
-      <button class="btn icon-btn" id="resetBtn" title="Reset all progress" aria-label="Reset all progress"><ion-icon name="refresh-outline"></ion-icon></button>
     </div>
   </header>
 </div>

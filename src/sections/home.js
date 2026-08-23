@@ -41,7 +41,7 @@ export function renderHome(navigate) {
 
   main.innerHTML = `
     <div class="sec-title">Japanese Study Dashboard</div>
-    <div class="sec-sub">JLPT N5 pass needs ≥80/180 overall and ≥19 in each section. Aim for 80%+ on every module — plus your own class coursework below.</div>
+    <div class="sec-sub">Class coursework first, then the JLPT N5 syllabus. Aim for 80%+ on every module — N5 pass needs ≥80/180 overall and ≥19 in each section.</div>
 
     <div id="wotd-mount"></div>
 
@@ -59,18 +59,18 @@ export function renderHome(navigate) {
 
     <details class="collapsible" open>
       <summary>
-        <span class="collapsible-title"><span class="dash-ic">日</span> JLPT N5</span>
-        <ion-icon name="chevron-down-outline" class="collapsible-caret"></ion-icon>
-      </summary>
-      <div class="dash" id="dash-jlpt"></div>
-    </details>
-
-    <details class="collapsible" open>
-      <summary>
         <span class="collapsible-title"><span class="dash-ic">級</span> Coursework</span>
         <ion-icon name="chevron-down-outline" class="collapsible-caret"></ion-icon>
       </summary>
       <div class="dash" id="dash-coursework"></div>
+    </details>
+
+    <details class="collapsible" open>
+      <summary>
+        <span class="collapsible-title"><span class="dash-ic">日</span> JLPT N5</span>
+        <ion-icon name="chevron-down-outline" class="collapsible-caret"></ion-icon>
+      </summary>
+      <div class="dash" id="dash-jlpt"></div>
     </details>`;
 
   const dashJlpt = document.getElementById('dash-jlpt');
@@ -150,7 +150,7 @@ async function mountWordOfTheDay() {
   if (!mount) return;
   mount.innerHTML = wotdSkeletonHtml();
   const data = await fetchWordOfTheDay();
-  if (!document.getElementById('wotd-mount')) return; // navigated away before it resolved
+  if (!document.getElementById('wotd-mount')) return;
   mount.innerHTML = wotdContentHtml(data);
   const speakBtn = document.getElementById('wotd-speak');
   if (speakBtn && data) speakBtn.onclick = () => speak(data.word);

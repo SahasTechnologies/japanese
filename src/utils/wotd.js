@@ -5,18 +5,16 @@
  * innovativelanguage.com's public WOTD widget and parsed from the HTML it
  * returns. That endpoint doesn't send CORS headers, so instead of relying on
  * public CORS-proxy relays (flaky, rate-limited, and outside our control),
- * the actual fetch happens server-side in a Cloudflare Pages Function
- * (functions/api/wotd.js) which this file calls as a same-origin request —
- * no CORS involved at all. That function also caches the upstream response
- * at Cloudflare's edge for 12 hours.
+ * the actual fetch happens server-side:
+ *
+ *   - Production: Cloudflare Pages Function at functions/api/wotd.js
+ *   - Local / preview: Vite middleware in vite.config.js
+ *
+ * Both expose GET /api/wotd as a same-origin request. The function also
+ * caches the upstream response at Cloudflare's edge for 12 hours.
  *
  * On top of that, the parsed result is cached here in localStorage for the
  * rest of the day, so a given browser only calls /api/wotd once daily.
- *
- * Note: /api/wotd only exists when this site is deployed on Cloudflare
- * Pages (which auto-detects the /functions directory at build time). If the
- * site is hosted elsewhere, the request below simply 404s and the Home
- * screen shows a "couldn't reach the service" message instead of breaking.
  */
 
 const WOTD_ENDPOINT = '/api/wotd';
@@ -74,7 +72,7 @@ export async function fetchWordOfTheDay() {
         return data;
       }
     }
-  } catch (_) { /* endpoint unavailable — e.g. not hosted on Cloudflare Pages */ }
+  } catch (_) { /* endpoint unavailable */ }
 
   return null;
 }

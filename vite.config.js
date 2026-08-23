@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
 
 const WOTD_UPSTREAM = 'https://www.innovativelanguage.com/widgets/wotd/large.php';
+const MURF_VOICE = 'VM017394160576626PQ';
+const MURF_STYLE = 'Conversational';
 
 async function proxyWotd(_req, res) {
   try {
@@ -25,17 +27,57 @@ async function proxyWotd(_req, res) {
   }
 }
 
-function wotdPlugin() {
+async function proxyTts(req, res) {
+  try {
+    const u = new URL(req.url, 'http://localhost');
+    const text = (u.searchParams.get('text') || '').trim();
+    if (!text || text.length > 300) {
+      res.statusCode = 400;
+      res.end('Bad text');
+      return;
+    }
+    const murf = `https://murf.ai/Prod/anonymous-tts/audio?text=${encodeURIComponent(text)}&voiceId=${MURF_VOICE}&style=${MURF_STYLE}`;
+    const up = await fetch(murf, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0',
+        Accept: 'audio/mpeg,audio/*;q=0.9,*/*;q=0.5',
+        Referer: 'https://murf.ai/text-to-speech/japanese',
+      },
+    });
+    if (!up.ok) {
+      res.statusCode = 502;
+      res.end('TTS upstream error');
+      return;
+    }
+    const buf = Buffer.from(await up.arrayBuffer());
+    if (!buf.length) {
+      res.statusCode = 502;
+      res.end('Empty TTS');
+      return;
+    }
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'audio/mpeg');
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    res.setHeader('Content-Length', String(buf.length));
+    res.end(buf);
+  } catch {
+    res.statusCode = 502;
+    res.end('TTS unavailable');
+  }
+}
+
+function apiPlugin() {
   const mount = (server) => {
     server.middlewares.use((req, res, next) => {
-      const url = (req.url || '').split('?')[0];
-      if (url !== '/api/wotd') return next();
+      const path = (req.url || '').split('?')[0];
       if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-      proxyWotd(req, res);
+      if (path === '/api/wotd') return proxyWotd(req, res);
+      if (path === '/api/tts') return proxyTts(req, res);
+      next();
     });
   };
   return {
-    name: 'wotd-api',
+    name: 'study-api',
     configureServer: mount,
     configurePreviewServer: mount,
   };
@@ -44,7 +86,7 @@ function wotdPlugin() {
 export default defineConfig({
   root: '.',
   publicDir: 'public',
-  plugins: [wotdPlugin()],
+  plugins: [apiPlugin()],
   server: {
     host: '0.0.0.0',
     port: Number(process.env.PORT) || 5173,

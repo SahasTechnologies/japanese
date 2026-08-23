@@ -249,7 +249,7 @@ function renderDialog(s) {
       <section class="set-section set-danger">
         <h3 class="set-h">Progress</h3>
         <p class="set-hint">Clears best scores, learned lists, and flashcard piles on this device. Settings are kept.</p>
-        <button type="button" class="btn red" id="setReset">Reset all progress</button>
+        <button type="button" class="btn set-reset" id="setReset">Reset all progress</button>
       </section>
     </div>`;
 }

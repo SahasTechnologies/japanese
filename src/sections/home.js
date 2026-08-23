@@ -138,7 +138,10 @@ function wotdContentHtml(d) {
       </div>
       ${d.example ? `
         <div class="wotd-example">
-          <div class="wotd-ex-jp">${d.example.jp}</div>
+          <div class="wotd-ex-jp">
+            <span>${d.example.jp}</span>
+            ${d.example.audio ? `<button class="btn icon-btn" id="wotd-ex-speak" title="Listen"><ion-icon name="volume-high-outline"></ion-icon></button>` : ''}
+          </div>
           <div class="wotd-ex-kana">${d.example.kana}</div>
           <div class="wotd-ex-en">${d.example.en}</div>
         </div>` : ''}
@@ -153,5 +156,7 @@ async function mountWordOfTheDay() {
   if (!document.getElementById('wotd-mount')) return;
   mount.innerHTML = wotdContentHtml(data);
   const speakBtn = document.getElementById('wotd-speak');
-  if (speakBtn && data) speakBtn.onclick = () => speak(data.word);
+  if (speakBtn && data) speakBtn.onclick = () => speak(data.audio || data.word);
+  const exBtn = document.getElementById('wotd-ex-speak');
+  if (exBtn && data?.example) exBtn.onclick = () => speak(data.example.audio || data.example.jp);
 }

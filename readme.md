@@ -48,7 +48,8 @@ An interactive Japanese study app with two halves:
 - **Word of the Day** — a daily word fetched live (see [Word of the Day](#word-of-the-day) below)
 - **Full-page quizzes** — every quiz takes over the whole screen with a back button, instead of being squeezed under other content
 - **Search** — Instant search across kanji, vocab, and grammar
-- **Settings** — Header gear opens a panel for light / dark / custom theme (colour pickers for background, cards, text, accent, buttons), Japanese + interface font dropdowns, and a progress reset
+- **Settings** — Header gear opens a centred panel (dimmed backdrop) for light / dark / custom theme (colour pickers for background, cards, text, accent, buttons), Japanese + interface font dropdowns, and a progress reset
+- **Speech** — Word of the Day plays JapanesePod101's own mp3 from the widget. All other listen buttons use one on-demand voice (`/api/tts`, cached) with the browser's Japanese voice as fallback. Clips are not generated at build time.
 - **Progress** — Best scores, kanji read/write flags, vocab/coursework learned lists, and flashcard piles stored in `localStorage`
 
 ## Quick start
@@ -76,14 +77,16 @@ Kanji stroke paths are **not** hand-maintained: `scripts/fetch-kanjivg.js` downl
    - **Framework preset:** Vite
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-3. Cloudflare auto-detects `functions/` (the Word of the Day proxy). No extra config is required; `wrangler.toml` already points at `dist`.
+3. Cloudflare auto-detects `functions/` (`/api/wotd` and `/api/tts`). No extra config is required; `wrangler.toml` already points at `dist`.
 4. Attach the custom domain `jap.shimpi.dev` in the Pages project's Custom domains tab (update DNS away from GitHub Pages if it still points there).
 
 ### Word of the Day
 
-The Home screen's word-of-the-day card is fetched live from JapanesePod101's public WOTD widget. That endpoint doesn't send CORS headers, so the actual fetch happens server-side in a **Cloudflare Pages Function** — `functions/api/wotd.js` — which the browser calls as a same-origin request (no CORS involved). That function caches the upstream response at Cloudflare's edge for 12 hours, and the browser additionally caches the parsed result in `localStorage` for the rest of the day, so in practice it's called at most once per device per day.
+The Home screen's word-of-the-day card is fetched live from JapanesePod101's public WOTD widget. That endpoint doesn't send CORS headers, so the actual fetch happens server-side in a **Cloudflare Pages Function** — `functions/api/wotd.js` — which the browser calls as a same-origin request. The widget already includes spoken mp3s on CloudFront; we parse those URLs and play them directly (no generated voice). The parsed result is cached in `localStorage` for the rest of the day.
 
-Locally, Vite's `wotd-api` plugin serves the same `/api/wotd` route so the card works in `npm run dev` too.
+Locally, Vite middleware serves `/api/wotd` and `/api/tts` so both work in `npm run dev`.
+
+Other listen buttons (kana, vocab, quizzes, …) go through `/api/tts` (one conversational Japanese voice, cached at the edge) and fall back to the browser's Web Speech API. Audio is **not** generated at build time — that would dump hundreds of clips into git and make every build depend on a third-party demo endpoint.
 
 ### Adding a coursework unit
 
@@ -105,7 +108,7 @@ Units with no content yet are left as empty placeholders (`"kanji": [], "qaSecti
 - Vanilla JS (ES modules)
 - [Vite](https://vitejs.dev/)
 - [wanakana](https://github.com/WaniKani/WanaKana) for rōmaji ⇄ kana conversion in Writing practice and the Unit mock test
-- A [Cloudflare Pages Function](https://developers.cloudflare.com/pages/functions/) (`functions/api/wotd.js`) for the Word of the Day fetch
+- A [Cloudflare Pages Function](https://developers.cloudflare.com/pages/functions/) (`functions/api/wotd.js`) for the Word of the Day fetch, and `functions/api/tts.js` for on-demand spoken audio
 - Web Speech API for Japanese TTS
 - [Ionicons](https://ionic.io/ionicons/) for UI icons
 - Kanji stroke paths from KanjiVG

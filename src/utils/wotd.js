@@ -13,12 +13,16 @@
  * Both expose GET /api/wotd as a same-origin request. The function also
  * caches the upstream response at Cloudflare's edge for 12 hours.
  *
- * On top of that, the parsed result is cached here in localStorage for the
+ * Audio is not generated: the widget already embeds JapanesePod101 mp3s on
+ * CloudFront (a.wotd-widget-sentence-main-space-sound). We parse those URLs
+ * and play them directly.
+ *
+ * The parsed result (including audio URLs) is cached in localStorage for the
  * rest of the day, so a given browser only calls /api/wotd once daily.
  */
 
 const WOTD_ENDPOINT = '/api/wotd';
-const CACHE_KEY = 'n5app-wotd';
+const CACHE_KEY = 'n5app-wotd-v2';
 
 function todayKey() {
   const d = new Date();
@@ -31,6 +35,13 @@ function fetchWithTimeout(url, ms) {
   return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(t));
 }
 
+function audioHref(el) {
+  if (!el) return '';
+  const a = el.querySelector('a.jp-audio-track, a.wotd-widget-sentence-main-space-sound');
+  const href = a?.getAttribute('href') || '';
+  return /^https?:\/\//i.test(href) ? href : '';
+}
+
 function parseWotdHtml(html) {
   const doc = new DOMParser().parseFromString(html, 'text/html');
   const up = doc.querySelector('.wotd-widget-container-up');
@@ -41,6 +52,8 @@ function parseWotdHtml(html) {
   const [kana, romaji, english, pos] = texts;
   if (!word || !kana || !english) return null;
 
+  const audio = audioHref(up.querySelector('.wotd-widget-sentence-main-space')) || audioHref(up);
+
   let example = null;
   const downBlock = doc.querySelector('.wotd-widget-container-down .wotd-widget-sentence-down-space');
   const downQuiz = downBlock?.nextElementSibling;
@@ -48,11 +61,16 @@ function parseWotdHtml(html) {
     const exJp = downBlock.querySelector('.wotd-widget-sentence-main-space-text')?.textContent.trim();
     const exTexts = [...downQuiz.querySelectorAll('.wotd-widget-sentence-quizmode-space-text')].map(e => e.textContent.trim());
     if (exJp && exTexts.length >= 2) {
-      example = { jp: exJp, kana: exTexts[0], en: exTexts[exTexts.length - 1] };
+      example = {
+        jp: exJp,
+        kana: exTexts[0],
+        en: exTexts[exTexts.length - 1],
+        audio: audioHref(downBlock),
+      };
     }
   }
 
-  return { word, kana, romaji, english, pos: pos || '', example };
+  return { word, kana, romaji, english, pos: pos || '', audio, example };
 }
 
 /** Returns the parsed word-of-the-day object, or null if it couldn't be fetched. */

@@ -44,10 +44,12 @@ An interactive Japanese study app with two halves:
 - Kanji introduced in a unit link straight into the same stroke-tracing tool used in the JLPT N5 section
 
 ### App-wide
-- Two-tier navigation: **Home / JLPT N5 / Coursework**, with JLPT N5 expanding into its own sub-tabs
+- **Home hub** — a single flat dashboard: collapsible **JLPT N5** and **Coursework** sections, each showing every module/unit as its own tile with a progress ring. The header logo always returns Home.
+- **Word of the Day** — a daily word fetched live (see [Word of the Day](#word-of-the-day) below)
+- **Full-page quizzes** — every quiz takes over the whole screen with a back button, instead of being squeezed under other content
 - **Search** — Instant search across kanji, vocab, and grammar
 - **Dark mode** — Toggle in the header; preference is saved
-- **Progress** — Best scores, kanji read/write flags, vocab learned list, and flashcard piles stored in `localStorage`
+- **Progress** — Best scores, kanji read/write flags, vocab/coursework learned lists, and flashcard piles stored in `localStorage`
 
 ## Quick start
 
@@ -67,15 +69,26 @@ Study content lives as JSON under `src/data/` (`vocab.json`, `kanji.json`, `read
 
 Kanji stroke paths are **not** hand-maintained: `scripts/fetch-kanjivg.js` downloads them from [KanjiVG](https://kanjivg.tagaini.net/) on **every** `npm run dev` and `npm run build`, writing `src/data/kanjivg-strokes.json`.
 
+### Word of the Day
+
+The Home screen's word-of-the-day card is fetched live from JapanesePod101's public WOTD widget. That endpoint doesn't send CORS headers, so the actual fetch happens server-side in a **Cloudflare Pages Function** — `functions/api/wotd.js` — which the browser calls as a same-origin request (no CORS involved). That function caches the upstream response at Cloudflare's edge for 12 hours, and the browser additionally caches the parsed result in `localStorage` for the rest of the day, so in practice it's called at most once per device per day.
+
+**This only works if the site is deployed on Cloudflare Pages** (which auto-detects the `/functions` directory at build time). The repo's current GitHub Actions workflow (`.github/workflows`) deploys to GitHub Pages instead, which has no server-side execution — if you keep that deployment, `/api/wotd` will 404 and the card just shows "couldn't reach the service" instead of breaking anything. To get the real word of the day working, either:
+- move hosting to **Cloudflare Pages** (connect the repo in the Cloudflare dashboard; it will pick up `functions/api/wotd.js` automatically, no config needed), or
+- deploy `functions/api/wotd.js`'s handler as a **standalone Cloudflare Worker** on its own route/subdomain, and change `WOTD_ENDPOINT` in `src/utils/wotd.js` to that Worker's absolute URL.
+
 ### Adding a coursework unit
 
 Each entry in `src/data/coursework.json` → `UNITS` can include any combination of:
 
-- `kanji` — full-width cards; each glyph must already exist in `src/data/kanji.json` (for its readings/radical/stroke data), plus a list of `sentences`
+- `kanji` — full-width cards with embedded stroke tracing; each glyph must already exist in `src/data/kanji.json` (for its readings/radical/stroke data), plus a list of `sentences`
 - `phraseChevrons` — grouped example phrases rendered as chevron/arrow rows
-- `qaSections` / `grammarPractice` — Q&amp;A blocks, pattern tables, and drills
-- `vocabSections` — simple three-column vocab tables
-- `grammarNotes` — free-form explanatory cards (particle usage notes, etc.)
+- `qaSections` — simple Q&amp;A pattern blocks
+- `grammarPractice` — accordion cards, each optionally with `example`/`example2` (with `qTag`/`aTag` overrides), a `pattern` table, a generic `table`, `drills`, `timeWords`, `vocabList`, or a `practice` block (numbered fill-in prompts with a reveal-able suggested answer)
+- `vocabSections` — three-column vocab tables, rendered as interactive learn/expand cards
+- `grammarNotes` — free-form explanatory accordion cards (particle usage notes, etc.)
+
+Each unit also gets a **Quiz**, **Flashcards**, **Writing practice**, and — once it has 8+ vocab/kanji items — a **Unit mock test** (a 20-row fill-in table plus 3 translation questions), all built automatically from that unit's own content; nothing extra to wire up.
 
 Units with no content yet are left as empty placeholders (`"kanji": [], "qaSections": [], ...`) and show a "not filled in yet" card.
 
@@ -83,7 +96,8 @@ Units with no content yet are left as empty placeholders (`"kanji": [], "qaSecti
 
 - Vanilla JS (ES modules)
 - [Vite](https://vitejs.dev/)
-- [wanakana](https://github.com/WaniKani/WanaKana) for rōmaji ⇄ kana conversion in Writing practice
+- [wanakana](https://github.com/WaniKani/WanaKana) for rōmaji ⇄ kana conversion in Writing practice and the Unit mock test
+- A [Cloudflare Pages Function](https://developers.cloudflare.com/pages/functions/) (`functions/api/wotd.js`) for the Word of the Day fetch
 - Web Speech API for Japanese TTS
 - [Ionicons](https://ionic.io/ionicons/) for UI icons
 - Kanji stroke paths from KanjiVG

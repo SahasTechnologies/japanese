@@ -1,23 +1,25 @@
 /**
  * Japanese Word of the Day.
  *
- * Source content is not ours to hardcode — it's fetched live from
- * innovativelanguage.com's public WOTD widget each day and parsed from the
- * HTML it returns. Since that endpoint doesn't send CORS headers, we go
- * through a rotating list of public CORS proxies and use whichever answers
- * first; the result is cached in localStorage for the rest of the day so we
- * don't hit the proxies on every page load.
+ * Source content is not ours to hardcode — it's fetched live each day from
+ * innovativelanguage.com's public WOTD widget and parsed from the HTML it
+ * returns. That endpoint doesn't send CORS headers, so instead of relying on
+ * public CORS-proxy relays (flaky, rate-limited, and outside our control),
+ * the actual fetch happens server-side in a Cloudflare Pages Function
+ * (functions/api/wotd.js) which this file calls as a same-origin request —
+ * no CORS involved at all. That function also caches the upstream response
+ * at Cloudflare's edge for 12 hours.
+ *
+ * On top of that, the parsed result is cached here in localStorage for the
+ * rest of the day, so a given browser only calls /api/wotd once daily.
+ *
+ * Note: /api/wotd only exists when this site is deployed on Cloudflare
+ * Pages (which auto-detects the /functions directory at build time). If the
+ * site is hosted elsewhere, the request below simply 404s and the Home
+ * screen shows a "couldn't reach the service" message instead of breaking.
  */
 
-const WOTD_URL = 'https://www.innovativelanguage.com/widgets/wotd/embed.php?language=Japanese&type=large&bg=%23FFFFFF&content=%23000&header=%23EB2A2E&highlight=%23F9F9FA&opacity=1&scrollbg=%2300CAED&sound=%2300ACED&text=%2300ACED&quiz=N';
-
-const PROXIES = [
-  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
-  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
-  url => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-  url => `https://thingproxy.freeboard.io/fetch/${url}`,
-];
-
+const WOTD_ENDPOINT = '/api/wotd';
 const CACHE_KEY = 'n5app-wotd';
 
 function todayKey() {
@@ -52,27 +54,27 @@ function parseWotdHtml(html) {
     }
   }
 
-  return { word, kana, romaji, english, pos: pos || '' , example };
+  return { word, kana, romaji, english, pos: pos || '', example };
 }
 
-/** Returns the parsed word-of-the-day object, or null if every proxy failed. */
+/** Returns the parsed word-of-the-day object, or null if it couldn't be fetched. */
 export async function fetchWordOfTheDay() {
   try {
     const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null');
     if (cached && cached._key === todayKey() && cached.data) return cached.data;
   } catch (_) { /* ignore cache errors */ }
 
-  for (const buildProxy of PROXIES) {
-    try {
-      const res = await fetchWithTimeout(buildProxy(WOTD_URL), 7000);
-      if (!res.ok) continue;
+  try {
+    const res = await fetchWithTimeout(WOTD_ENDPOINT, 8000);
+    if (res.ok) {
       const html = await res.text();
       const data = parseWotdHtml(html);
       if (data) {
         try { localStorage.setItem(CACHE_KEY, JSON.stringify({ _key: todayKey(), data })); } catch (_) {}
         return data;
       }
-    } catch (_) { /* try the next proxy */ }
-  }
+    }
+  } catch (_) { /* endpoint unavailable — e.g. not hosted on Cloudflare Pages */ }
+
   return null;
 }

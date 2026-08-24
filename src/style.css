@@ -2985,3 +2985,15 @@ ion-icon {
   .qz-opt { font-size: 14px; padding: 12px 14px; }
   .fc-doodle-canvas { height: 180px; }
 }
+
+/* Mobile: settings gear pinned to the header's top-right corner instead of
+   wrapping onto its own row below the title */
+@media (max-width: 768px) {
+  header { position: relative; }
+  .hdr-right { margin-left: 0; }
+  #settingsBtn {
+    position: absolute;
+    top: 8px;
+    right: 14px;
+  }
+}

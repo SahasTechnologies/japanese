@@ -4,6 +4,9 @@ import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { speakWithBtn } from '../utils/tts.js';
 import { updateBest } from '../state.js';
+import { srsCounts, srsQueue } from '../utils/srs.js';
+import { mountSrsReview } from '../utils/srsReview.js';
+import { runSentenceDrill } from '../utils/sentenceBuilder.js';
 
 /** Build grammar/particle quiz questions */
 export function grammarQs() {
@@ -21,6 +24,8 @@ export function renderGrammar() {
     <div class="sec-sub">${GRAMMAR.length} core N5 patterns — read the cards, then drill particles</div>
     <div class="btnrow" style="justify-content:flex-start;margin-bottom:16px">
       <button class="btn primary" id="gq-btn">Particle &amp; form drill</button>
+      <button class="btn" id="gsrs-btn"><ion-icon name="layers-outline"></ion-icon> SRS review</button>
+      <button class="btn" id="gsb-btn"><ion-icon name="puzzle-outline"></ion-icon> Sentence builder</button>
     </div>
     <div class="glist" id="gl"></div>`;
 
@@ -66,6 +71,33 @@ export function renderGrammar() {
 
     gl.appendChild(card);
   });
+
+  // SRS review over the grammar patterns
+  const gSrsCards = GRAMMAR.map(g => ({
+    id: `g:${g.t}`,
+    front: `<span class="big-kana">${g.p}</span>`,
+    back: `<div class="srs-meaning">${g.t}</div><div class="srs-sub">${g.e}</div>`,
+  }));
+  const gSrsIds = gSrsCards.map(c => c.id);
+  const gSc = srsCounts(gSrsIds);
+  const gSrsBtn = document.getElementById('gsrs-btn');
+  if (gSrsBtn) {
+    gSrsBtn.innerHTML = `<ion-icon name="layers-outline"></ion-icon> SRS review <b class="mono">${gSc.due + gSc.fresh}</b>`;
+    gSrsBtn.onclick = () => mountSrsReview({
+      title: 'Grammar — spaced repetition',
+      cards: gSrsCards,
+      queue: srsQueue(gSrsIds),
+      onExit: renderGrammar,
+    });
+  }
+
+  document.getElementById('gsb-btn').onclick = () => {
+    const items = GRAMMAR.flatMap(g => (g.x || []).map(([jp, en]) => ({ jp, en })));
+    const area = document.createElement('div');
+    document.getElementById('gl').prepend(area);
+    runSentenceDrill(area, items, { limit: 10 });
+    area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  };
 
   document.getElementById('gq-btn').onclick = () =>
     runFullQuiz(grammarQs(), {

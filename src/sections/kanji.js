@@ -4,6 +4,8 @@ import { shuffle } from '../utils/helpers.js';
 import { updateBest, getState, toggleKanjiFlag, setVocabKanjiMode, setShowFurigana } from '../state.js';
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { speakWithBtn } from '../utils/tts.js';
+import { srsCounts, srsQueue } from '../utils/srs.js';
+import { mountSrsReview } from '../utils/srsReview.js';
 // KanjiVG stroke data — pre-fetched at build time
 import STROKES from '../data/kanjivg-strokes.json' with { type: 'json' };
 
@@ -46,6 +48,7 @@ function renderKanjiList() {
       <button class="btn" id="klqbtn" ${learnedCount < 4 ? 'disabled title="Mark at least 4 kanji as learned"' : ''}>
         <ion-icon name="checkmark-done-outline"></ion-icon> Learned quiz (${learnedCount})
       </button>
+      <button class="btn" id="ksrs-btn"><ion-icon name="layers-outline"></ion-icon> SRS review</button>
     </div>
     <div class="vocab-controls card" style="margin-bottom:14px;padding:12px 14px">
       <div class="vc-row">
@@ -92,6 +95,25 @@ function renderKanjiList() {
     }
     kg.appendChild(grid);
   });
+
+  // SRS review over all kanji
+  const kSrsCards = KANJI.map(k => ({
+    id: `k:${k[0]}`,
+    front: `<span class="big-kana">${k[0]}</span>`,
+    back: `<div class="srs-meaning">${k[3]}</div><div class="srs-sub">ON ${k[1] || '–'} · KUN ${k[2] || '–'}</div>`,
+  }));
+  const kSrsIds = kSrsCards.map(c => c.id);
+  const kSc = srsCounts(kSrsIds);
+  const kSrsBtn = document.getElementById('ksrs-btn');
+  if (kSrsBtn) {
+    kSrsBtn.innerHTML = `<ion-icon name="layers-outline"></ion-icon> SRS review <b class="mono">${kSc.due + kSc.fresh}</b>`;
+    kSrsBtn.onclick = () => mountSrsReview({
+      title: 'Kanji — spaced repetition',
+      cards: kSrsCards,
+      queue: srsQueue(kSrsIds),
+      onExit: renderKanjiList,
+    });
+  }
 
   document.getElementById('kqbtn').onclick = () =>
     runFullQuiz(kanjiQs(12), {

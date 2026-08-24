@@ -4,13 +4,28 @@ import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { speakWithBtn } from '../utils/tts.js';
 import {
-  updateBest, getState, save,
+  updateBest, getState,
   toggleVocabLearned, setVocabKanjiMode, setShowFurigana,
-  formatVocabWord, canShowKanjiForm,
+  formatVocabWord,
 } from '../state.js';
+import { rubyWord } from '../utils/furigana.js';
+import { srsCounts, srsQueue } from '../utils/srs.js';
+import { mountSrsReview } from '../utils/srsReview.js';
+import { pitchHtml } from '../utils/pitch.js';
 
 let vcat = Object.keys(VOCAB)[0];
 let selectedWord = null; // [expr, reading, meaning] currently expanded
+
+/** SRS catalog for the whole vocab list */
+function vocabSrsCards() {
+  return ALLVOCAB.map(w => ({
+    id: `v:${w[0]}`,
+    front: `<span class="big-kana">${rubyWord(w[0], w[1])}</span>`,
+    back: `<div class="srs-meaning">${w[2]}</div>
+      <div class="srs-sub">${w[1]}${pitchHtml(w[0], w[1])}</div>`,
+    speak: w[0],
+  }));
+}
 
 /** Simple N5-style example sentences for a word */
 export function exampleSentences(expr, reading, meaning) {
@@ -120,6 +135,7 @@ export function renderVocab() {
       <button class="btn" id="vql-btn" ${learnedCount < 4 ? 'disabled title="Mark at least 4 words as learned"' : ''}>
         Learned quiz (${learnedCount})
       </button>
+      <button class="btn" id="vsrs-btn"><ion-icon name="layers-outline"></ion-icon> SRS review</button>
     </div>
 
     <div class="vocab-controls card" style="margin-bottom:14px;padding:12px 14px">
@@ -166,6 +182,21 @@ export function renderVocab() {
     vct.appendChild(b);
   });
 
+  // SRS review
+  const srsCards = vocabSrsCards();
+  const srsIds = srsCards.map(c => c.id);
+  const sc = srsCounts(srsIds);
+  const srsBtn = document.getElementById('vsrs-btn');
+  if (srsBtn) {
+    srsBtn.innerHTML = `<ion-icon name="layers-outline"></ion-icon> SRS review <b class="mono">${sc.due + sc.fresh}</b>`;
+    srsBtn.onclick = () => mountSrsReview({
+      title: 'Vocabulary — spaced repetition',
+      cards: srsCards,
+      queue: srsQueue(srsIds),
+      onExit: renderVocab,
+    });
+  }
+
   // Cards
   const vl = document.getElementById('vl');
   VOCAB[vcat].forEach(w => {
@@ -182,6 +213,7 @@ export function renderVocab() {
           <div class="v-reading-line">
             <span class="v-full">${formatVocabWord(w[0], w[1])}</span>
             <span class="v-kana-hint">${w[1]}</span>
+            ${pitchHtml(w[0], w[1])}
           </div>
           <div class="v-examples">
             <div class="v-ex-title">Example sentences</div>

@@ -62,9 +62,18 @@ function playUrl(url, rate, fallbackText, opts = {}) {
 /** True: Murf proxy and/or Web Speech can produce audio. */
 export const HAS_TTS = true;
 
+/* Very short kana/kanji (single kana, single kanji, 2-char words) sound
+   glitchy through the Murf proxy sometimes — the built-in browser voice
+   handles those instantly and reliably. */
+const SHORT_TEXT_RE = /^[\u3040-\u30ff\u4e00-\u9faf]+$/;
+function isVeryShort(text) {
+  return text.length <= 3 && SHORT_TEXT_RE.test(text);
+}
+
 /**
  * Speak Japanese. If `text` is an http(s) URL, that file is played directly
- * (used for Word of the Day). Otherwise the Murf proxy is used.
+ * (used for Word of the Day). Very short kana/kanji use the browser's built-in
+ * speech; everything else goes through the Murf proxy.
  * @param {string} text
  * @param {number} [rate=1]
  * @param {{onstart?: ()=>void, onerror?: ()=>void}} [opts] - lifecycle callbacks
@@ -79,6 +88,10 @@ export function speak(text, rate = 1, opts = {}) {
   }
 
   const clipped = text.length > MURF_MAX_CHARS ? text.slice(0, MURF_MAX_CHARS) : text;
+  if (isVeryShort(clipped)) {
+    speakBrowser(clipped, rate, opts);
+    return;
+  }
   const url = `${TTS_ENDPOINT}?text=${encodeURIComponent(clipped)}`;
   playUrl(url, rate, clipped, opts);
 }

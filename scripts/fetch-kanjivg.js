@@ -95,6 +95,11 @@ async function main() {
     );
   }
 
+  if (ok === 0) {
+    console.warn('All stroke downloads failed — keeping the previous kanjivg-strokes.json.');
+    process.exit(0);
+  }
+
   const dir = dirname(OUT);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 

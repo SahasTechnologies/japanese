@@ -116,12 +116,28 @@ function renderCard() {
   if (!area) return;
 
   if (mode === 'review' && cards.length === 0) {
-    area.innerHTML = `
-      <div class="card fc-done">
-        <p>Don't-know pile is empty. Great work!</p>
-        <button class="btn primary" id="fc-back-study">Back to study</button>
-      </div>`;
-    document.getElementById('fc-back-study').onclick = () => { mode = 'study'; startDeck(); };
+    if (dont.length === 0) {
+      area.innerHTML = `
+        <div class="card fc-done">
+          <p>Don't-know pile is empty. Great work!</p>
+          <button class="btn primary" id="fc-back-study">Back to study</button>
+        </div>`;
+      document.getElementById('fc-back-study').onclick = () => { mode = 'study'; startDeck(); };
+    } else {
+      area.innerHTML = `
+        <div class="card fc-done">
+          <p>Still shaky: <b>${dont.length}</b> card${dont.length === 1 ? '' : 's'}. Review them again?</p>
+          <button class="btn primary" id="fc-review-again">Review again (${dont.length})</button>
+        </div>`;
+      document.getElementById('fc-review-again').onclick = () => {
+        cards = shuffle(dont.slice());
+        dont = [];
+        idx = 0;
+        flipped = false;
+        persistPiles();
+        renderCard();
+      };
+    }
     return;
   }
 
@@ -179,6 +195,7 @@ function renderCard() {
     </div>
     <div class="btnrow" style="margin-top:16px;justify-content:center;flex-wrap:wrap">
       ${c.speak ? `<button class="btn" id="fc-speak"><ion-icon name="volume-high-outline"></ion-icon> Listen</button>` : ''}
+      <button class="btn" id="fc-write"><ion-icon name="brush-outline"></ion-icon> Write it</button>
       <button class="btn" id="fc-flip"><ion-icon name="sync-outline"></ion-icon> Flip</button>
       <button class="btn primary" id="fc-know" ${flipped ? '' : 'disabled'}>
         <ion-icon name="checkmark-outline"></ion-icon> Know
@@ -205,6 +222,53 @@ function renderCard() {
     document.getElementById('fc-speak').onclick = () => speakWithBtn(c.speak, document.getElementById('fc-speak'));
   }
 
+  // Handwriting doodle pad — write the answer from memory (mouse, pen, or touch)
+  document.getElementById('fc-write').onclick = () => {
+    let pad = document.getElementById('fc-doodle');
+    if (pad) { pad.remove(); return; }
+    pad = document.createElement('div');
+    pad.className = 'fc-doodle card';
+    pad.id = 'fc-doodle';
+    pad.innerHTML = `
+      <div class="fc-doodle-head">
+        <span>Write it from memory</span>
+        <button class="btn" id="fc-doodle-clear"><ion-icon name="refresh-outline"></ion-icon> Clear</button>
+      </div>
+      <canvas class="fc-doodle-canvas" width="520" height="220"></canvas>`;
+    document.getElementById('fc-card').after(pad);
+    const canvas = pad.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
+    const ink = getComputedStyle(document.documentElement).getPropertyValue('--ink') || '#23211c';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.strokeStyle = ink;
+    let drawing = false, last = null;
+    const pos = ev => {
+      const r = canvas.getBoundingClientRect();
+      return [(ev.clientX - r.left) * (canvas.width / r.width), (ev.clientY - r.top) * (canvas.height / r.height)];
+    };
+    canvas.onpointerdown = ev => {
+      ev.preventDefault();
+      try { canvas.setPointerCapture(ev.pointerId); } catch (_) {}
+      drawing = true;
+      last = pos(ev);
+      ctx.beginPath();
+      ctx.moveTo(last[0], last[1]);
+    };
+    canvas.onpointermove = ev => {
+      if (!drawing) return;
+      const p = pos(ev);
+      ctx.lineTo(p[0], p[1]);
+      ctx.stroke();
+      last = p;
+    };
+    const stop = () => { drawing = false; };
+    canvas.onpointerup = stop;
+    canvas.onpointercancel = stop;
+    pad.querySelector('#fc-doodle-clear').onclick = () => ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   document.getElementById('fc-know').onclick = () => {
     if (!flipped) return;
     know.push(c);
@@ -224,6 +288,11 @@ function renderCard() {
 
   // Keyboard: ← don't know, → know, ↑/↓ flip
   const onKey = (e) => {
+    if (!document.getElementById('fc-area')) {
+      window.removeEventListener('keydown', onKey);
+      window.__fcKeyHandler = null;
+      return;
+    }
     if (e.target.matches('input, textarea')) return;
     if (e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === ' ') {
       e.preventDefault();

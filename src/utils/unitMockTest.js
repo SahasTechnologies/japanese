@@ -8,6 +8,40 @@ import { shuffle } from './helpers.js';
 import { mountFreehandBox } from './freehand.js';
 import { unitVocabPool } from './courseworkPool.js';
 import { furigana } from './furigana.js';
+import courseworkData from '../data/coursework.json' with { type: 'json' };
+import grammar from '../data/grammar.json' with { type: 'json' };
+const { UNITS: ALL_UNITS } = courseworkData;
+const { GRAMMAR } = grammar;
+
+/**
+ * A big bank of {en, jp} sentence pairs drawn from every coursework unit and
+ * every grammar pattern example — unit mocks pick their own sentences first
+ * and top up from here, so the translation section stays fresh.
+ */
+function globalSentenceBank() {
+  const bank = [];
+  ALL_UNITS.forEach(u => {
+    (u.kanji || []).forEach(k => (k.sentences || []).forEach(s => {
+      if (s.en && s.kanji) bank.push({ en: s.en, jp: s.kanji });
+    }));
+    (u.phraseChevrons || []).forEach(sec => (sec.groups || []).forEach(g => (g.items || []).forEach(it => {
+      if (it.en && it.jp) bank.push({ en: it.en, jp: it.jp });
+    })));
+    (u.grammarPractice || []).forEach(gp => ['example', 'example2'].forEach(key => {
+      const ex = gp[key];
+      if (!ex) return;
+      ['q', 'a', 'a1', 'a2'].forEach(k2 => {
+        if (ex[k2] && ex[k2].en && ex[k2].jp) bank.push({ en: ex[k2].en, jp: ex[k2].jp });
+      });
+    }));
+    (u.qaSections || []).forEach(sec => (sec.pairs || []).forEach(p => {
+      if (p.q.en && p.q.jp) bank.push({ en: p.q.en, jp: p.q.jp });
+      if (p.a.en && p.a.jp) bank.push({ en: p.a.en, jp: p.a.jp });
+    }));
+  });
+  GRAMMAR.forEach(g => (g.x || []).forEach(([jp, en]) => { if (jp && en) bank.push({ jp, en }); }));
+  return bank;
+}
 
 /** Collect {en, jp} translation pairs the unit actually teaches, for the free-response section */
 function unitTranslationPool(u) {
@@ -60,7 +94,11 @@ export function renderUnitMockTest(u, opts = {}) {
   const main = document.getElementById('main');
   const pool = unitVocabPool(u);
   const rows = shuffle(pool).slice(0, Math.min(20, pool.length));
-  const translations = shuffle(unitTranslationPool(u)).slice(0, 3);
+  // own unit's sentences first, then top up from the whole-app sentence bank
+  const own = shuffle(unitTranslationPool(u));
+  const seenEn = new Set(own.map(t => t.en.trim().toLowerCase()));
+  const extra = shuffle(globalSentenceBank()).filter(t => !seenEn.has(t.en.trim().toLowerCase()));
+  const translations = [...own, ...extra].slice(0, 3);
 
   main.innerHTML = `
     <button class="btn qz-exit-btn" id="umt-exit"><ion-icon name="arrow-back-outline"></ion-icon> ← ${u.title}</button>

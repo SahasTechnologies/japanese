@@ -4,8 +4,8 @@
   "type": "module",
   "description": "Japanese study app — JLPT N5 (Kana, Kanji, Vocab, Grammar, Reading, Listening) plus personal coursework units",
   "scripts": {
-    "dev": "node scripts/fetch-kanjivg.js && vite",
-    "build": "node scripts/fetch-kanjivg.js && vite build",
+    "dev": "node scripts/fetch-kanjivg.js && node scripts/fetch-pitch.js && vite",
+    "build": "node scripts/fetch-kanjivg.js && node scripts/fetch-pitch.js && vite build",
     "preview": "vite preview"
   },
   "devDependencies": {

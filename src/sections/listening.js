@@ -3,7 +3,7 @@ import LISTENING_SCRIPTS from '../data/listening.json' with { type: 'json' };
 const ALLVOCAB = Object.values(VOCAB).flat();
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
-import { HAS_TTS, speak } from '../utils/tts.js';
+import { HAS_TTS } from '../utils/tts.js';
 import { updateBest } from '../state.js';
 
 /** Vocab-based listening (word → meaning) */

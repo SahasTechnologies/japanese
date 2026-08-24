@@ -10,6 +10,9 @@
  *   - Production: Cloudflare Pages Function at functions/api/wotd.js
  *   - Local / preview: Vite middleware in vite.config.js
  *
+ * The function's cache expires at the next Japanese midnight so yesterday's
+ * word never leaks into today (see functions/api/wotd.js).
+ *
  * Both expose GET /api/wotd as a same-origin request. The function also
  * caches the upstream response at Cloudflare's edge for 12 hours.
  *

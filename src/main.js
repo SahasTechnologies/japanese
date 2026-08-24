@@ -4,6 +4,7 @@ import { initSettings } from './settings.js';
 import kanjiData from './data/kanji.json' with { type: 'json' };
 import VOCAB from './data/vocab.json' with { type: 'json' };
 import grammar from './data/grammar.json' with { type: 'json' };
+import courseworkData from './data/coursework.json' with { type: 'json' };
 import { renderHome } from './sections/home.js';
 import { renderKana } from './sections/kana.js';
 import { renderKanji } from './sections/kanji.js';
@@ -14,15 +15,43 @@ import { renderListening } from './sections/listening.js';
 import { renderMock } from './sections/mock.js';
 import { renderRef } from './sections/reference.js';
 import { renderFlashcards } from './sections/flashcards.js';
-import { renderCoursework } from './sections/coursework.js';
+import { renderCoursework, openUnit } from './sections/coursework.js';
 import { renderWriting } from './sections/writing.js';
 import { renderPlacement } from './sections/placement.js';
 
 const { KANJI } = kanjiData;
 const { GRAMMAR } = grammar;
+const { UNITS } = courseworkData;
 const ALLVOCAB = Object.values(VOCAB).flat();
 
+/* Two-tier navigation. JLPT sub-tabs are split into learning pages and
+   testing/practice pages with a divider; Coursework sub-tabs jump straight
+   to a unit. */
+const JLPT_LEARN = [
+  { id: 'kana',    ic: 'あ', label: 'Kana' },
+  { id: 'kanji',   ic: '漢', label: 'Kanji' },
+  { id: 'vocab',   ic: '語', label: 'Vocabulary' },
+  { id: 'grammar', ic: '文', label: 'Grammar' },
+  { id: 'writing', ic: '書', label: 'Writing' },
+  { id: 'ref',     ic: '本', label: 'Reference' },
+];
+const JLPT_TEST = [
+  { id: 'reading',   ic: '読', label: 'Reading' },
+  { id: 'listening', ic: '聴', label: 'Listening' },
+  { id: 'flash',     ic: '札', label: 'Flashcards' },
+  { id: 'mock',      ic: '試', label: 'Mock Test' },
+  { id: 'placement', ic: '検', label: 'Placement' },
+];
+const GROUPS = [
+  { id: 'home', ic: '家', label: 'Home' },
+  { id: 'jlpt', ic: '日', label: 'JLPT N5' },
+  { id: 'coursework', ic: '級', label: 'Coursework' },
+];
+const GROUP_OF = {};
+JLPT_LEARN.concat(JLPT_TEST).forEach(t => { GROUP_OF[t.id] = 'jlpt'; });
+
 let curTab = 'home';
+let curUnitId = null; // which coursework unit is open (nav highlight)
 
 const routes = {
   home: () => renderHome(navigateTo),
@@ -43,7 +72,82 @@ const routes = {
 export function navigateTo(tabId) {
   if (routes[tabId]) {
     curTab = tabId;
+    renderNav();
     route();
+  }
+}
+
+/** Coursework pages call this so the unit switcher highlights the open unit. */
+export function setNavUnit(id) {
+  if (curUnitId !== id) {
+    curUnitId = id;
+    renderNav();
+  }
+}
+
+function goUnit(id) {
+  openUnit(id);
+  curTab = 'coursework';
+  renderNav();
+  route();
+}
+
+function renderNav() {
+  const nav = document.getElementById('nav');
+  const navsub = document.getElementById('navsub');
+  if (!nav || !navsub) return;
+
+  nav.innerHTML = '';
+  GROUPS.forEach(g => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tab' + (curTab === g.id || (g.id === 'jlpt' && GROUP_OF[curTab] === 'jlpt') ? ' on' : '');
+    btn.innerHTML = `<span class="ic">${g.ic}</span>${g.label}`;
+    btn.onclick = () => {
+      if (g.id === 'jlpt') navigateTo('kana');
+      else if (g.id === 'coursework') goUnit(curUnitId || (UNITS[0] && UNITS[0].id) || 1);
+      else navigateTo('home');
+    };
+    nav.appendChild(btn);
+  });
+
+  // Secondary row
+  navsub.innerHTML = '';
+  if (GROUP_OF[curTab] === 'jlpt') {
+    navsub.style.display = '';
+    const mk = (t) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tab sub' + (curTab === t.id ? ' on' : '');
+      btn.innerHTML = `<span class="ic">${t.ic}</span>${t.label}`;
+      btn.onclick = () => navigateTo(t.id);
+      navsub.appendChild(btn);
+    };
+    JLPT_LEARN.forEach(mk);
+    const div = document.createElement('span');
+    div.className = 'nav-div';
+    div.setAttribute('role', 'separator');
+    div.title = 'Practice & testing';
+    navsub.appendChild(div);
+    JLPT_TEST.forEach(mk);
+  } else if (curTab === 'coursework') {
+    navsub.style.display = '';
+    const all = document.createElement('button');
+    all.type = 'button';
+    all.className = 'tab sub' + (curUnitId === null ? ' on' : '');
+    all.textContent = 'All units';
+    all.onclick = () => { openUnit(null); curUnitId = null; renderNav(); route(); };
+    navsub.appendChild(all);
+    UNITS.forEach(u => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tab sub' + (curUnitId === u.id ? ' on' : '');
+      btn.innerHTML = `<span class="ic">${u.id}</span>${u.title}`;
+      btn.onclick = () => goUnit(u.id);
+      navsub.appendChild(btn);
+    });
+  } else {
+    navsub.style.display = 'none';
   }
 }
 
@@ -57,6 +161,7 @@ function updateMasteredCount() {
 
 function route() {
   window.scrollTo({ top: 0, behavior: 'instant' });
+  renderNav();
   const render = routes[curTab] || routes.home;
   render();
   updateMasteredCount();

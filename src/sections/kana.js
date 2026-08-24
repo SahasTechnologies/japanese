@@ -5,6 +5,8 @@ import { shuffle } from '../utils/helpers.js';
 import { speakWithBtn } from '../utils/tts.js';
 import { updateBest } from '../state.js';
 import { mountKanjiPractice } from './kanji.js';
+import { srsCounts, srsQueue } from '../utils/srs.js';
+import { mountSrsReview } from '../utils/srsReview.js';
 import STROKES from '../data/kanjivg-strokes.json' with { type: 'json' };
 
 let kanaSet = 'hira';
@@ -47,6 +49,7 @@ export function renderKana() {
       <span style="flex:1"></span>
       <button class="btn primary" id="qz1-btn">Kana → Reading</button>
       <button class="btn" id="qz2-btn">Reading → Kana</button>
+      <button class="btn" id="hsrs-btn"><ion-icon name="layers-outline"></ion-icon> SRS review</button>
     </div>
     <div id="kana-practice"></div>
     <div id="kgrid-wrap"></div>`;
@@ -122,6 +125,26 @@ export function renderKana() {
   // Reopen the practice panel if a kana was open before re-render
   if (practiceChar && STROKES[practiceChar]?.length) {
     openPractice(practiceChar, lookup.get(practiceChar) || '?');
+  }
+
+  // SRS review over both kana sets
+  const kanaSrsCards = [...HIRA, ...KATA].map(([ch, r]) => ({
+    id: `h:${ch}`,
+    front: `<span class="big-kana">${ch}</span>`,
+    back: `<div class="srs-meaning mono">${r}</div>`,
+    speak: ch,
+  }));
+  const hSrsIds = kanaSrsCards.map(c => c.id);
+  const hSc = srsCounts(hSrsIds);
+  const hSrsBtn = document.getElementById('hsrs-btn');
+  if (hSrsBtn) {
+    hSrsBtn.innerHTML = `<ion-icon name="layers-outline"></ion-icon> SRS review <b class="mono">${hSc.due + hSc.fresh}</b>`;
+    hSrsBtn.onclick = () => mountSrsReview({
+      title: 'Kana — spaced repetition',
+      cards: kanaSrsCards,
+      queue: srsQueue(hSrsIds),
+      onExit: renderKana,
+    });
   }
 
   const onDone = (s, t) => { updateBest('kana', s, t); };

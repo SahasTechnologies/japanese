@@ -12,7 +12,7 @@ An interactive Japanese study app with two halves:
 
 ### JLPT N5
 - **Kana** — Hiragana & Katakana charts with TTS and reading quizzes
-- **Kanji** — 103 N5 characters with:
+- **Kanji** — 108 N5 kanji with:
   - Full stroke-order animation (autoplay watch mode)
   - Trace practice with optional stroke guide, background outline, grid lines, and stroke numbers — turn any (or all) of them off for a fully freehand challenge
   - Freehand mode that shakes the canvas on mistakes
@@ -30,7 +30,7 @@ An interactive Japanese study app with two halves:
 - **Reading** — 60+ short passages and 120+ comprehension questions, plus mixed quizzes
 - **Listening** — Word quizzes from vocabulary (TTS) plus scripted dialogues; normal and slow rates
 - **Flashcards** — Vocab, kanji, hiragana, and katakana decks with flip + Know / Don't-know piles
-- **Mock test** — Multimodal exam (~65 questions, 45 min): kanji reading, vocab, grammar, reading, listening; plus a quick 25-question mode
+- **Mock test** — Multimodal exam (~80 questions, 50 min): kanji reading, vocab, grammar, reading, listening; plus a quick 31-question mode
 - **Placement test** — Optional diagnostic (vocab, kanji, short sentences) for anyone who already knows some Japanese; correct answers can be marked as already-known so progress tracking starts from a realistic baseline instead of zero
 - **Reference** — Numbers, counters, days, months, expressions, verb groups
 

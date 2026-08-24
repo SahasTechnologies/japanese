@@ -2,9 +2,6 @@
  * Shared utility helpers.
  */
 
-/** Shorthand querySelector */
-export const $ = (sel) => document.querySelector(sel);
-
 /** Fisher-Yates shuffle — returns new array */
 export function shuffle(arr) {
   const a = arr.slice();

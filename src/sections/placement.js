@@ -100,21 +100,33 @@ export function renderPlacement(navigate) {
           <div class="qz-opts" id="pt-opts"></div>
         </div>`;
       const box = document.getElementById('pt-opts');
-      (q.options || []).forEach((op, idx) => {
+      // shipped data lists the correct answer first — shuffle so position
+      // never gives it away
+      let options = (q.options || []).slice();
+      let aIdx = q.a;
+      if (options.length > 1) {
+        const correct = options[aIdx];
+        for (let k = options.length - 1; k > 0; k--) {
+          const j = Math.floor(Math.random() * (k + 1));
+          [options[k], options[j]] = [options[j], options[k]];
+        }
+        aIdx = options.indexOf(correct);
+      }
+      options.forEach((op, idx) => {
         const b = document.createElement('button');
         b.className = 'qz-opt';
         // options may carry <ruby> furigana markup built from repo data
         b.innerHTML = op;
         b.onclick = () => {
           [...box.children].forEach(c => { c.disabled = true; });
-          if (idx === q.a) {
+          if (idx === aIdx) {
             b.classList.add('correct');
             score++;
             if (q.kind === 'vocab') correctVocab.push(q.key);
             if (q.kind === 'kanji') correctKanji.push(q.key);
           } else {
             b.classList.add('wrong');
-            if (q.a >= 0 && box.children[q.a]) box.children[q.a].classList.add('correct');
+            if (options[aIdx] !== undefined) box.children[aIdx].classList.add('correct');
           }
           setTimeout(() => { i++; show(); }, 700);
         };

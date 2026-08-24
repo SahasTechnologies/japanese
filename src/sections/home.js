@@ -4,11 +4,12 @@ import { fetchWordOfTheDay } from '../utils/wotd.js';
 import { speakWithBtn } from '../utils/tts.js';
 import courseworkData from '../data/coursework.json' with { type: 'json' };
 import { openUnit } from './coursework.js';
+import { unitHasContent } from '../utils/courseworkPool.js';
 const { UNITS } = courseworkData;
 
 const JLPT_ITEMS = [
   { id: 'kana',      icon: 'あ', label: 'Kana',       desc: 'Hiragana & Katakana — charts + drills',   color: 'var(--red)' },
-  { id: 'kanji',     icon: '漢', label: 'Kanji',      desc: '103 kanji · stroke order · tracing',     color: 'var(--blue)' },
+  { id: 'kanji',     icon: '漢', label: 'Kanji',      desc: '108 kanji · stroke order · tracing · dictation',     color: 'var(--blue)' },
   { id: 'vocab',     icon: '語', label: 'Vocabulary', desc: '700+ words · kana-only mode · learned tracking', color: 'var(--green)' },
   { id: 'grammar',   icon: '文', label: 'Grammar',    desc: '25 patterns + particle drills',          color: 'var(--gold)' },
   { id: 'writing',   icon: '書', label: 'Writing',    desc: 'Type rōmaji, watch it become kana',       color: 'var(--green)' },
@@ -83,8 +84,7 @@ export function renderHome(navigate) {
   });
 
   const dashCw = document.getElementById('dash-coursework');
-  const unitsWithContent = UNITS.filter(u =>
-    u.kanji.length || u.qaSections.length || (u.vocabSections || []).length || (u.grammarPractice || []).length);
+  const unitsWithContent = UNITS.filter(unitHasContent);
   if (!unitsWithContent.length) {
     dashCw.innerHTML = `<p style="color:var(--ink2);font-size:13.5px;grid-column:1/-1">No coursework units have been added yet.</p>`;
   }

@@ -11,6 +11,12 @@ import { mountKanjiPractice } from './kanji.js';
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { unitHasContent, unitVocabPool } from '../utils/courseworkPool.js';
 import { renderUnitMockTest } from '../utils/unitMockTest.js';
+import { setNavUnit } from '../main.js';
+import { srsCounts, srsQueue } from '../utils/srs.js';
+import { mountSrsReview } from '../utils/srsReview.js';
+import { pitchHtml } from '../utils/pitch.js';
+import { runSentenceDrill } from '../utils/sentenceBuilder.js';
+import { rubyWord } from '../utils/furigana.js';
 
 const kanjiByGlyph = {};
 KANJI.forEach(k => { kanjiByGlyph[k[0]] = k; });
@@ -27,6 +33,7 @@ export function openUnit(id) {
 
 export function renderCoursework(nav) {
   if (nav) navigate = nav;
+  setNavUnit(selUnit ? selUnit.id : null);
   if (selUnit === null) renderUnitList();
   else renderUnitDetail();
 }
@@ -203,7 +210,7 @@ function vocabCardHtml(w, P) {
         <span class="w">${esc(w[0])}${w[0] !== w[1] ? `<span class="cw-vcard-reading">（${esc(w[1])}）</span>` : ''}</span>
         <span class="v-speaker" title="Listen"><ion-icon name="volume-high-outline"></ion-icon></span>
       </div>
-      <div class="m">${esc(w[2])}</div>
+      <div class="m">${esc(w[2])}${pitchHtml(w[0], w[1])}</div>
       ${detail}
       <div class="vcard-actions">
         <button class="btn v-learn ${learned ? 'red' : ''}">
@@ -345,6 +352,8 @@ function renderUnitDetail() {
         <button class="btn primary" id="cw-quiz-btn"><ion-icon name="help-circle-outline"></ion-icon> Quiz this unit</button>
         <button class="btn" id="cw-flash-btn"><ion-icon name="albums-outline"></ion-icon> Flashcards</button>
         <button class="btn" id="cw-write-btn"><ion-icon name="create-outline"></ion-icon> Writing practice</button>
+        <button class="btn" id="cw-srs-btn"><ion-icon name="layers-outline"></ion-icon> SRS review</button>
+        <button class="btn" id="cw-sb-btn"><ion-icon name="puzzle-outline"></ion-icon> Sentence builder</button>
         ${pool.length >= 8 ? `<button class="btn red" id="cw-mock-btn"><ion-icon name="school-outline"></ion-icon> Unit mock test</button>` : ''}
       </div>
       <div id="cw-tool-area" style="margin-bottom:24px"></div>`;
@@ -451,6 +460,41 @@ function renderUnitDetail() {
 
   const writeBtn = document.getElementById('cw-write-btn');
   if (writeBtn) writeBtn.onclick = () => writingPractice(toolArea, pool, { onDone });
+
+  const srsBtn2 = document.getElementById('cw-srs-btn');
+  if (srsBtn2) {
+    const srsCards = pool.map(w => ({
+      id: `cv:${u.id}:${w[0]}`,
+      front: `<span class="big-kana">${rubyWord(w[0], w[1])}</span>`,
+      back: `<div class="srs-meaning">${w[2]}</div><div class="srs-sub">${w[1]}${pitchHtml(w[0], w[1])}</div>`,
+      speak: w[0],
+    }));
+    const srsIds = srsCards.map(c => c.id);
+    const sc2 = srsCounts(srsIds);
+    srsBtn2.innerHTML = `<ion-icon name="layers-outline"></ion-icon> SRS review <b class="mono">${sc2.due + sc2.fresh}</b>`;
+    srsBtn2.onclick = () => mountSrsReview({
+      title: `${u.title} — spaced repetition`,
+      cards: srsCards,
+      queue: srsQueue(srsIds),
+      onExit: renderUnitDetail,
+    });
+  }
+
+  const sbBtn = document.getElementById('cw-sb-btn');
+  if (sbBtn) {
+    sbBtn.onclick = () => {
+      const items = [];
+      (u.kanji || []).forEach(k => (k.sentences || []).forEach(s => { if (s.kanji && s.en) items.push({ jp: s.kanji, en: s.en }); }));
+      (u.phraseChevrons || []).forEach(sec => (sec.groups || []).forEach(g => (g.items || []).forEach(it => { if (it.jp && it.en) items.push({ jp: it.jp, en: it.en }); })));
+      (u.grammarPractice || []).forEach(gp => ['example', 'example2'].forEach(key => {
+        const ex = gp[key];
+        if (ex && ex.q?.jp && ex.q?.en) items.push({ jp: ex.q.jp, en: ex.q.en });
+        if (ex && ex.a?.jp && ex.a?.en) items.push({ jp: ex.a.jp, en: ex.a.en });
+      }));
+      const area = document.getElementById('cw-tool-area');
+      if (area) runSentenceDrill(area, items, { limit: 10 });
+    };
+  }
 
   const mockBtn = document.getElementById('cw-mock-btn');
   if (mockBtn) mockBtn.onclick = () =>

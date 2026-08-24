@@ -16,6 +16,8 @@ const DEFAULTS = {
   showFurigana: true,
   mockBest: 0,
   flashPiles: {},
+  // spaced repetition: id → { e: ease, iv: interval (days), due: 'YYYY-M-D', r: reviews }
+  srs: {},
 };
 
 let P = { ...DEFAULTS };
@@ -32,6 +34,7 @@ try {
     if (typeof parsed.vocabHideKanji === 'boolean' && parsed.vocabKanjiMode == null) {
       P.vocabKanjiMode = parsed.vocabHideKanji ? 'none' : 'learned';
     }
+    if (!P.srs || typeof P.srs !== 'object') P.srs = {};
   }
 } catch (_) {}
 
@@ -53,6 +56,7 @@ export function resetState() {
     vocabKanjiMode: 'learned',
     showFurigana: true,
     flashPiles: {},
+    srs: {},
   };
   save();
 }
@@ -83,6 +87,7 @@ export function replaceState(next) {
     flashPiles: (next.flashPiles && typeof next.flashPiles === 'object' && !Array.isArray(next.flashPiles))
       ? next.flashPiles
       : {},
+    srs: (next.srs && typeof next.srs === 'object' && !Array.isArray(next.srs)) ? next.srs : {},
   };
   save();
   return true;
@@ -171,7 +176,7 @@ export function formatVocabWord(expr, reading, readingMap = null) {
  *  3) Fallback: one ruby over the whole kanji run.
  */
 function rubyAnnotate(expr, reading, readingMap) {
-  const map = readingMap || _kanjiReadMap;
+  const map = readingMap;
   const chars = [...expr];
   const isKanji = ch => /[\u4e00-\u9faf]/.test(ch);
   const isHira = ch => /[\u3040-\u309f]/.test(ch);
@@ -240,12 +245,6 @@ function rubyAnnotate(expr, reading, readingMap) {
   }
   if (oku) html += escapeHtml(oku);
   return html;
-}
-
-/** Optional external map: call setKanjiReadMap from main after loading KANJI data */
-let _kanjiReadMap = null;
-export function setKanjiReadMap(map) {
-  _kanjiReadMap = map;
 }
 
 function escapeHtml(s) {

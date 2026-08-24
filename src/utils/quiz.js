@@ -47,7 +47,8 @@ export function quiz(container, qs, opts = {}) {
     options.forEach((op, idx) => {
       const b = document.createElement('button');
       b.className = 'qz-opt';
-      b.textContent = op;
+      // options may carry <ruby> furigana markup built from repo data
+      b.innerHTML = op;
       b.id = `qopt-${idx}`;
       b.onclick = () => {
         [...box.children].forEach(c => { c.disabled = true; });

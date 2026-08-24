@@ -93,6 +93,12 @@ function chevRow(jp, kana, en, speakText) {
     </div>`;
 }
 
+/** Small inline speaker for a Japanese line (Q&A pairs, grammar notes) */
+function lineSpeaker(jp) {
+  if (!jp) return '';
+  return `<button class="btn icon-btn cw-line-speak" data-say="${esc(jp)}" title="Listen" aria-label="Listen"><ion-icon name="volume-high-outline"></ion-icon></button>`;
+}
+
 function kanjiCardHtml(entry) {
   const k = kanjiByGlyph[entry.glyph];
   if (!k) return '';
@@ -151,9 +157,9 @@ function qaCardHtml(sec) {
     ${sec.note ? `<p class="cw-note">${esc(sec.note)}</p>` : ''}
     ${sec.pairs.map(p => `
       <div class="cw-qa-pair">
-        <div class="cw-qa-line q"><span class="cw-qa-tag">Q</span><span class="cw-qa-jp">${boldify(p.q.jp, p.q.bold)}</span></div>
+        <div class="cw-qa-line q"><span class="cw-qa-tag">Q</span><span class="cw-qa-jp">${boldify(p.q.jp, p.q.bold)}</span>${lineSpeaker(p.q.jp)}</div>
         <div class="cw-qa-en">${esc(p.q.en)}</div>
-        <div class="cw-qa-line a"><span class="cw-qa-tag">A</span><span class="cw-qa-jp">${boldify(p.a.jp, p.a.bold)}</span></div>
+        <div class="cw-qa-line a"><span class="cw-qa-tag">A</span><span class="cw-qa-jp">${boldify(p.a.jp, p.a.bold)}</span>${lineSpeaker(p.a.jp)}</div>
         <div class="cw-qa-en">${esc(p.a.en)}</div>
       </div>`).join('')}`;
   return accordionWrap(sec.title, sec.note ? '' : '', inner);
@@ -236,13 +242,13 @@ function qaExampleHtml(ex) {
   const qTag = ex.qTag || 'Q';
   const aTag = ex.aTag || 'A';
   let html = `<div class="cw-qa-pair">
-    <div class="cw-qa-line q"><span class="cw-qa-tag">${esc(qTag)}</span><span class="cw-qa-jp">${boldify(ex.q.jp, ex.q.bold)}</span></div>
+    <div class="cw-qa-line q"><span class="cw-qa-tag">${esc(qTag)}</span><span class="cw-qa-jp">${boldify(ex.q.jp, ex.q.bold)}</span>${lineSpeaker(ex.q.jp)}</div>
     <div class="cw-qa-en">${esc(ex.q.en)}</div>`;
   ['a', 'a1', 'a2'].forEach(key => {
     if (!ex[key]) return;
     const tag = key === 'a1' ? 'A1' : key === 'a2' ? 'A2' : aTag;
     html += `
-      <div class="cw-qa-line a"><span class="cw-qa-tag">${esc(tag)}</span><span class="cw-qa-jp">${boldify(ex[key].jp, ex[key].bold)}</span></div>
+      <div class="cw-qa-line a"><span class="cw-qa-tag">${esc(tag)}</span><span class="cw-qa-jp">${boldify(ex[key].jp, ex[key].bold)}</span>${lineSpeaker(ex[key].jp)}</div>
       <div class="cw-qa-en">${esc(ex[key].en)}</div>`;
   });
   html += `</div>`;
@@ -370,8 +376,8 @@ function renderUnitDetail() {
 
   document.getElementById('cw-back').onclick = () => { if (navigate) navigate('home'); };
 
-  // TTS speaker buttons (chevron rows, vocab cards)
-  main.querySelectorAll('.cw-speak, .v-speaker, .v-ex-speak').forEach(btn => {
+  // TTS speaker buttons (chevron rows, vocab cards, Q&A lines)
+  main.querySelectorAll('.cw-speak, .v-speaker, .v-ex-speak, .cw-line-speak').forEach(btn => {
     btn.onclick = ev => {
       ev.stopPropagation();
       const say = btn.dataset.say || btn.closest('.cw-vcard')?.dataset.expr;

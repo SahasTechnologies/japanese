@@ -3,6 +3,7 @@ const { KANJI, KANJI_GROUPS, RADICALS } = kanjiData;
 import { shuffle } from '../utils/helpers.js';
 import { updateBest, getState, toggleKanjiFlag, setVocabKanjiMode, setShowFurigana } from '../state.js';
 import { runFullQuiz } from '../utils/fullQuiz.js';
+import { speakWithBtn } from '../utils/tts.js';
 // KanjiVG stroke data — pre-fetched at build time
 import STROKES from '../data/kanjivg-strokes.json' with { type: 'json' };
 
@@ -150,9 +151,10 @@ function renderKanjiDetail() {
         </div>
       </div>
 
-      <div class="mode-tabs" style="display:flex;gap:8px;margin:12px 0">
+      <div class="mode-tabs" style="display:flex;gap:8px;margin:12px 0;flex-wrap:wrap">
         <button class="btn ${strokeMode === 'watch' ? 'red' : ''}" id="mw-btn"><ion-icon name="play-outline"></ion-icon> Watch</button>
         <button class="btn ${strokeMode === 'trace' ? 'red' : ''}" id="mt-btn"><ion-icon name="pencil-outline"></ion-icon> Trace</button>
+        <button class="btn ${strokeMode === 'write' ? 'red' : ''}" id="md-btn"><ion-icon name="brush-outline"></ion-icon> Write</button>
       </div>
 
       <div class="kanji-detail">
@@ -179,13 +181,17 @@ function renderKanjiDetail() {
   document.getElementById('bk-btn').onclick = () => { selKanji = null; renderKanji(); };
   document.getElementById('mw-btn').onclick  = () => { strokeMode = 'watch'; renderKanjiDetail(); };
   document.getElementById('mt-btn').onclick  = () => { strokeMode = 'trace'; renderKanjiDetail(); };
+  document.getElementById('md-btn').onclick  = () => { strokeMode = 'write'; renderKanjiDetail(); };
 
   // Example words
   const exw = document.getElementById('exw');
   k[5].forEach(([word, reading, gloss]) => {
     const row = document.createElement('div');
     row.className = 'ex-row';
-    row.innerHTML = `<span class="w">${word}</span><span class="r">${reading}</span><span class="g">${gloss}</span>`;
+    row.innerHTML = `
+      <span class="w">${word}</span><span class="r">${reading}</span><span class="g">${gloss}</span>
+      <button class="btn icon-btn ex-speak" title="Listen" aria-label="Listen"><ion-icon name="volume-high-outline"></ion-icon></button>`;
+    row.querySelector('.ex-speak').onclick = () => speakWithBtn(word, row.querySelector('.ex-speak'));
     exw.appendChild(row);
   });
 
@@ -218,24 +224,40 @@ const GUIDES = `
     <line class="guide-diag" x1="109" y1="0" x2="0" y2="109" stroke-width=".55" stroke-dasharray="2.5 4"/>
   </g>`;
 
+/** glyph → { meaning, reading } for the dictation prompt */
+const GLYPH_INFO = {};
+KANJI.forEach(k => {
+  GLYPH_INFO[k[0]] = {
+    meaning: k[3],
+    reading: (k[2] || k[1] || '').split(/[・\/、,;]|;\s*/)[0].trim(),
+  };
+});
+
 /**
- * Mount the stroke-order/trace widget into `root`.
+ * Mount the stroke-order/trace/dictation widget into `root`.
  * @param {HTMLElement} root - empty container to render into
- * @param {string} glyph - the kanji character
- * @param {{mode?: 'watch'|'trace', showTabs?: boolean, onModeChange?: (mode:string)=>void}} opts
+ * @param {string} glyph - the kanji (or kana) character
+ * @param {{mode?: 'watch'|'trace'|'write', showTabs?: boolean, onModeChange?: (mode:string)=>void,
+ *          label?: string, sub?: string}} opts
+ *   label/sub override the dictation prompt (defaults from the KANJI data;
+ *   pass them for kana, e.g. label 'a', sub 'あ').
  */
 export function mountKanjiPractice(root, glyph, opts = {}) {
   let mode = opts.mode || 'watch';
-  const showTabs = opts.showTabs !== false; // hide when the host page renders its own Watch/Trace tabs
+  const showTabs = opts.showTabs !== false; // hide when the host page renders its own mode tabs
 
   function paint() {
+    root.dataset.glyph = glyph;
     root.innerHTML = `
       ${showTabs ? `
-      <div class="mode-tabs" style="display:flex;gap:8px;margin-bottom:12px">
+      <div class="mode-tabs" style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
         <button class="btn ${mode === 'watch' ? 'red' : ''}" data-role="mw"><ion-icon name="play-outline"></ion-icon> Watch</button>
         <button class="btn ${mode === 'trace' ? 'red' : ''}" data-role="mt"><ion-icon name="pencil-outline"></ion-icon> Trace</button>
+        <button class="btn ${mode === 'write' ? 'red' : ''}" data-role="md"><ion-icon name="brush-outline"></ion-icon> Write</button>
       </div>` : ''}
-      <div class="canvas-wrap" data-role="cw">
+      ${mode === 'write' ? `
+      <div class="dict-prompt" data-role="prompt"></div>` : ''}
+      <div class="canvas-wrap ${mode !== 'watch' ? 'trace' : ''}" data-role="cw">
         <svg data-role="stage" viewBox="-8 -8 125 125"></svg>
         <div class="stamp" data-role="stamp">完</div>
       </div>
@@ -245,15 +267,16 @@ export function mountKanjiPractice(root, glyph, opts = {}) {
     if (showTabs) {
       root.querySelector('[data-role="mw"]').onclick = () => { mode = 'watch'; opts.onModeChange?.(mode); paint(); };
       root.querySelector('[data-role="mt"]').onclick = () => { mode = 'trace'; opts.onModeChange?.(mode); paint(); };
+      root.querySelector('[data-role="md"]').onclick = () => { mode = 'write'; opts.onModeChange?.(mode); paint(); };
     }
 
-    loadKanjiStrokes(root, glyph, mode);
+    loadKanjiStrokes(root, glyph, mode, opts);
   }
 
   paint();
 }
 
-function loadKanjiStrokes(root, ch, mode) {
+function loadKanjiStrokes(root, ch, mode, opts = {}) {
   const svg  = root.querySelector('[data-role="stage"]');
   const cw   = root.querySelector('[data-role="cw"]');
   const ctl  = root.querySelector('[data-role="ctl"]');
@@ -311,6 +334,15 @@ function loadKanjiStrokes(root, ch, mode) {
       numG.appendChild(g);
     });
     setupWatch(root, paths, ctl, msg);
+  } else if (mode === 'write') {
+    // Dictation: no outline, no guide — draw from the meaning/reading prompt
+    strokeG.style.display = 'none';
+    ghostG.style.display = 'none';
+    const info = GLYPH_INFO[ch] || {};
+    setupDictation(root, paths, svg, cw, ctl, msg, ghostG, {
+      label: opts.label ?? info.meaning ?? '',
+      sub: opts.sub ?? info.reading ?? '',
+    });
   } else {
     // The animated stroke layer is watch-mode only; hiding it entirely also
     // guarantees no stray "dot" artifacts can appear while tracing.
@@ -664,5 +696,212 @@ function setupTrace(root, paths, svg, cw, ctl, msg) {
   };
 
   showTarget();
+  updMsg();
+}
+
+/* ---- Dictation (Write) mode ----
+   No outline, no guide: the prompt shows the meaning/reading and the user
+   writes each stroke from memory. Strokes are checked one at a time in
+   order (direction-agnostic). After two misses on the same stroke the
+   dashed guide for that stroke appears as a hint. */
+function setupDictation(root, paths, svg, cw, ctl, msg, ghostG, prompt) {
+  cw.classList.add('trace');
+  const gridGroup = svg.querySelector('.grid-group');
+
+  const promptEl = root.querySelector('[data-role="prompt"]');
+  if (promptEl) {
+    promptEl.innerHTML = `
+      <span class="dict-glyph">${root.dataset.glyph || ''}</span>
+      <span class="dict-meta">
+        ${prompt.label ? `<span class="dict-meaning">${prompt.label}</span>` : ''}
+        ${prompt.sub ? `<span class="dict-reading">${prompt.sub}</span>` : ''}
+      </span>`;
+  }
+
+  ctl.innerHTML = `
+    <div class="btnrow" style="margin-top:12px;flex-wrap:wrap">
+      <button class="btn" data-role="undo-btn"><ion-icon name="arrow-undo-outline"></ion-icon> Undo</button>
+      <button class="btn" data-role="rst-btn"><ion-icon name="refresh-outline"></ion-icon> Reset</button>
+      <button class="btn" data-role="peek-btn"><ion-icon name="eye-outline"></ion-icon> Peek</button>
+      <button class="btn" data-role="show-btn"><ion-icon name="list-outline"></ion-icon> Show order</button>
+    </div>
+    <p style="font-size:12px;color:var(--ink2);margin-top:8px">Write each stroke in order. After two misses the guide appears as a hint.</p>`;
+
+  const targetG = svgEl('g', {});
+  const doneG   = svgEl('g', {});
+  const drawG   = svgEl('g', {});
+  svg.appendChild(targetG);
+  svg.appendChild(doneG);
+  svg.appendChild(drawG);
+
+  const samples = paths.map(p => {
+    const L = p.el.getTotalLength();
+    const pts = [];
+    for (let i = 0; i < SAMPLES; i++) {
+      const pt = p.el.getPointAtLength((L * i) / (SAMPLES - 1));
+      pts.push([pt.x, pt.y]);
+    }
+    return { pts, len: L };
+  });
+  const ends = paths.map(p => pathEnds(p.el));
+
+  let cur = 0, misses = 0, drawing = false, pts = [], curLine = null, busy = false;
+
+  function showHintGuide(on) {
+    targetG.innerHTML = '';
+    if (!on || cur >= paths.length) return;
+    const e = ends[cur];
+    targetG.appendChild(svgEl('path', { d: paths[cur].d, class: 'trace-road' }));
+    targetG.appendChild(svgEl('path', { d: paths[cur].d, class: 'trace-target' }));
+    targetG.appendChild(svgEl('polygon', {
+      points: ARROW_PTS, class: 'trace-arrow-head',
+      transform: `translate(${e.ex.toFixed(2)} ${e.ey.toFixed(2)}) rotate(${e.eAng.toFixed(1)})`,
+    }));
+    const sx = Math.min(Math.max(e.sx, 3), 106);
+    const sy = Math.min(Math.max(e.sy, 3), 106);
+    targetG.appendChild(svgEl('circle', { cx: sx, cy: sy, r: 5, class: 'trace-start-btn' }));
+    targetG.appendChild(svgEl('polygon', {
+      points: ARROW_PTS, class: 'trace-start-arrow',
+      transform: `translate(${sx.toFixed(2)} ${sy.toFixed(2)}) rotate(${e.sAng.toFixed(1)})`,
+    }));
+  }
+
+  function updMsg() {
+    if (cur >= paths.length) {
+      msg.textContent = 'Complete! Beautiful.';
+      msg.className = 'tp-msg ok';
+      root.querySelector('[data-role="stamp"]')?.classList.add('show');
+    } else {
+      msg.textContent = `Stroke ${cur + 1} of ${paths.length}`;
+      msg.className = 'tp-msg';
+    }
+  }
+
+  function shakeCanvas() {
+    cw.classList.remove('shake');
+    void cw.offsetWidth;
+    cw.classList.add('shake');
+  }
+
+  function evaluate() {
+    if (pts.length < 3) return { ok: false, msg: 'Draw the whole stroke in one motion.' };
+    const s = samples[cur];
+    const u = resample(pts, SAMPLES);
+    if (!u) return { ok: false, msg: 'Draw the whole stroke.' };
+    let uL = 0;
+    for (let i = 1; i < pts.length; i++)
+      uL += Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    if (uL < s.len * 0.35) return { ok: false, msg: 'Too short — draw the whole stroke.' };
+    // direction-agnostic: a stroke drawn backwards still counts
+    const fwd = distStats(u, s.pts);
+    const rev = distStats([...u].reverse(), s.pts);
+    const d = fwd.mean < rev.mean ? fwd : rev;
+    if (d.mean > 12 || d.max > 30) return { ok: false, msg: 'Not this stroke — check its shape and position.' };
+    return { ok: true };
+  }
+
+  function accept() {
+    curLine?.remove(); curLine = null;
+    doneG.appendChild(svgEl('path', { d: paths[cur].d, class: 'trace-done' }));
+    cur++;
+    misses = 0;
+    showHintGuide(false);
+    updMsg();
+  }
+
+  function reject(res) {
+    curLine?.remove(); curLine = null;
+    misses++;
+    msg.textContent = res.msg;
+    msg.className = 'tp-msg err';
+    shakeCanvas();
+    if (misses >= 2 && cur < paths.length) {
+      showHintGuide(true);
+      msg.textContent = `Hint: stroke ${cur + 1} — follow the dashed line.`;
+    }
+  }
+
+  function getXY(ev) {
+    const rect = svg.getBoundingClientRect();
+    return [
+      ((ev.clientX - rect.left) / rect.width)  * 125 - 8,
+      ((ev.clientY - rect.top)  / rect.height) * 125 - 8,
+    ];
+  }
+
+  svg.onpointerdown = ev => {
+    if (busy || cur >= paths.length) return;
+    ev.preventDefault();
+    try { svg.setPointerCapture(ev.pointerId); } catch (_) {}
+    drawing = true;
+    pts = [getXY(ev)];
+    curLine = svgEl('polyline', { class: 'trace-user', points: `${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}` });
+    drawG.appendChild(curLine);
+  };
+
+  svg.onpointermove = ev => {
+    if (!drawing) return;
+    const p = getXY(ev), last = pts[pts.length - 1];
+    if (Math.hypot(p[0] - last[0], p[1] - last[1]) > 0.6) {
+      pts.push(p);
+      curLine.setAttribute('points', pts.map(q => `${q[0].toFixed(1)},${q[1].toFixed(1)}`).join(' '));
+    }
+  };
+
+  const end = () => {
+    if (!drawing) return;
+    drawing = false;
+    const r = evaluate();
+    r.ok ? accept() : reject(r);
+  };
+  svg.onpointerup = end;
+  svg.onpointercancel = end;
+
+  ctl.querySelector('[data-role="undo-btn"]').onclick = () => {
+    if (busy || cur === 0) return;
+    cur--;
+    misses = 0;
+    doneG.lastElementChild?.remove();
+    showHintGuide(false);
+    root.querySelector('[data-role="stamp"]')?.classList.remove('show');
+    updMsg();
+  };
+
+  ctl.querySelector('[data-role="rst-btn"]').onclick = () => {
+    if (busy) return;
+    drawG.innerHTML = '';
+    doneG.innerHTML = '';
+    cur = 0;
+    misses = 0;
+    showHintGuide(false);
+    root.querySelector('[data-role="stamp"]')?.classList.remove('show');
+    updMsg();
+  };
+
+  ctl.querySelector('[data-role="peek-btn"]').onclick = () => {
+    if (busy) return;
+    busy = true;
+    ghostG.style.display = '';
+    setTimeout(() => { ghostG.style.display = 'none'; busy = false; }, 1500);
+  };
+
+  ctl.querySelector('[data-role="show-btn"]').onclick = () => {
+    if (busy || !paths.length) return;
+    busy = true;
+    const prevDisplay = doneG.style.display;
+    doneG.style.display = 'none';
+    drawG.innerHTML = '';
+    paths.forEach((p, i) => {
+      const pp = svgEl('path', { d: p.d, class: 'replay-anim', pathLength: 1 });
+      pp.style.animationDelay = `${i * 0.55}s`;
+      svg.appendChild(pp);
+    });
+    setTimeout(() => {
+      [...svg.querySelectorAll('path.replay-anim')].forEach(el => el.remove());
+      doneG.style.display = prevDisplay;
+      busy = false;
+    }, paths.length * 550 + 680);
+  };
+
   updMsg();
 }

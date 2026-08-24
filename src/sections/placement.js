@@ -12,6 +12,7 @@ const ALLVOCAB = Object.values(VOCAB).flat();
 const { KANJI } = kanjiData;
 import { shuffle } from '../utils/helpers.js';
 import { toggleVocabLearned, toggleKanjiFlag, getState } from '../state.js';
+import { furigana, rubyWord } from '../utils/furigana.js';
 
 const N_QUESTIONS = 20;
 
@@ -24,18 +25,20 @@ function buildQuestions() {
     const options = shuffle([w[2], ...distractors]);
     qs.push({
       kind: 'vocab', key: w[0],
-      q: `<span class="big-kana">${w[0]}</span><div style="font-size:14px;color:var(--ink2);margin-top:6px">${w[1]}</div>`,
+      q: `<span class="big-kana">${rubyWord(w[0], w[1])}</span>`,
       options, a: options.indexOf(w[2]),
     });
   });
 
-  // Kanji meaning questions
+  // Kanji meaning questions — readings shown so the item is readable;
+  // the English meaning is still what's being tested
   shuffle(KANJI).slice(0, 7).forEach(k => {
     const distractors = shuffle(KANJI.filter(x => x[3] !== k[3])).slice(0, 3).map(x => x[3]);
     const options = shuffle([k[3], ...distractors]);
+    const reading = (k[2] || k[1] || '').split(/[・\/、,;]|;\s*/)[0].trim();
     qs.push({
       kind: 'kanji', key: k[0],
-      q: `<span class="big-kana">${k[0]}</span>`,
+      q: `<span class="big-kana">${rubyWord(k[0], reading)}</span>`,
       options, a: options.indexOf(k[3]),
     });
   });
@@ -47,8 +50,9 @@ function buildQuestions() {
     if (!options) return;
     qs.push({
       kind: 'sentence', key: null,
-      q: `<div style="font-size:15px;margin-bottom:8px;white-space:pre-line">${rq.passage || ''}</div><div>${rq.q || ''}</div>`,
-      options, a: rq.a,
+      q: `<div class="passage mock-passage">${furigana(rq.passage || '')}</div>
+          <div class="qz-q-text">${furigana(rq.q || '')}</div>`,
+      options: options.map(furigana), a: rq.a,
     });
   });
 
@@ -99,7 +103,8 @@ export function renderPlacement(navigate) {
       (q.options || []).forEach((op, idx) => {
         const b = document.createElement('button');
         b.className = 'qz-opt';
-        b.textContent = op;
+        // options may carry <ruby> furigana markup built from repo data
+        b.innerHTML = op;
         b.onclick = () => {
           [...box.children].forEach(c => { c.disabled = true; });
           if (idx === q.a) {

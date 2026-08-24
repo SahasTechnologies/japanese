@@ -17,6 +17,7 @@ import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { HAS_TTS } from '../utils/tts.js';
 import { getState, updateBest, save } from '../state.js';
+import { furigana, rubyWord } from '../utils/furigana.js';
 
 function kanjiReadingQs(n) {
   const pool = shuffle(KANJI.filter(k => k[1] || k[2])).slice(0, n);
@@ -29,6 +30,7 @@ function kanjiReadingQs(n) {
       .slice(0, 3);
     const options = shuffle([correct, ...others]);
     return {
+      // no furigana here on purpose — the reading IS the answer
       q: `<div class="mock-label">Kanji reading</div><span class="big-kana">${k[0]}</span><div style="font-size:13px;color:var(--ink2);margin-top:6px">How is this read?</div>`,
       options,
       a: options.indexOf(correct),
@@ -43,7 +45,7 @@ function vocabContextQs(n) {
     const distractors = shuffle(ALLVOCAB.filter(x => x[2] !== correct)).slice(0, 3).map(x => x[2]);
     const options = shuffle([correct, ...distractors]);
     return {
-      q: `<div class="mock-label">Vocabulary</div>${w[0]} <span style="color:var(--ink2);font-size:13px">（${w[1]}）</span>`,
+      q: `<div class="mock-label">Vocabulary</div><span class="mock-word">${rubyWord(w[0], w[1])}</span>`,
       options,
       a: options.indexOf(correct),
     };
@@ -52,8 +54,8 @@ function vocabContextQs(n) {
 
 function grammarQs(n) {
   return shuffle(PARTICLE_QUIZ).slice(0, n).map(p => ({
-    q: `<div class="mock-label">Grammar</div><span style="font-family:var(--serif);font-size:20px">${p.q}</span>`,
-    options: p.o || p.options,
+    q: `<div class="mock-label">Grammar</div><span class="mock-word">${furigana(p.q)}</span>`,
+    options: (p.o || p.options).map(furigana),
     a: p.a,
   }));
 }
@@ -62,9 +64,9 @@ function readingQs(n) {
   const all = READING.flatMap(p =>
     p.qs.map(q => ({
       q: `<div class="mock-label">Reading · ${p.title}</div>
-          <div class="passage" style="margin:10px 0;font-size:15px">${p.text}</div>
-          ${q.q}`,
-      options: q.o || q.options,
+          <div class="passage mock-passage">${furigana(p.text)}</div>
+          <div class="qz-q-text">${furigana(q.q || '')}</div>`,
+      options: (q.o || q.options).map(furigana),
       a: q.a,
     }))
   );

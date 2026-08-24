@@ -7,6 +7,7 @@ KANJI.forEach(k => { kanjiByGlyph[k[0]] = k; });
 import { shuffle } from './helpers.js';
 import { mountFreehandBox } from './freehand.js';
 import { unitVocabPool } from './courseworkPool.js';
+import { furigana } from './furigana.js';
 
 /** Collect {en, jp} translation pairs the unit actually teaches, for the free-response section */
 function unitTranslationPool(u) {
@@ -159,7 +160,7 @@ export function renderUnitMockTest(u, opts = {}) {
       <div class="btnrow" style="margin-top:8px;justify-content:flex-start">
         <button class="btn" data-role="reveal">Show answer</button>
       </div>
-      <div class="umt-trans-answer" data-role="answer" style="display:none">${t.jp}</div>`;
+      <div class="umt-trans-answer" data-role="answer" style="display:none">${furigana(t.jp)}</div>`;
     transMount.appendChild(card);
     card.querySelector('[data-role="reveal"]').onclick = () => {
       const ans = card.querySelector('[data-role="answer"]');

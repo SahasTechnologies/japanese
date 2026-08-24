@@ -3,7 +3,8 @@
  * Replaces the old header theme-toggle + reset buttons.
  */
 
-import { resetState } from './state.js';
+import { resetState, replaceState } from './state.js';
+import { exportProgressString, importProgressString } from './utils/backup.js';
 
 const SETTINGS_KEY = 'n5app-settings';
 const LEGACY_THEME_KEY = 'n5-theme';
@@ -260,6 +261,22 @@ function renderDialog(s) {
         </div>
       </section>
 
+      <section class="set-section">
+        <h3 class="set-h">Backup</h3>
+        <p class="set-hint">Save your progress to an encrypted backup file, or restore it on another
+          device. The file is encrypted — it can’t be read or hand-edited.</p>
+        <div class="set-data-row">
+          <button type="button" class="btn" id="setExport">
+            <ion-icon name="download-outline"></ion-icon> Export progress
+          </button>
+          <button type="button" class="btn" id="setImport">
+            <ion-icon name="cloud-upload-outline"></ion-icon> Import backup
+          </button>
+          <input type="file" id="setImportFile" accept=".jps,.txt" hidden>
+        </div>
+        <p class="set-data-status" id="setDataStatus"></p>
+      </section>
+
       <section class="set-section set-danger">
         <h3 class="set-h">Progress</h3>
         <p class="set-hint">Clears best scores, learned lists, and flashcard piles on this device. Settings are kept.</p>
@@ -318,6 +335,63 @@ function bindDialog(dialog, getS, setS) {
     resetState();
     close();
     if (typeof onResetProgress === 'function') onResetProgress();
+  });
+
+  // ---- Backup: export / import ----
+  const setStatus = (text, ok) => {
+    const el = dialog.querySelector('#setDataStatus');
+    if (el) {
+      el.textContent = text;
+      el.className = `set-data-status ${ok ? 'ok' : 'err'}`;
+    }
+  };
+
+  dialog.querySelector('#setExport')?.addEventListener('click', async () => {
+    try {
+      const data = await exportProgressString();
+      const blob = new Blob([data], { type: 'application/octet-stream' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `japanese-progress-${new Date().toISOString().slice(0, 10)}.jps`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+      setStatus('Backup downloaded — keep the file safe.', true);
+    } catch (_) {
+      setStatus('Export failed — your browser may block downloads here.', false);
+    }
+  });
+
+  const importBtn = dialog.querySelector('#setImport');
+  const fileInput = dialog.querySelector('#setImportFile');
+  importBtn?.addEventListener('click', () => fileInput?.click());
+  fileInput?.addEventListener('change', async () => {
+    const file = fileInput.files?.[0];
+    fileInput.value = '';
+    if (!file) return;
+    try {
+      const text = await file.text();
+      const res = await importProgressString(text);
+      if (!res.ok) { setStatus(res.error, false); return; }
+      const counts = [
+        res.state.vocabLearned?.length || 0,
+        res.state.kanjiCanRead?.length || 0,
+      ];
+      if (!window.confirm(
+        `Restore this backup? It replaces your current progress `
+        + `(${counts[0]} words, ${counts[1]} kanji marked as learned).`
+      )) return;
+      if (replaceState(res.state)) {
+        setStatus('Progress restored.', true);
+        close();
+        if (typeof onResetProgress === 'function') onResetProgress();
+      } else {
+        setStatus('Backup is damaged or incomplete.', false);
+      }
+    } catch (_) {
+      setStatus('Could not read that file.', false);
+    }
   });
 }
 

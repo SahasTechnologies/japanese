@@ -3,6 +3,7 @@ import { quiz } from '../utils/quiz.js';
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
 import { updateBest } from '../state.js';
+import { furigana } from '../utils/furigana.js';
 
 export function renderReading() {
   const main = document.getElementById('main');
@@ -20,7 +21,8 @@ export function renderReading() {
   const allQs = READING.flatMap(p =>
     p.qs.map(q => ({
       ...q,
-      q: `<div style="font-size:12px;color:var(--ink2);margin-bottom:6px">${p.title}</div>${q.q}`,
+      q: `<div style="font-size:12px;color:var(--ink2);margin-bottom:6px">${p.title}</div>${furigana(q.q)}`,
+      options: (q.o || q.options).map(furigana),
     }))
   );
 
@@ -47,12 +49,16 @@ export function renderReading() {
       <h4 style="font:700 15px var(--sans);margin-bottom:10px;color:var(--ink2);letter-spacing:.03em">
         ${pi + 1}. ${passage.title}
       </h4>
-      <div class="passage">${passage.text}</div>
+      <div class="passage">${furigana(passage.text)}</div>
       <div id="rq-${pi}"></div>`;
     rd.appendChild(sec);
     quiz(
       sec.querySelector(`#rq-${pi}`),
-      passage.qs,
+      passage.qs.map(q => ({
+        ...q,
+        q: furigana(q.q),
+        options: (q.o || q.options).map(furigana),
+      })),
       { onDone: (s, t) => updateBest('reading', s, t) }
     );
   });

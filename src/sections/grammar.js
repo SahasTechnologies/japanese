@@ -2,6 +2,7 @@ import grammar from '../data/grammar.json' with { type: 'json' };
 const { GRAMMAR, PARTICLE_QUIZ } = grammar;
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
+import { speakWithBtn } from '../utils/tts.js';
 import { updateBest } from '../state.js';
 
 /** Build grammar/particle quiz questions */
@@ -36,7 +37,9 @@ export function renderGrammar() {
         <p>${g.e}</p>
         ${g.x.map(([jp, en]) => `
           <div class="gex">
-            ${jp}
+            <span class="gex-jp">${jp}
+              <button class="btn icon-btn gex-speak" data-say="${String(jp).replace(/"/g, '&quot;')}" title="Listen" aria-label="Listen"><ion-icon name="volume-high-outline"></ion-icon></button>
+            </span>
             <span class="tr">${en}</span>
           </div>`).join('')}
       </div>`;
@@ -53,6 +56,13 @@ export function renderGrammar() {
     };
     header.onclick = toggle;
     header.onkeydown = e => { if (e.key === 'Enter' || e.key === ' ') toggle(); };
+
+    card.querySelectorAll('.gex-speak').forEach(btn => {
+      btn.onclick = ev => {
+        ev.stopPropagation();
+        speakWithBtn(btn.dataset.say, btn);
+      };
+    });
 
     gl.appendChild(card);
   });

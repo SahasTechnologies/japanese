@@ -57,6 +57,37 @@ export function resetState() {
   save();
 }
 
+/**
+ * Replace all progress with an imported state object (from a backup file).
+ * Every field is validated; anything malformed falls back to its default.
+ * @returns {boolean} true if the import was applied
+ */
+export function replaceState(next) {
+  if (!next || typeof next !== 'object' || Array.isArray(next)) return false;
+  const arr = v => (Array.isArray(v) ? v : []);
+  P = {
+    ...DEFAULTS,
+    best: (next.best && typeof next.best === 'object' && !Array.isArray(next.best))
+      ? Object.fromEntries(Object.entries(next.best).filter(([, v]) => typeof v === 'number'))
+      : {},
+    kanjiLearned: arr(next.kanjiLearned).filter(x => typeof x === 'string'),
+    kanjiCanRead: arr(next.kanjiCanRead).filter(x => typeof x === 'string'),
+    kanjiCanWrite: arr(next.kanjiCanWrite).filter(x => typeof x === 'string'),
+    vocabLearned: arr(next.vocabLearned).filter(x => typeof x === 'string'),
+    courseworkLearned: arr(next.courseworkLearned).filter(x => typeof x === 'string'),
+    vocabKanjiMode: ['all', 'learned', 'none'].includes(next.vocabKanjiMode)
+      ? next.vocabKanjiMode
+      : 'learned',
+    showFurigana: typeof next.showFurigana === 'boolean' ? next.showFurigana : true,
+    mockBest: typeof next.mockBest === 'number' && next.mockBest >= 0 ? next.mockBest : 0,
+    flashPiles: (next.flashPiles && typeof next.flashPiles === 'object' && !Array.isArray(next.flashPiles))
+      ? next.flashPiles
+      : {},
+  };
+  save();
+  return true;
+}
+
 export function updateBest(id, score, total) {
   const pct = Math.round((score / total) * 100);
   P.best[id] = Math.max(P.best[id] || 0, pct);

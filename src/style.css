@@ -2564,3 +2564,173 @@ ruby.vw-ruby rt {
 }
 
 
+
+/* ---- Quiz questions with boxed text (reading comprehension) ---- */
+.qz-q:has(.mock-passage) {
+  display: block;
+  text-align: left;
+  min-height: 0;
+}
+.mock-passage {
+  font-size: 16px;
+  line-height: 2.3;
+  text-align: left;
+  margin-bottom: 14px;
+}
+.qz-q-text {
+  font: 600 17px var(--serif);
+  line-height: 1.9;
+  text-align: center;
+  padding: 2px 0;
+}
+.mock-word {
+  font: 700 34px var(--serif);
+  line-height: 1.6;
+}
+/* ruby readings inside quiz questions, choices, passages, and answers */
+.qz-q ruby rt,
+.qz-opt ruby rt,
+.passage ruby rt,
+.umt-trans-answer ruby rt,
+.mock-passage ruby rt {
+  font-size: 0.48em;
+  color: var(--ink2);
+  font-weight: 500;
+}
+.qz-opt ruby {
+  margin-right: 2px;
+}
+
+/* ---- Dictation (Write) mode prompt ---- */
+.dict-prompt {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  border: 1px dashed var(--line-hover);
+  border-radius: 12px;
+  background: var(--surface-soft);
+}
+.dict-glyph {
+  font: 800 34px var(--serif);
+  color: var(--red);
+  line-height: 1;
+}
+.dict-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.dict-meaning {
+  font: 700 15px var(--sans);
+  color: var(--ink);
+}
+.dict-reading {
+  font: 500 13px var(--sans);
+  color: var(--ink2);
+}
+
+/* ---- Kana writing practice ---- */
+.kcell {
+  position: relative;
+}
+.kcell.active {
+  border-color: var(--red);
+  box-shadow: 0 0 0 1px var(--red);
+}
+.kcell-pen {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  color: var(--ink2);
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.kcell:hover .kcell-pen,
+.kcell.active .kcell-pen {
+  opacity: 1;
+}
+.kcell-pen:hover {
+  color: var(--red);
+  background: var(--surface-soft);
+}
+.kcell-pen ion-icon {
+  font-size: 0.85em;
+  pointer-events: none;
+}
+.kana-practice-card {
+  margin-bottom: 18px;
+  padding: 14px 16px 18px;
+}
+.kana-practice-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.kana-practice-title {
+  font-size: 14px;
+  color: var(--ink2);
+}
+.kana-practice-title b {
+  font: 800 22px var(--serif);
+  color: var(--ink);
+}
+
+/* ---- Settings backup row ---- */
+.set-data-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.set-data-status {
+  font-size: 12.5px;
+  margin-top: 10px;
+  min-height: 1.2em;
+}
+.set-data-status.ok { color: var(--green); }
+.set-data-status.err { color: var(--red); }
+
+/* ---- Inline example-sentence speakers ---- */
+.gex-jp {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.gex-speak {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  flex: none;
+  align-self: center;
+}
+.ex-speak {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  margin-left: auto;
+  flex: none;
+  align-self: center;
+}
+.cw-qa-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.cw-line-speak {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  flex: none;
+  align-self: center;
+  margin-left: auto;
+}

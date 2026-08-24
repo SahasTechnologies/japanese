@@ -15,6 +15,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, '../src/data/kanjivg-strokes.json');
 const KANJI_JSON = join(__dirname, '../src/data/kanji.json');
+const KANA_JSON = join(__dirname, '../src/data/kana.json');
 
 const CDN = 'https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg/kanji/';
 const RAW = 'https://raw.githubusercontent.com/KanjiVG/kanjivg/main/kanji/';
@@ -25,6 +26,16 @@ function loadKanjiList() {
   }
   const { KANJI } = JSON.parse(readFileSync(KANJI_JSON, 'utf8'));
   const list = KANJI.map(row => row[0]);
+  return [...new Set(list)];
+}
+
+/** Single-character kana from the kana chart (combination kana like きゃ skipped) */
+function loadKanaList() {
+  if (!existsSync(KANA_JSON)) return [];
+  const data = JSON.parse(readFileSync(KANA_JSON, 'utf8'));
+  const list = [...(data.HIRA || []), ...(data.KATA || [])]
+    .map(([ch]) => ch)
+    .filter(ch => [...ch].length === 1);
   return [...new Set(list)];
 }
 
@@ -62,20 +73,24 @@ async function fetchKanji(ch) {
 
 async function main() {
   const KANJI_LIST = loadKanjiList();
-  console.log(`Fetching KanjiVG stroke data for ${KANJI_LIST.length} kanji (every build)…`);
+  // Kana come from the same KanjiVG source (hiragana/katakana codepoints);
+  // combination kana like きゃ have no single glyph, so only 1-char cells.
+  const KANA_LIST = loadKanaList();
+  const LIST = [...new Set([...KANJI_LIST, ...KANA_LIST])];
+  console.log(`Fetching KanjiVG stroke data for ${KANJI_LIST.length} kanji + ${KANA_LIST.length} kana (every build)…`);
 
   const result = {};
   let ok = 0;
   const BATCH = 8;
 
-  for (let i = 0; i < KANJI_LIST.length; i += BATCH) {
-    const batch = KANJI_LIST.slice(i, i + BATCH);
+  for (let i = 0; i < LIST.length; i += BATCH) {
+    const batch = LIST.slice(i, i + BATCH);
     await Promise.all(
       batch.map(async (ch) => {
         const paths = await fetchKanji(ch);
         result[ch] = paths;
         if (paths.length) ok++;
-        process.stdout.write(`\r  ${Math.min(i + batch.length, KANJI_LIST.length)}/${KANJI_LIST.length} fetched…`);
+        process.stdout.write(`\r  ${Math.min(i + batch.length, LIST.length)}/${LIST.length} fetched…`);
       })
     );
   }
@@ -84,7 +99,8 @@ async function main() {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 
   writeFileSync(OUT, JSON.stringify(result));
-  console.log(`\nSaved ${ok}/${KANJI_LIST.length} kanji stroke sets → src/data/kanjivg-strokes.json`);
+  const kanaOk = KANA_LIST.filter(ch => result[ch]?.length).length;
+  console.log(`\nSaved ${ok}/${LIST.length} stroke sets (${kanaOk}/${KANA_LIST.length} kana) → src/data/kanjivg-strokes.json`);
 }
 
 main().catch((e) => {

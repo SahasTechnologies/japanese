@@ -8,7 +8,7 @@
  * Options: { time?: number (seconds), rate?: number (TTS rate),
  *            back?: () => void, onDone?: (score, total) => void }
  */
-import { HAS_TTS, speak } from './tts.js';
+import { HAS_TTS, speak, speakWithBtn } from './tts.js';
 import { fmtTime, msgFor } from './helpers.js';
 
 export function quiz(container, qs, opts = {}) {
@@ -40,7 +40,8 @@ export function quiz(container, qs, opts = {}) {
 
     if (q.speak && HAS_TTS) {
       speak(q.speak, opts.rate);
-      container.querySelector('#sp-btn').onclick = () => speak(q.speak, opts.rate);
+      const spBtn = container.querySelector('#sp-btn');
+      spBtn.onclick = () => speakWithBtn(q.speak, spBtn, opts.rate);
     }
 
     options.forEach((op, idx) => {

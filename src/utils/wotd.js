@@ -22,7 +22,9 @@
  */
 
 const WOTD_ENDPOINT = '/api/wotd';
-const CACHE_KEY = 'n5app-wotd-v2';
+// v3: discard entries cached before the server aligned its cache expiry to the
+// daily word rollover — those could pin yesterday's word under today's date.
+const CACHE_KEY = 'n5app-wotd-v3';
 
 function todayKey() {
   const d = new Date();
@@ -32,7 +34,9 @@ function todayKey() {
 function fetchWithTimeout(url, ms) {
   const controller = new AbortController();
   const t = setTimeout(() => controller.abort(), ms);
-  return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(t));
+  // no-cache: revalidate with the function instead of trusting a stored
+  // browser-cached copy (older deployments sent a 12h Cache-Control)
+  return fetch(url, { signal: controller.signal, cache: 'no-cache' }).finally(() => clearTimeout(t));
 }
 
 function audioHref(el) {

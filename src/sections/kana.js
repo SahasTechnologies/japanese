@@ -2,7 +2,7 @@ import kana from '../data/kana.json' with { type: 'json' };
 const { HIRA, KATA, HIRA_ROWS, KATA_ROWS } = kana;
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
-import { speak } from '../utils/tts.js';
+import { speakWithBtn } from '../utils/tts.js';
 import { updateBest } from '../state.js';
 
 let kanaSet = 'hira';
@@ -68,7 +68,7 @@ export function renderKana() {
       cell.className = 'kcell';
       cell.innerHTML = `<span class="k">${ch}</span><span class="r">${r}</span>`;
       cell.title = r;
-      cell.onclick = () => speak(ch);
+      cell.onclick = () => speakWithBtn(ch, cell);
       grid.appendChild(cell);
     });
     wrap.appendChild(grid);

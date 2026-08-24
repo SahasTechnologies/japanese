@@ -44,3 +44,12 @@ export function fmtTime(s) {
   const m = Math.floor(s / 60), r = s % 60;
   return `${m}:${r < 10 ? '0' : ''}${r}`;
 }
+
+/** Number → Japanese numeral (一, 二, … 十二, … 99). Falls back to String(). */
+const JP_DIGITS = ['', '一', '二', '三', '四', '五', '六', '七', '八', '九'];
+export function jpNum(n) {
+  n = Math.round(Number(n));
+  if (!(n >= 1 && n <= 99)) return String(n);
+  const tens = Math.floor(n / 10), ones = n % 10;
+  return (tens ? (tens > 1 ? JP_DIGITS[tens] : '') + '十' : '') + JP_DIGITS[ones];
+}

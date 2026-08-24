@@ -11,7 +11,7 @@
  * as far as kana — but it still accepts a correctly typed kanji answer.
  */
 import * as wanakana from 'wanakana';
-import { speak } from './tts.js';
+import { speakWithBtn } from './tts.js';
 import { shuffle } from './helpers.js';
 
 /**
@@ -62,7 +62,7 @@ export function writingPractice(container, words, opts = {}) {
     else wanakana.bind(input, { IMEMode: true });
     input.focus();
 
-    document.getElementById('wp-speak').onclick = () => speak(expr);
+    document.getElementById('wp-speak').onclick = e => speakWithBtn(expr, e.currentTarget);
 
     const fb = document.getElementById('wp-fb');
     function check() {

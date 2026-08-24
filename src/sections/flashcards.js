@@ -8,7 +8,7 @@ const { HIRA, KATA } = kana;
 const { KANJI } = kanjiData;
 const ALLVOCAB = Object.values(VOCAB).flat();
 import { shuffle } from '../utils/helpers.js';
-import { speak } from '../utils/tts.js';
+import { speakWithBtn } from '../utils/tts.js';
 import { getState, save, formatVocabWord } from '../state.js';
 
 const DECKS = {
@@ -202,7 +202,7 @@ function renderCard() {
   document.getElementById('fc-flip').onclick = flip;
 
   if (c.speak) {
-    document.getElementById('fc-speak').onclick = () => speak(c.speak);
+    document.getElementById('fc-speak').onclick = () => speakWithBtn(c.speak, document.getElementById('fc-speak'));
   }
 
   document.getElementById('fc-know').onclick = () => {

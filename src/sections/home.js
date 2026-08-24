@@ -1,7 +1,7 @@
-import { ring } from '../utils/helpers.js';
+import { ring, jpNum } from '../utils/helpers.js';
 import { getState } from '../state.js';
 import { fetchWordOfTheDay } from '../utils/wotd.js';
-import { speak } from '../utils/tts.js';
+import { speakWithBtn } from '../utils/tts.js';
 import courseworkData from '../data/coursework.json' with { type: 'json' };
 import { openUnit } from './coursework.js';
 const { UNITS } = courseworkData;
@@ -92,7 +92,7 @@ export function renderHome(navigate) {
     const el = document.createElement('div');
     el.innerHTML = tileHtml({
       id: 'coursework',
-      icon: String(u.id),
+      icon: jpNum(u.id),
       label: u.title,
       desc: u.subtitle,
       color: 'var(--red)',
@@ -156,7 +156,7 @@ async function mountWordOfTheDay() {
   if (!document.getElementById('wotd-mount')) return;
   mount.innerHTML = wotdContentHtml(data);
   const speakBtn = document.getElementById('wotd-speak');
-  if (speakBtn && data) speakBtn.onclick = () => speak(data.audio || data.word);
+  if (speakBtn && data) speakBtn.onclick = () => speakWithBtn(data.audio || data.word, speakBtn);
   const exBtn = document.getElementById('wotd-ex-speak');
-  if (exBtn && data?.example) exBtn.onclick = () => speak(data.example.audio || data.example.jp);
+  if (exBtn && data?.example) exBtn.onclick = () => speakWithBtn(data.example.audio || data.example.jp, exBtn);
 }

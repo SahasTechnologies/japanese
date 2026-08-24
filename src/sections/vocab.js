@@ -2,7 +2,7 @@ import VOCAB from '../data/vocab.json' with { type: 'json' };
 const ALLVOCAB = Object.values(VOCAB).flat();
 import { runFullQuiz } from '../utils/fullQuiz.js';
 import { shuffle } from '../utils/helpers.js';
-import { speak } from '../utils/tts.js';
+import { speakWithBtn } from '../utils/tts.js';
 import {
   updateBest, getState, save,
   toggleVocabLearned, setVocabKanjiMode, setShowFurigana,
@@ -213,7 +213,7 @@ export function renderVocab() {
 
     card.querySelector('.v-speaker').onclick = ev => {
       ev.stopPropagation();
-      speak(w[0]);
+      speakWithBtn(w[0], card.querySelector('.v-speaker'));
     };
     card.querySelector('.v-learn').onclick = ev => {
       ev.stopPropagation();
@@ -228,7 +228,7 @@ export function renderVocab() {
     card.querySelectorAll('.v-ex-speak').forEach(b => {
       b.onclick = ev => {
         ev.stopPropagation();
-        speak(b.dataset.say);
+        speakWithBtn(b.dataset.say, b);
       };
     });
     // click card body toggles examples

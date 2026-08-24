@@ -193,7 +193,7 @@ function renderKanjiDetail() {
   document.getElementById('read-btn').onclick = () => { toggleKanjiFlag(k[0], 'read'); renderKanjiDetail(); };
   document.getElementById('write-btn').onclick = () => { toggleKanjiFlag(k[0], 'write'); renderKanjiDetail(); };
 
-  mountKanjiPractice(document.getElementById('kp-mount'), k[0], { mode: strokeMode });
+  mountKanjiPractice(document.getElementById('kp-mount'), k[0], { mode: strokeMode, showTabs: false });
 }
 
 /* ============================================================
@@ -222,17 +222,19 @@ const GUIDES = `
  * Mount the stroke-order/trace widget into `root`.
  * @param {HTMLElement} root - empty container to render into
  * @param {string} glyph - the kanji character
- * @param {{mode?: 'watch'|'trace', onModeChange?: (mode:string)=>void}} opts
+ * @param {{mode?: 'watch'|'trace', showTabs?: boolean, onModeChange?: (mode:string)=>void}} opts
  */
 export function mountKanjiPractice(root, glyph, opts = {}) {
   let mode = opts.mode || 'watch';
+  const showTabs = opts.showTabs !== false; // hide when the host page renders its own Watch/Trace tabs
 
   function paint() {
     root.innerHTML = `
+      ${showTabs ? `
       <div class="mode-tabs" style="display:flex;gap:8px;margin-bottom:12px">
         <button class="btn ${mode === 'watch' ? 'red' : ''}" data-role="mw"><ion-icon name="play-outline"></ion-icon> Watch</button>
         <button class="btn ${mode === 'trace' ? 'red' : ''}" data-role="mt"><ion-icon name="pencil-outline"></ion-icon> Trace</button>
-      </div>
+      </div>` : ''}
       <div class="canvas-wrap" data-role="cw">
         <svg data-role="stage" viewBox="-8 -8 125 125"></svg>
         <div class="stamp" data-role="stamp">完</div>
@@ -240,8 +242,10 @@ export function mountKanjiPractice(root, glyph, opts = {}) {
       <div data-role="ctl"></div>
       <div class="tp-msg" data-role="tpmsg"></div>`;
 
-    root.querySelector('[data-role="mw"]').onclick = () => { mode = 'watch'; opts.onModeChange?.(mode); paint(); };
-    root.querySelector('[data-role="mt"]').onclick = () => { mode = 'trace'; opts.onModeChange?.(mode); paint(); };
+    if (showTabs) {
+      root.querySelector('[data-role="mw"]').onclick = () => { mode = 'watch'; opts.onModeChange?.(mode); paint(); };
+      root.querySelector('[data-role="mt"]').onclick = () => { mode = 'trace'; opts.onModeChange?.(mode); paint(); };
+    }
 
     loadKanjiStrokes(root, glyph, mode);
   }
@@ -270,39 +274,49 @@ function loadKanjiStrokes(root, ch, mode) {
 
   const ghostG  = svgEl('g', {});
   const strokeG = svgEl('g', {});
-  const numG    = svgEl('g', {});
   svg.appendChild(ghostG);
   svg.appendChild(strokeG);
-  svg.appendChild(numG);
 
   const paths = [];
-  ds.forEach((d, j) => {
+  ds.forEach(d => {
     ghostG.appendChild(svgEl('path', { d, class: 'ghost' }));
     const sp = svgEl('path', { d, class: 'stroke' });
+    // Hidden until its animation starts — a fully dash-offset path with round
+    // caps can still render a stray dot at the start point in some browsers.
+    sp.style.visibility = 'hidden';
     strokeG.appendChild(sp);
     const len = sp.getTotalLength();
     sp.style.strokeDasharray = len;
     sp.style.strokeDashoffset = len;
-
-    const m  = d.match(/M\s*([-0-9.]+)[\s,]+([-0-9.]+)/);
-    const sx = Math.min(Math.max(m ? +m[1] : 0, 3), 106);
-    const sy = Math.min(Math.max(m ? +m[2] : 0, 3), 106);
-
-    const g = svgEl('g', {});
-    g.appendChild(svgEl('circle', { cx: sx, cy: sy, r: 3.4, class: 'stroke-num-dot' }));
-    const tx = svgEl('text', { x: sx, y: sy, dy: '0.34em', 'text-anchor': 'middle' });
-    tx.textContent = j + 1;
-    tx.setAttribute('fill', '#fff');
-    tx.setAttribute('font-size', '4.9');
-    tx.setAttribute('font-family', 'IBM Plex Mono');
-    g.appendChild(tx);
-    numG.appendChild(g);
-
-    paths.push({ el: sp, len, d, sx, sy });
+    paths.push({ el: sp, len, d });
   });
 
-  if (mode === 'watch') setupWatch(root, paths, ctl, msg);
-  else setupTrace(root, paths, svg, cw, ctl, msg, numG);
+  if (mode === 'watch') {
+    // Stroke numbers are a watch-mode aid; trace mode uses the arrow guide instead
+    const numG = svgEl('g', {});
+    svg.appendChild(numG);
+    paths.forEach((p, j) => {
+      const m  = p.d.match(/M\s*([-0-9.]+)[\s,]+([-0-9.]+)/);
+      const sx = Math.min(Math.max(m ? +m[1] : 0, 3), 106);
+      const sy = Math.min(Math.max(m ? +m[2] : 0, 3), 106);
+      p.sx = sx; p.sy = sy;
+      const g = svgEl('g', {});
+      g.appendChild(svgEl('circle', { cx: sx, cy: sy, r: 3.4, class: 'stroke-num-dot' }));
+      const tx = svgEl('text', { x: sx, y: sy, dy: '0.34em', 'text-anchor': 'middle' });
+      tx.textContent = j + 1;
+      tx.setAttribute('fill', '#fff');
+      tx.setAttribute('font-size', '4.9');
+      tx.setAttribute('font-family', 'IBM Plex Mono');
+      g.appendChild(tx);
+      numG.appendChild(g);
+    });
+    setupWatch(root, paths, ctl, msg);
+  } else {
+    // The animated stroke layer is watch-mode only; hiding it entirely also
+    // guarantees no stray "dot" artifacts can appear while tracing.
+    strokeG.style.display = 'none';
+    setupTrace(root, paths, svg, cw, ctl, msg);
+  }
 }
 
 /* ---- Watch mode ---- */
@@ -316,7 +330,7 @@ function setupWatch(root, paths, ctl, msg) {
   let i = 0, playing = false, raf = null;
 
   function reset() {
-    paths.forEach(p => { p.el.style.strokeDashoffset = p.len; p.el.classList.remove('current'); });
+    paths.forEach(p => { p.el.style.strokeDashoffset = p.len; p.el.style.visibility = 'hidden'; p.el.classList.remove('current'); });
     i = 0;
     root.querySelector('[data-role="stamp"]')?.classList.remove('show');
   }
@@ -333,6 +347,7 @@ function setupWatch(root, paths, ctl, msg) {
       return;
     }
     const p = paths[i];
+    p.el.style.visibility = 'visible';
     p.el.classList.add('current');
     const dur = Math.max(160, (p.len / 210) * 1000);
     const t0 = performance.now();
@@ -374,6 +389,21 @@ function setupWatch(root, paths, ctl, msg) {
 /* ---- Trace mode ---- */
 const SAMPLES = 22;
 
+/* Small arrow polygon pointing along +X, centered on (0,0) — rotated into
+   place for both the start button and the end-of-stroke arrowhead. */
+const ARROW_PTS = '-1.5,-2.1 2.3,0 -1.5,2.1';
+
+/** Start/end points and travel direction (deg) of a stroke path */
+function pathEnds(el) {
+  const L = el.getTotalLength();
+  const a = el.getPointAtLength(0);
+  const b = el.getPointAtLength(Math.min(2.5, L));
+  const c = el.getPointAtLength(L);
+  const d = el.getPointAtLength(Math.max(0, L - 2.5));
+  const deg = (p, q) => Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI;
+  return { sx: a.x, sy: a.y, sAng: deg(a, b), ex: c.x, ey: c.y, eAng: deg(d, c) };
+}
+
 function resample(poly, n) {
   if (poly.length < 2) return null;
   const d = [0];
@@ -406,12 +436,11 @@ function distStats(a, b) {
   return { mean: s / a.length, max: mx };
 }
 
-function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
+function setupTrace(root, paths, svg, cw, ctl, msg) {
   cw.classList.add('trace');
   let showGuide = true;
   let showGhost = true;
   let showGrid = true;
-  let showNums = true;
   const gridGroup = svg.querySelector('.grid-group');
 
   ctl.innerHTML = `
@@ -423,25 +452,13 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
     <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
       <button class="btn" data-role="guide-btn"><ion-icon name="locate-outline"></ion-icon> Guide: On</button>
       <button class="btn" data-role="ghost-btn"><ion-icon name="layers-outline"></ion-icon> Outline: On</button>
-    </div>
-    <div class="btnrow" style="margin-top:8px;flex-wrap:wrap">
       <button class="btn" data-role="grid-btn"><ion-icon name="grid-outline"></ion-icon> Grid lines: On</button>
-      <button class="btn" data-role="num-btn"><ion-icon name="list-outline"></ion-icon> Numbers: On</button>
     </div>
     <p style="font-size:12px;color:var(--ink2);margin-top:8px">Turn everything off for a completely freehand challenge.</p>`;
 
   const targetG = svgEl('g', {});
   const doneG   = svgEl('g', {});
   const drawG   = svgEl('g', {});
-  const startDot = svgEl('circle', { r: 3.4, class: 'trace-dot', visibility: 'hidden' });
-  const startNum = svgEl('text', {
-    'text-anchor': 'middle',
-    fill: '#9c2b1e',
-    'font-size': '5',
-    'font-family': 'IBM Plex Mono',
-  });
-  targetG.appendChild(startDot);
-  targetG.appendChild(startNum);
   svg.appendChild(targetG);
   svg.appendChild(doneG);
   svg.appendChild(drawG);
@@ -462,6 +479,9 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
     return { pts, len: L };
   });
 
+  // Start/end geometry for the arrow guide, computed once per stroke
+  const ends = paths.map(p => pathEnds(p.el));
+
   let cur = 0, drawing = false, pts = [], curLine = null, busy = false;
 
   function setGhostVisible(on) {
@@ -479,25 +499,26 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
   }
 
   function showTarget() {
-    [...targetG.querySelectorAll('path.trace-target')].forEach(el => el.remove());
-    if (cur >= paths.length) {
-      startDot.setAttribute('visibility', 'hidden');
-      startNum.textContent = '';
-      return;
-    }
-    if (showGuide) {
-      const guidePath = svgEl('path', { d: paths[cur].d, class: 'trace-target' });
-      targetG.insertBefore(guidePath, startDot);
-      startDot.setAttribute('cx', paths[cur].sx);
-      startDot.setAttribute('cy', paths[cur].sy);
-      startDot.setAttribute('visibility', 'visible');
-      startNum.setAttribute('x', paths[cur].sx);
-      startNum.setAttribute('y', Math.max(paths[cur].sy - 6, 2.5));
-      startNum.textContent = String(cur + 1);
-    } else {
-      startDot.setAttribute('visibility', 'hidden');
-      startNum.textContent = '';
-    }
+    targetG.innerHTML = '';
+    if (cur >= paths.length) return;
+    if (!showGuide) return;
+    const e = ends[cur];
+    // Wide "road" under the dashed line, Duolingo-style
+    targetG.appendChild(svgEl('path', { d: paths[cur].d, class: 'trace-road' }));
+    targetG.appendChild(svgEl('path', { d: paths[cur].d, class: 'trace-target' }));
+    // Arrowhead showing travel direction at the end of the stroke
+    targetG.appendChild(svgEl('polygon', {
+      points: ARROW_PTS, class: 'trace-arrow-head',
+      transform: `translate(${e.ex.toFixed(2)} ${e.ey.toFixed(2)}) rotate(${e.eAng.toFixed(1)})`,
+    }));
+    // Round start button with an arrow, showing where to begin
+    const sx = Math.min(Math.max(e.sx, 3), 106);
+    const sy = Math.min(Math.max(e.sy, 3), 106);
+    targetG.appendChild(svgEl('circle', { cx: sx, cy: sy, r: 5, class: 'trace-start-btn' }));
+    targetG.appendChild(svgEl('polygon', {
+      points: ARROW_PTS, class: 'trace-start-arrow',
+      transform: `translate(${sx.toFixed(2)} ${sy.toFixed(2)}) rotate(${e.sAng.toFixed(1)})`,
+    }));
   }
 
   function updMsg() {
@@ -506,7 +527,7 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
       msg.className = 'tp-msg ok';
       root.querySelector('[data-role="stamp"]')?.classList.add('show');
     } else if (showGuide) {
-      msg.textContent = `Stroke ${cur + 1} of ${paths.length} — start at the red dot`;
+      msg.textContent = `Stroke ${cur + 1} of ${paths.length} — start at the arrow`;
       msg.className = 'tp-msg';
     } else {
       msg.textContent = `Stroke ${cur + 1} of ${paths.length} — freehand (no guide)`;
@@ -534,7 +555,7 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
     if (rev.mean < fwd.mean * 0.8) return { ok: false, msg: 'Wrong direction.' };
     if (showGuide) {
       const sd = Math.hypot(u[0][0] - s.pts[0][0], u[0][1] - s.pts[0][1]);
-      if (sd > 15) return { ok: false, msg: 'Start closer to the red dot.' };
+      if (sd > 15) return { ok: false, msg: 'Start closer to the arrow.' };
     }
     if (fwd.mean > (showGuide ? 8.6 : 12) || fwd.max > (showGuide ? 19 : 28)) {
       return { ok: false, msg: 'Off the stroke — try again.' };
@@ -615,9 +636,7 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
   ctl.querySelector('[data-role="show-btn"]').onclick = () => {
     if (busy || !paths.length) return;
     busy = true;
-    [...targetG.querySelectorAll('path.trace-target')].forEach(el => el.remove());
-    startDot.setAttribute('visibility', 'hidden');
-    startNum.textContent = '';
+    targetG.innerHTML = '';
     const prevDisplay = doneG.style.display;
     doneG.style.display = 'none';
     drawG.innerHTML = '';
@@ -642,12 +661,6 @@ function setupTrace(root, paths, svg, cw, ctl, msg, numG) {
     if (gridGroup) gridGroup.style.display = showGrid ? '' : 'none';
     ctl.querySelector('[data-role="grid-btn"]').innerHTML =
       `<ion-icon name="grid-outline"></ion-icon> Grid lines: ${showGrid ? 'On' : 'Off'}`;
-  };
-  ctl.querySelector('[data-role="num-btn"]').onclick = () => {
-    showNums = !showNums;
-    if (numG) numG.style.display = showNums ? '' : 'none';
-    ctl.querySelector('[data-role="num-btn"]').innerHTML =
-      `<ion-icon name="list-outline"></ion-icon> Numbers: ${showNums ? 'On' : 'Off'}`;
   };
 
   showTarget();

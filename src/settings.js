@@ -63,11 +63,18 @@ const UI_FONTS = [
 ];
 
 const DEFAULTS = {
-  theme: 'light',
+  theme: 'system',
   colors: { ...LIGHT_COLORS },
   jpFont: 'shippori-mincho',
   uiFont: 'noto-sans-jp',
 };
+
+const THEME_OPTIONS = [
+  { id: 'light', icon: 'sunny-outline', label: 'Light' },
+  { id: 'dark', icon: 'moon-outline', label: 'Dark' },
+  { id: 'system', icon: 'desktop-outline', label: 'System' },
+  { id: 'custom', icon: 'color-palette-outline', label: 'Custom' },
+];
 
 let onResetProgress = null;
 
@@ -85,11 +92,11 @@ function loadSettings() {
     } else {
       const legacy = localStorage.getItem(LEGACY_THEME_KEY);
       if (legacy === 'dark' || legacy === 'light') s.theme = legacy;
-      else if (window.matchMedia('(prefers-color-scheme: dark)').matches) s.theme = 'dark';
+      else s.theme = 'system';
       if (s.theme === 'dark') s.colors = { ...DARK_COLORS };
     }
   } catch (_) { /* ignore */ }
-  if (!['light', 'dark', 'custom'].includes(s.theme)) s.theme = 'light';
+  if (!['light', 'dark', 'system', 'custom'].includes(s.theme)) s.theme = 'system';
   if (!JP_FONTS.some(f => f.id === s.jpFont)) s.jpFont = DEFAULTS.jpFont;
   if (!UI_FONTS.some(f => f.id === s.uiFont)) s.uiFont = DEFAULTS.uiFont;
   return s;
@@ -132,11 +139,18 @@ function loadFont(id, href) {
   document.head.appendChild(link);
 }
 
+/** 'system' resolves to the OS preference; everything else passes through. */
+function resolvedTheme(theme) {
+  if (theme !== 'system') return theme;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function applyColors(theme, colors) {
   const root = document.documentElement;
-  const palette = theme === 'dark' ? DARK_COLORS : theme === 'light' ? LIGHT_COLORS : colors;
+  const eff = resolvedTheme(theme);
 
   if (theme === 'custom') {
+    const palette = colors;
     root.setAttribute('data-theme', luminance(palette.paper) < 140 ? 'dark' : 'light');
     const redDeep = mix(palette.red, '#000000', 0.22);
     const redSoft = mix(palette.red, palette.card, 0.88);
@@ -160,7 +174,7 @@ function applyColors(theme, colors) {
     root.style.setProperty('--btn-primary-fg', palette.btnFg);
     root.style.setProperty('--btn-primary-hover', mix(palette.btnBg, palette.ink, 0.15));
   } else {
-    root.setAttribute('data-theme', theme);
+    root.setAttribute('data-theme', eff);
     [
       '--paper', '--card', '--ink', '--ink2', '--line', '--line-hover',
       '--red', '--red-deep', '--red-soft', '--header-bg', '--surface-soft',
@@ -219,9 +233,9 @@ function renderDialog(s) {
       <section class="set-section">
         <h3 class="set-h">Theme</h3>
         <div class="set-seg" role="radiogroup" aria-label="Theme">
-          ${['light', 'dark', 'custom'].map(t => `
-            <button type="button" class="set-seg-btn ${s.theme === t ? 'on' : ''}" data-theme="${t}">
-              ${t[0].toUpperCase() + t.slice(1)}
+          ${THEME_OPTIONS.map(t => `
+            <button type="button" class="set-seg-btn ${s.theme === t.id ? 'on' : ''}" data-theme="${t.id}" aria-label="${t.label} theme">
+              <ion-icon name="${t.icon}"></ion-icon><span>${t.label}</span>
             </button>`).join('')}
         </div>
         <div class="set-colors ${customHidden}" id="setColors">
@@ -249,7 +263,9 @@ function renderDialog(s) {
       <section class="set-section set-danger">
         <h3 class="set-h">Progress</h3>
         <p class="set-hint">Clears best scores, learned lists, and flashcard piles on this device. Settings are kept.</p>
-        <button type="button" class="btn set-reset" id="setReset">Reset all progress</button>
+        <button type="button" class="btn set-reset" id="setReset">
+          <ion-icon name="trash-outline"></ion-icon> Reset all progress
+        </button>
       </section>
     </div>`;
 }
@@ -331,6 +347,14 @@ export function initSettings({ onReset } = {}) {
       bindDialog(dialog, getS, setS);
       if (typeof dialog.showModal === 'function') dialog.showModal();
       else dialog.setAttribute('open', '');
+    });
+  }
+
+  // Follow OS light/dark switches while in system theme
+  const colorSchemeMq = window.matchMedia('(prefers-color-scheme: dark)');
+  if (colorSchemeMq.addEventListener) {
+    colorSchemeMq.addEventListener('change', () => {
+      if (s.theme === 'system') applySettings(s);
     });
   }
 }

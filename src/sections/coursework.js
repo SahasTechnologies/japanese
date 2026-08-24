@@ -2,8 +2,8 @@ import courseworkData from '../data/coursework.json' with { type: 'json' };
 import kanjiData from '../data/kanji.json' with { type: 'json' };
 const { UNITS } = courseworkData;
 const { KANJI, RADICALS } = kanjiData;
-import { speak } from '../utils/tts.js';
-import { shuffle } from '../utils/helpers.js';
+import { speakWithBtn } from '../utils/tts.js';
+import { shuffle, jpNum } from '../utils/helpers.js';
 import { writingPractice } from '../utils/writing.js';
 import { exampleSentences } from './vocab.js';
 import { updateBest, getState, toggleCourseworkLearned } from '../state.js';
@@ -59,7 +59,7 @@ function renderUnitList() {
     tile.type = 'button';
     tile.className = 'cw-unit-tile' + (has ? '' : ' empty');
     tile.innerHTML = `
-      <div class="cw-unit-num">${u.id}</div>
+      <div class="cw-unit-num" lang="ja">${jpNum(u.id)}</div>
       <div class="cw-unit-title">${esc(u.title)}</div>
       <div class="cw-unit-sub">${esc(u.subtitle)}</div>`;
     tile.onclick = () => { selUnit = u; renderCoursework(); window.scrollTo({ top: 0, behavior: 'instant' }); };
@@ -375,7 +375,7 @@ function renderUnitDetail() {
     btn.onclick = ev => {
       ev.stopPropagation();
       const say = btn.dataset.say || btn.closest('.cw-vcard')?.dataset.expr;
-      if (say) speak(say);
+      if (say) speakWithBtn(say, btn);
     };
   });
 
@@ -478,7 +478,8 @@ function renderUnitFlashcards(container, pool) {
     const flip = () => { flipped = !flipped; document.getElementById('cwf-card').classList.toggle('flipped', flipped); };
     document.getElementById('cwf-card').onclick = flip;
     document.getElementById('cwf-flip').onclick = flip;
-    document.getElementById('cwf-speak').onclick = () => speak(c[0]);
+    const cwfSpeak = document.getElementById('cwf-speak');
+    if (cwfSpeak) cwfSpeak.onclick = () => speakWithBtn(c[0], cwfSpeak);
     document.getElementById('cwf-next').onclick = () => { idx++; flipped = false; draw(); };
   }
   draw();

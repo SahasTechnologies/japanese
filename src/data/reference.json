@@ -119,6 +119,34 @@
     [
       "大丈夫です",
       "I am OK"
+    ],
+    [
+      "いってきます",
+      "I am off (leaving home)"
+    ],
+    [
+      "いってらっしゃい",
+      "take care (to someone leaving)"
+    ],
+    [
+      "ただいま",
+      "I am home"
+    ],
+    [
+      "おかえりなさい",
+      "welcome home"
+    ],
+    [
+      "どうぞ",
+      "please; go ahead"
+    ],
+    [
+      "お願いします",
+      "please (requesting)"
+    ],
+    [
+      "もう一度 お願いします",
+      "once more, please"
     ]
   ],
   "NUMBERS": [

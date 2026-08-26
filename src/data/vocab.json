@@ -129,6 +129,36 @@
       "私",
       "わたし",
       "I, myself"
+    ],
+    [
+      "彼",
+      "かれ",
+      "he; boyfriend"
+    ],
+    [
+      "彼女",
+      "かのじょ",
+      "she; girlfriend"
+    ],
+    [
+      "僕",
+      "ぼく",
+      "I (casual, male)"
+    ],
+    [
+      "〜さん",
+      "さん",
+      "polite name suffix (Mr/Ms)"
+    ],
+    [
+      "〜ちゃん",
+      "ちゃん",
+      "cute name suffix"
+    ],
+    [
+      "〜くん",
+      "くん",
+      "name suffix for boys/ juniors"
     ]
   ],
   "Family & People": [
@@ -336,6 +366,31 @@
       "留学生",
       "りゅうがくせい",
       "international student"
+    ],
+    [
+      "おばさん",
+      "おばさん",
+      "aunt; middle-aged woman"
+    ],
+    [
+      "おじさん",
+      "おじさん",
+      "uncle; middle-aged man"
+    ],
+    [
+      "いとこ",
+      "いとこ",
+      "cousin"
+    ],
+    [
+      "めい",
+      "めい",
+      "niece"
+    ],
+    [
+      "おい",
+      "おい",
+      "nephew"
     ]
   ],
   "Places": [
@@ -1167,6 +1222,11 @@
       "来年",
       "らいねん",
       "next year"
+    ],
+    [
+      "一昨年",
+      "おととし",
+      "the year before last"
     ]
   ],
   "Transport": [
@@ -2262,6 +2322,46 @@
       "渡る",
       "わたる",
       "to cross over, to go across"
+    ],
+    [
+      "います",
+      "います",
+      "to be; to exist (animate)"
+    ],
+    [
+      "寝ます",
+      "ねます",
+      "to sleep; to go to bed"
+    ],
+    [
+      "起きます",
+      "おきます",
+      "to wake up; to get up"
+    ],
+    [
+      "洗います",
+      "あらいます",
+      "to wash"
+    ],
+    [
+      "出します",
+      "だします",
+      "to send; to take out"
+    ],
+    [
+      "入ります",
+      "はいります",
+      "to enter; to insert"
+    ],
+    [
+      "出ます",
+      "でます",
+      "to leave; to exit"
+    ],
+    [
+      "帰ります",
+      "かえります",
+      "to go home; to return"
     ]
   ],
   "i-Adjectives": [
@@ -2563,6 +2663,136 @@
       "零",
       "れい",
       "zero, nought"
+    ],
+    [
+      "やっぱり",
+      "やっぱり",
+      "as I thought; after all"
+    ],
+    [
+      "おはようございます",
+      "おはようございます",
+      "good morning (polite)"
+    ],
+    [
+      "おはよう",
+      "おはよう",
+      "good morning (casual)"
+    ],
+    [
+      "こんばんは",
+      "こんばんは",
+      "good evening"
+    ],
+    [
+      "おやすみなさい",
+      "おやすみなさい",
+      "good night"
+    ],
+    [
+      "すみません",
+      "すみません",
+      "excuse me; I am sorry"
+    ],
+    [
+      "ごめんなさい",
+      "ごめんなさい",
+      "I am sorry (casual)"
+    ],
+    [
+      "はじめまして",
+      "はじめまして",
+      "nice to meet you"
+    ],
+    [
+      "ありがとうございます",
+      "ありがとうございます",
+      "thank you (polite)"
+    ],
+    [
+      "どういたしまして",
+      "どういたしまして",
+      "you are welcome"
+    ],
+    [
+      "いただきます",
+      "いただきます",
+      "said before eating"
+    ],
+    [
+      "ごちそうさま",
+      "ごちそうさま",
+      "said after eating"
+    ],
+    [
+      "いってきます",
+      "いってきます",
+      "I am off (leaving home)"
+    ],
+    [
+      "いってらっしゃい",
+      "いってらっしゃい",
+      "take care (to someone leaving)"
+    ],
+    [
+      "ただいま",
+      "ただいま",
+      "I am home"
+    ],
+    [
+      "おかえりなさい",
+      "おかえりなさい",
+      "welcome home"
+    ],
+    [
+      "だいじょうぶ",
+      "だいじょうぶ",
+      "all right; okay"
+    ],
+    [
+      "ちょっと待って",
+      "ちょっとまって",
+      "wait a moment"
+    ],
+    [
+      "たいてい",
+      "たいてい",
+      "usually"
+    ],
+    [
+      "ときどき",
+      "ときどき",
+      "sometimes"
+    ],
+    [
+      "ぜんぜん",
+      "ぜんぜん",
+      "not at all (with negative)"
+    ],
+    [
+      "すぐ",
+      "すぐ",
+      "soon; right away"
+    ],
+    [
+      "もちろん",
+      "もちろん",
+      "of course"
+    ],
+    [
+      "ほんとうに",
+      "ほんとうに",
+      "really; truly"
+    ],
+    [
+      "すこし",
+      "すこし",
+      "a little"
+    ],
+    [
+      "ぜんぶ",
+      "ぜんぶ",
+      "everything; all"
     ]
   ],
   "Katakana Loanwords": [
@@ -2795,6 +3025,11 @@
       "レコード",
       "レコード",
       "record"
+    ],
+    [
+      "スリッパ",
+      "スリッパ",
+      "slippers"
     ]
   ],
   "Other": [

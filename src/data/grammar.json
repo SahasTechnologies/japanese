@@ -374,6 +374,246 @@
           "There are five students."
         ]
       ]
+    },
+    {
+      "t": "〜ないでください",
+      "p": "Verb ない-form + ないでください",
+      "e": "Asks someone politely not to do something — the negative request version of 〜てください.",
+      "x": [
+        [
+          "ここで 写真を 撮らないでください。",
+          "Please do not take photos here."
+        ],
+        [
+          "窓を 開けないで ください。",
+          "Please do not open the window."
+        ]
+      ]
+    },
+    {
+      "t": "〜が ほしいです",
+      "p": "Noun + が ほしいです",
+      "e": "Expresses wanting a thing (not an action). For wanting to do things, use 〜たいです.",
+      "x": [
+        [
+          "新しい パソコンが ほしいです。",
+          "I want a new computer."
+        ],
+        [
+          "誕生日に 何が ほしいですか。",
+          "What do you want for your birthday?"
+        ]
+      ]
+    },
+    {
+      "t": "〜ましょうか",
+      "p": "Verb ます-stem + ましょうか",
+      "e": "Offers help or suggests doing something together — \"shall I / shall we?\".",
+      "x": [
+        [
+          "手伝いましょうか。",
+          "Shall I help you?"
+        ],
+        [
+          "少し 休みましょうか。",
+          "Shall we take a short break?"
+        ]
+      ]
+    },
+    {
+      "t": "〜前に / 〜後で",
+      "p": "Dictionary-form + 前に / た-form + 後で",
+      "e": "前に = before doing something; 後で = after doing something.",
+      "x": [
+        [
+          "寝る前に、歯を 磨きます。",
+          "I brush my teeth before going to bed."
+        ],
+        [
+          "仕事が 終わった後で、映画を 見ます。",
+          "After work I will watch a movie."
+        ]
+      ]
+    },
+    {
+      "t": "〜とき",
+      "p": "Dictionary/た-form + とき",
+      "e": "とき attaches to a verb to mean \"when / at the time that\" something happens.",
+      "x": [
+        [
+          "ひまな とき、音楽を 聞きます。",
+          "When I am free, I listen to music."
+        ],
+        [
+          "日本へ 行った とき、着物を 買いました。",
+          "When I went to Japan, I bought a kimono."
+        ]
+      ]
+    },
+    {
+      "t": "〜から / 〜ので (because)",
+      "p": "Plain form + から / ので",
+      "e": "Gives a reason. ので sounds softer and more formal than から.",
+      "x": [
+        [
+          "時間が なかったから、昼ごはんを 食べませんでした。",
+          "Because there was no time, I did not eat lunch."
+        ],
+        [
+          "危ないので、そこに 入らないで ください。",
+          "It is dangerous, so please do not go in there."
+        ]
+      ]
+    },
+    {
+      "t": "〜けど / 〜が (but)",
+      "p": "Plain form + けど / が",
+      "e": "Connects two clauses with \"but\". が is more formal, けど more conversational.",
+      "x": [
+        [
+          "この 店は 高いけど、おいしいです。",
+          "This restaurant is expensive but delicious."
+        ],
+        [
+          "日本語は 難しいですが、面白いです。",
+          "Japanese is difficult, but interesting."
+        ]
+      ]
+    },
+    {
+      "t": "〜たり〜たりする",
+      "p": "た-form + り, た-form + り する",
+      "e": "Lists example activities (\"things like A and B\") instead of all actions.",
+      "x": [
+        [
+          "日曜日は 本を 読んだり、音楽を 聞いたり します。",
+          "On Sundays I do things like reading and listening to music."
+        ],
+        [
+          "休みの 日は 掃除したり、洗濯したり します。",
+          "On days off I do things like cleaning and laundry."
+        ]
+      ]
+    },
+    {
+      "t": "〜くなる / 〜になる",
+      "p": "い-adj く + なる / な-adj・Noun + に + なる",
+      "e": "Expresses something becoming or turning into a state.",
+      "x": [
+        [
+          "春に なって、暖かく なりました。",
+          "It became spring and got warm."
+        ],
+        [
+          "息子は 先生に なりたいです。",
+          "My son wants to become a teacher."
+        ]
+      ]
+    },
+    {
+      "t": "〜すぎる",
+      "p": "Verb ます-stem / い-adj stem + すぎる",
+      "e": "Means \"too much\" of something — overdoing an action or exceeding a degree.",
+      "x": [
+        [
+          "昨日は 食べすぎました。",
+          "I ate too much yesterday."
+        ],
+        [
+          "この 財布は 高すぎます。",
+          "This wallet is too expensive."
+        ]
+      ]
+    },
+    {
+      "t": "〜に行きます",
+      "p": "Verb ます-stem + に 行きます",
+      "e": "States the purpose of movement — going somewhere in order to do something.",
+      "x": [
+        [
+          "図書館へ 本を 借りに 行きます。",
+          "I'm going to the library to borrow a book."
+        ],
+        [
+          "友達に 会いに 東京へ 行きました。",
+          "I went to Tokyo to meet a friend."
+        ]
+      ]
+    },
+    {
+      "t": "〜だけ",
+      "p": "Noun / Verb + だけ",
+      "e": "Means \"only; just\" — limiting the amount or scope.",
+      "x": [
+        [
+          "私だけ 知りませんでした。",
+          "Only I did not know."
+        ],
+        [
+          "少し だけ 食べます。",
+          "I will eat just a little."
+        ]
+      ]
+    },
+    {
+      "t": "〜しか〜ない",
+      "p": "Noun + しか + Negative verb",
+      "e": "\"Nothing but / only\" — always pairs with a negative verb.",
+      "x": [
+        [
+          "日本語しか 話せません。",
+          "I can speak only Japanese."
+        ],
+        [
+          "水しか 飲みません。",
+          "I drink nothing but water."
+        ]
+      ]
+    },
+    {
+      "t": "〜ね / 〜よ",
+      "p": "Sentence + ね / よ",
+      "e": "ね seeks agreement or confirmation (\"right?\"); よ tells the listener new information.",
+      "x": [
+        [
+          "今日は 暑いですね。",
+          "It is hot today, is it not."
+        ],
+        [
+          "この 店は 安いですよ。",
+          "This shop is cheap, you know."
+        ]
+      ]
+    },
+    {
+      "t": "〜ても",
+      "p": "て-form + も",
+      "e": "\"Even if / even though\" — the second action happens regardless of the first.",
+      "x": [
+        [
+          "雨が 降っても、行きます。",
+          "Even if it rains, I will go."
+        ],
+        [
+          "高くても、買いたいです。",
+          "Even though it is expensive, I want to buy it."
+        ]
+      ]
+    },
+    {
+      "t": "Plain verb forms",
+      "p": "〜る / 〜ない / 〜た / 〜なかった",
+      "e": "The plain (dictionary) forms. Used in writing, with plain-form grammar, and before nouns.",
+      "x": [
+        [
+          "毎日 コーヒーを 飲む。",
+          "I drink coffee every day. (plain)"
+        ],
+        [
+          "昨日は 何も 食べなかった。",
+          "I ate nothing yesterday. (plain past negative)"
+        ]
+      ]
     }
   ],
   "PARTICLE_QUIZ": [
@@ -773,6 +1013,226 @@
         "は",
         "を",
         "に",
+        "へ"
+      ],
+      "a": 0
+    },
+    {
+      "q": "ここで 写真を 撮ら___ください。",
+      "o": [
+        "ないで",
+        "ない",
+        "なくて",
+        "ます"
+      ],
+      "a": 0
+    },
+    {
+      "q": "新しい 車が ___です。",
+      "o": [
+        "ほしい",
+        "ほしく",
+        "ほしいの",
+        "ほしがる"
+      ],
+      "a": 0
+    },
+    {
+      "q": "荷物を 持ち___か。",
+      "o": [
+        "ましょう",
+        "ます",
+        "ません",
+        "たい"
+      ],
+      "a": 0
+    },
+    {
+      "q": "寝る___、本を 読みます。",
+      "o": [
+        "前に",
+        "後で",
+        "とき",
+        "から"
+      ],
+      "a": 0
+    },
+    {
+      "q": "仕事が 終わった___、飲みに行きます。",
+      "o": [
+        "後で",
+        "前に",
+        "とき",
+        "まで"
+      ],
+      "a": 0
+    },
+    {
+      "q": "ひまな___、何を しますか。",
+      "o": [
+        "とき",
+        "ころ",
+        "ごろ",
+        "まで"
+      ],
+      "a": 0
+    },
+    {
+      "q": "時間が なかった___、行きませんでした。",
+      "o": [
+        "から",
+        "ので",
+        "けど",
+        "のに"
+      ],
+      "a": 0
+    },
+    {
+      "q": "危ない___、そこに 入らないで ください。",
+      "o": [
+        "ので",
+        "から",
+        "けど",
+        "が"
+      ],
+      "a": 0
+    },
+    {
+      "q": "この 店は 高い___、おいしいです。",
+      "o": [
+        "けど",
+        "から",
+        "ので",
+        "まで"
+      ],
+      "a": 0
+    },
+    {
+      "q": "休みの日は 本を 読んだ___、音楽を 聞いた___ します。",
+      "o": [
+        "り、り",
+        "が、が",
+        "に、に",
+        "で、で"
+      ],
+      "a": 0
+    },
+    {
+      "q": "春になって、暖かく___。",
+      "o": [
+        "なりました",
+        "します",
+        "います",
+        "ください"
+      ],
+      "a": 0
+    },
+    {
+      "q": "昨日は 食べ___ました。",
+      "o": [
+        "すぎ",
+        "に",
+        "たい",
+        "ながら"
+      ],
+      "a": 0
+    },
+    {
+      "q": "図書館へ 本を 借り___ 行きます。",
+      "o": [
+        "に",
+        "が",
+        "を",
+        "は"
+      ],
+      "a": 0
+    },
+    {
+      "q": "私___ 知りませんでした。",
+      "o": [
+        "だけ",
+        "しか",
+        "も",
+        "は"
+      ],
+      "a": 0
+    },
+    {
+      "q": "日本語___ 話せません。",
+      "o": [
+        "しか",
+        "だけ",
+        "が",
+        "を"
+      ],
+      "a": 0
+    },
+    {
+      "q": "今日は 暑いです___。",
+      "o": [
+        "ね",
+        "よ",
+        "か",
+        "の"
+      ],
+      "a": 0
+    },
+    {
+      "q": "この 店は 安いです___。知っていましたか。",
+      "o": [
+        "よ",
+        "ね",
+        "か",
+        "が"
+      ],
+      "a": 0
+    },
+    {
+      "q": "雨が 降って___、行きます。",
+      "o": [
+        "も",
+        "は",
+        "を",
+        "に"
+      ],
+      "a": 0
+    },
+    {
+      "q": "昨日は 何も 食べ___。",
+      "o": [
+        "なかった",
+        "ませんでした",
+        "ないでした",
+        "なかったです"
+      ],
+      "a": 0
+    },
+    {
+      "q": "毎日 コーヒーを 飲___。",
+      "o": [
+        "む",
+        "みます",
+        "んだ",
+        "ります"
+      ],
+      "a": 0
+    },
+    {
+      "q": "電車___ バスのほうが 安いです。",
+      "o": [
+        "より",
+        "が",
+        "を",
+        "に"
+      ],
+      "a": 0
+    },
+    {
+      "q": "犬___ 猫のほうが 好きです。",
+      "o": [
+        "より",
+        "は",
+        "の",
         "へ"
       ],
       "a": 0

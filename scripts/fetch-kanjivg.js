@@ -15,10 +15,11 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT = join(__dirname, '../src/data/kanjivg-strokes.json');
 const KANJI_JSON = join(__dirname, '../src/data/kanji.json');
+const KANJI_N4_JSON = join(__dirname, '../src/data/kanji-n4.json');
 const KANA_JSON = join(__dirname, '../src/data/kana.json');
 
 const CDN = 'https://cdn.jsdelivr.net/gh/KanjiVG/kanjivg/kanji/';
-const RAW = 'https://raw.githubusercontent.com/KanjiVG/kanjivg/main/kanji/';
+const RAW = 'https://raw.githubusercontent.com/KanjiVG/kanjivg/master/kanji/';
 
 function loadKanjiList() {
   if (!existsSync(KANJI_JSON)) {
@@ -26,6 +27,10 @@ function loadKanjiList() {
   }
   const { KANJI } = JSON.parse(readFileSync(KANJI_JSON, 'utf8'));
   const list = KANJI.map(row => row[0]);
+  if (existsSync(KANJI_N4_JSON)) {
+    const { KANJI: KANJI4 } = JSON.parse(readFileSync(KANJI_N4_JSON, 'utf8'));
+    list.push(...KANJI4.map(row => row[0]));
+  }
   return [...new Set(list)];
 }
 

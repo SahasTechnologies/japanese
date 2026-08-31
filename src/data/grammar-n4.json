@@ -1,0 +1,604 @@
+{
+ "GRAMMAR": [
+  {
+   "t": "Passive voice (受身形)",
+   "p": "〜れる・〜られる",
+   "e": "Forms the passive: something is done (to the subject) by someone. う-verbs: 書く→書かれる. る-verbs: 見る→見られる. する→される, 来る→来られる.",
+   "x": [
+    [
+     "この本は多くの人に読まれています。",
+     "This book is read by many people."
+    ],
+    [
+     "先生に褒められました。",
+     "I was praised by the teacher."
+    ]
+   ]
+  },
+  {
+   "t": "Causative (使役形)",
+   "p": "〜せる・〜させる",
+   "e": "Makes or lets someone do something. う-verbs: 書く→書かせる. る-verbs: 見る→見させる. する→させる, 来る→来させる.",
+   "x": [
+    [
+     "母は私に部屋を掃除させました。",
+     "My mother made me clean the room."
+    ],
+    [
+     "先生は学生に本を読ませました。",
+     "The teacher had the students read the book."
+    ]
+   ]
+  },
+  {
+   "t": "Causative-passive (使役受身形)",
+   "p": "〜せられる・〜される",
+   "e": "Being made to do something against one's will. う-verbs often contract: 話す→話させられる→話さされる (colloquial).",
+   "x": [
+    [
+     "妹に部屋の掃除をさせられました。",
+     "I was made to clean the room by my sister."
+    ],
+    [
+     "嫌いな野菜を食べさせられた。",
+     "I was made to eat vegetables I dislike."
+    ]
+   ]
+  },
+  {
+   "t": "Potential form (可能形)",
+   "p": "〜れる・〜られる",
+   "e": "Expresses ability — 'can do'. う-verbs: 話す→話せる. る-verbs: 食べる→食べられる. する→できる, 来る→来られる. The object particle を is often replaced with が.",
+   "x": [
+    [
+     "漢字が少し読めます。",
+     "I can read a little kanji."
+    ],
+    [
+     "この魚は生で食べられます。",
+     "This fish can be eaten raw."
+    ]
+   ]
+  },
+  {
+   "t": "Volitional form (意向形)",
+   "p": "〜よう・〜おう",
+   "e": "Plain form of 'let's...' / 'I will...'. う-verbs: 行く→行こう. る-verbs: 食べる→食べよう. する→しよう, 来る→来よう. Also used with 〜と思う for stating intentions.",
+   "x": [
+    [
+     "少し休もう。",
+     "Let's rest a little."
+    ],
+    [
+     "来年、留学しようと思っています。",
+     "I'm thinking of studying abroad next year."
+    ]
+   ]
+  },
+  {
+   "t": "Imperative & prohibitive (命令形・禁止形)",
+   "p": "〜ろ・〜え / 〜な",
+   "e": "Blunt command forms, mostly heard from teachers, coaches, signs, or in anger. 〜な directly after the dictionary form means 'don't'.",
+   "x": [
+    [
+     "早く起きろ！",
+     "Get up now!"
+    ],
+    [
+     "ここに入るな。",
+     "Don't enter here."
+    ]
+   ]
+  },
+  {
+   "t": "〜ておく",
+   "p": "て-form + おく",
+   "e": "To do something in advance / to leave something as it is for later convenience.",
+   "x": [
+    [
+     "旅行の前に部屋を片付けておきます。",
+     "I'll tidy the room in advance, before the trip."
+    ],
+    [
+     "飲み物を買っておいてください。",
+     "Please buy drinks in advance."
+    ]
+   ]
+  },
+  {
+   "t": "〜てしまう",
+   "p": "て-form + しまう",
+   "e": "Completion of an action, often with a nuance of regret or something unintended. Casual contraction: 〜ちゃう / 〜じゃう.",
+   "x": [
+    [
+     "宿題を忘れてしまいました。",
+     "I ended up forgetting my homework."
+    ],
+    [
+     "もう食べちゃった。",
+     "I already ate it (all)."
+    ]
+   ]
+  },
+  {
+   "t": "〜てみる",
+   "p": "て-form + みる",
+   "e": "To try doing something and see what happens.",
+   "x": [
+    [
+     "新しいレストランに行ってみました。",
+     "I tried going to a new restaurant."
+    ],
+    [
+     "一度作ってみてください。",
+     "Please try making it once."
+    ]
+   ]
+  },
+  {
+   "t": "〜てある",
+   "p": "て-form (transitive) + ある",
+   "e": "Describes a resultant state that someone deliberately set up — implies a purpose behind the state, unlike 〜ている.",
+   "x": [
+    [
+     "壁に絵が飾ってあります。",
+     "A picture is hung (decoratively) on the wall."
+    ],
+    [
+     "ドアはもう閉めてあります。",
+     "The door has already been closed (on purpose)."
+    ]
+   ]
+  },
+  {
+   "t": "〜始める / 〜出す",
+   "p": "ます-stem + 始める / 出す",
+   "e": "To start doing something. 〜出す often has a nuance of suddenness.",
+   "x": [
+    [
+     "雨が降り始めました。",
+     "It started to rain."
+    ],
+    [
+     "急に泣き出した。",
+     "He/she suddenly burst into tears."
+    ]
+   ]
+  },
+  {
+   "t": "〜続ける / 〜終わる",
+   "p": "ます-stem + 続ける / 終わる",
+   "e": "To keep doing something (続ける) or finish doing something (終わる).",
+   "x": [
+    [
+     "彼は10年間、日本語を勉強し続けています。",
+     "He has kept studying Japanese for 10 years."
+    ],
+    [
+     "レポートを書き終わりました。",
+     "I finished writing the report."
+    ]
+   ]
+  },
+  {
+   "t": "〜やすい / 〜にくい",
+   "p": "ます-stem + やすい／にくい",
+   "e": "Easy to do (やすい) or hard to do (にくい).",
+   "x": [
+    [
+     "この辞書は使いやすいです。",
+     "This dictionary is easy to use."
+    ],
+    [
+     "この漢字は読みにくいです。",
+     "This kanji is hard to read."
+    ]
+   ]
+  },
+  {
+   "t": "〜がる",
+   "p": "i-adj/na-adj stem + がる",
+   "e": "Shows that a third person appears to feel/want something (feelings can't be stated directly for others in Japanese).",
+   "x": [
+    [
+     "妹は新しいゲームを欲しがっています。",
+     "My little sister wants the new game."
+    ],
+    [
+     "子供は暗い所を怖がります。",
+     "Children are scared of dark places."
+    ]
+   ]
+  },
+  {
+   "t": "〜そう (looks like / seems)",
+   "p": "stem + そう",
+   "e": "様態 (appearance): based on what you see, something looks like it will happen or seems to be a certain way. i-adjectives drop い (いい→よさそう); verbs use the ます-stem.",
+   "x": [
+    [
+     "雨が降りそうです。",
+     "It looks like it's going to rain."
+    ],
+    [
+     "このケーキはおいしそうです。",
+     "This cake looks delicious."
+    ]
+   ]
+  },
+  {
+   "t": "〜そう (I heard that)",
+   "p": "plain form + そう",
+   "e": "伝聞 (hearsay): reporting information you heard or read, attached to the full plain form of a verb/adjective.",
+   "x": [
+    [
+     "天気予報によると、明日は晴れるそうです。",
+     "According to the weather forecast, it will be sunny tomorrow."
+    ],
+    [
+     "彼はもう国に帰ったそうです。",
+     "I heard he already went back to his country."
+    ]
+   ]
+  },
+  {
+   "t": "〜ようだ / 〜みたいだ",
+   "p": "plain form + ようだ／みたいだ",
+   "e": "Expresses a subjective impression or guess based on what the speaker senses or observes. みたいだ is the casual equivalent.",
+   "x": [
+    [
+     "誰もいないようです。",
+     "It seems like no one is here."
+    ],
+    [
+     "彼は疲れているみたいです。",
+     "He seems to be tired."
+    ]
+   ]
+  },
+  {
+   "t": "〜らしい",
+   "p": "plain form + らしい",
+   "e": "Expresses a guess based on outside information (hearsay-like, more objective/detached than ようだ).",
+   "x": [
+    [
+     "天気予報によると、明日は雨らしいです。",
+     "Apparently it will rain tomorrow, according to the forecast."
+    ],
+    [
+     "彼は忙しいらしく、来られないそうです。",
+     "He seems to be busy, so I heard he can't come."
+    ]
+   ]
+  },
+  {
+   "t": "〜はず",
+   "p": "plain form + はず",
+   "e": "Expresses a strong expectation based on logic or evidence: 'it should be the case that...'.",
+   "x": [
+    [
+     "彼はもう着いているはずです。",
+     "He should have already arrived."
+    ],
+    [
+     "今日は休みのはずです。",
+     "Today should be a day off."
+    ]
+   ]
+  },
+  {
+   "t": "〜かもしれない",
+   "p": "plain form + かもしれない",
+   "e": "Expresses possibility: 'might, maybe'. Polite form: 〜かもしれません.",
+   "x": [
+    [
+     "明日は雪が降るかもしれません。",
+     "It might snow tomorrow."
+    ],
+    [
+     "彼は知らないかもしれない。",
+     "He might not know."
+    ]
+   ]
+  },
+  {
+   "t": "〜でしょう / 〜だろう",
+   "p": "plain form + でしょう／だろう",
+   "e": "Expresses probability or a guess: 'probably'. でしょう is the polite form; だろう is plain.",
+   "x": [
+    [
+     "明日は晴れるでしょう。",
+     "It will probably be sunny tomorrow."
+    ],
+    [
+     "彼はもう寝ているだろう。",
+     "He's probably already asleep."
+    ]
+   ]
+  },
+  {
+   "t": "〜つもり",
+   "p": "plain form + つもり",
+   "e": "Expresses intention: 'I intend to / plan to'.",
+   "x": [
+    [
+     "来年、大学院に行くつもりです。",
+     "I intend to go to graduate school next year."
+    ],
+    [
+     "今日は残業しないつもりです。",
+     "I don't plan to work overtime today."
+    ]
+   ]
+  },
+  {
+   "t": "〜ことにする / 〜ことになる",
+   "p": "plain form + ことにする／ことになる",
+   "e": "ことにする: I decide to (a personal decision). ことになる: it has been decided/arranged (often by circumstances or others).",
+   "x": [
+    [
+     "来月から毎日運動することにしました。",
+     "I decided to exercise every day starting next month."
+    ],
+    [
+     "転勤することになりました。",
+     "It has been decided that I will be transferred."
+    ]
+   ]
+  },
+  {
+   "t": "〜ようにする / 〜ようになる",
+   "p": "plain form + ようにする／ようになる",
+   "e": "ようにする: to make an effort to do something habitually. ようになる: a change has occurred — now something is/isn't the case.",
+   "x": [
+    [
+     "毎日野菜を食べるようにしています。",
+     "I try to make sure I eat vegetables every day."
+    ],
+    [
+     "漢字が読めるようになりました。",
+     "I've become able to read kanji."
+    ]
+   ]
+  },
+  {
+   "t": "Conditional 〜と",
+   "p": "plain form + と",
+   "e": "Expresses a natural, automatic, or habitual consequence: 'if/when X, then always Y'. Not used for one-time invitations or suggestions.",
+   "x": [
+    [
+     "春になると、桜が咲きます。",
+     "When spring comes, the cherry blossoms bloom."
+    ],
+    [
+     "このボタンを押すと、電気がつきます。",
+     "If you press this button, the light turns on."
+    ]
+   ]
+  },
+  {
+   "t": "Conditional 〜ば",
+   "p": "ば-form",
+   "e": "A general conditional: 'if X, then Y'. う-verbs: え-段+ば. る-verbs: stem+れば. い-adj: 〜ければ. な-adj/noun: 〜であれば.",
+   "x": [
+    [
+     "安ければ買います。",
+     "If it's cheap, I'll buy it."
+    ],
+    [
+     "時間があれば、手伝ってください。",
+     "If you have time, please help me."
+    ]
+   ]
+  },
+  {
+   "t": "Conditional 〜たら",
+   "p": "た-form + ら",
+   "e": "A flexible conditional often used for one-time or hypothetical situations, and for sequences ('when X happens, then Y').",
+   "x": [
+    [
+     "雨が降ったら、試合は中止です。",
+     "If it rains, the game will be cancelled."
+    ],
+    [
+     "家に着いたら、電話してください。",
+     "When you get home, please call me."
+    ]
+   ]
+  },
+  {
+   "t": "Conditional 〜なら",
+   "p": "plain form + なら",
+   "e": "Conditional based on a topic or premise already mentioned — 'if that's the case, then...'. Often gives advice.",
+   "x": [
+    [
+     "京都に行くなら、清水寺がおすすめです。",
+     "If you're going to Kyoto, I recommend Kiyomizu Temple."
+    ],
+    [
+     "安いなら、買います。",
+     "If it's (going to be) cheap, I'll buy it."
+    ]
+   ]
+  },
+  {
+   "t": "〜のに",
+   "p": "plain form + のに",
+   "e": "'Even though...' — expresses surprise, dissatisfaction, or contrast between expectation and reality.",
+   "x": [
+    [
+     "一生懸命勉強したのに、テストに落ちました。",
+     "Even though I studied hard, I failed the test."
+    ],
+    [
+     "まだ子供なのに、とてもしっかりしています。",
+     "Even though he's still a child, he's very reliable."
+    ]
+   ]
+  },
+  {
+   "t": "〜ばかり",
+   "p": "noun/て-form + ばかり",
+   "e": "Only/nothing but (noun+ばかり), or 'just did X' (て-form+ばかり).",
+   "x": [
+    [
+     "彼はゲームばかりしています。",
+     "He does nothing but play games."
+    ],
+    [
+     "この本はさっき買ったばかりです。",
+     "I just bought this book a moment ago."
+    ]
+   ]
+  },
+  {
+   "t": "〜だけでなく〜も",
+   "p": "〜だけでなく〜も",
+   "e": "'Not only X but also Y' — adds emphasis beyond a single item.",
+   "x": [
+    [
+     "彼は英語だけでなく、フランス語も話せます。",
+     "He can speak not only English but also French."
+    ],
+    [
+     "この店は安いだけでなく、おいしいです。",
+     "This restaurant is not only cheap but also delicious."
+    ]
+   ]
+  },
+  {
+   "t": "〜として",
+   "p": "noun + として",
+   "e": "'As...' — indicates a role, capacity, or qualification.",
+   "x": [
+    [
+     "彼は先生として働いています。",
+     "He works as a teacher."
+    ],
+    [
+     "この問題について、代表として意見を言いました。",
+     "As the representative, I gave my opinion on this issue."
+    ]
+   ]
+  },
+  {
+   "t": "〜について",
+   "p": "noun + について",
+   "e": "'About, regarding' — introduces the topic being discussed.",
+   "x": [
+    [
+     "日本の歴史について勉強しています。",
+     "I'm studying about Japanese history."
+    ],
+    [
+     "この計画について話し合いましょう。",
+     "Let's discuss this plan."
+    ]
+   ]
+  },
+  {
+   "t": "〜によって",
+   "p": "noun + によって",
+   "e": "'By, due to, according to' — expresses cause, means, or a varying factor.",
+   "x": [
+    [
+     "この橋は台風によって壊れました。",
+     "This bridge was destroyed by the typhoon."
+    ],
+    [
+     "国によって習慣が違います。",
+     "Customs differ depending on the country."
+    ]
+   ]
+  },
+  {
+   "t": "〜場合は",
+   "p": "plain form + 場合は",
+   "e": "'In the case that...' — sets up a specific hypothetical situation, often for instructions or rules.",
+   "x": [
+    [
+     "雨の場合は、体育館で行います。",
+     "In case of rain, it will be held in the gym."
+    ],
+    [
+     "遅れる場合は、連絡してください。",
+     "If you're going to be late, please contact us."
+    ]
+   ]
+  },
+  {
+   "t": "〜てあげる / 〜てもらう / 〜てくれる",
+   "p": "て-form + あげる／もらう／くれる",
+   "e": "Extends giving/receiving verbs to actions: doing a favor for someone, having someone do something for you, or someone doing something for you.",
+   "x": [
+    [
+     "友達に本を貸してあげました。",
+     "I lent my friend a book (as a favor)."
+    ],
+    [
+     "先生に日本語を教えてもらいました。",
+     "I had the teacher teach me Japanese."
+    ]
+   ]
+  },
+  {
+   "t": "Honorific & humble speech (敬語の基礎)",
+   "p": "尊敬語・謙譲語",
+   "e": "尊敬語 (honorific) raises the listener/third person: いらっしゃる (行く/来る/いる), おっしゃる (言う). 謙譲語 (humble) lowers the speaker: 参る (行く/来る), 申す (言う), いただく (もらう/食べる).",
+   "x": [
+    [
+     "先生は明日いらっしゃいます。",
+     "The teacher will come tomorrow. (honorific)"
+    ],
+    [
+     "明日、そちらへ参ります。",
+     "I will go there tomorrow. (humble)"
+    ]
+   ]
+  },
+  {
+   "t": "お/ご + verb stem + する / になる",
+   "p": "お〜する（謙譲）・ お〜になる（尊敬）",
+   "e": "A common pattern to build humble (お〜する) and honorific (お〜になる) forms without memorizing irregular verbs.",
+   "x": [
+    [
+     "荷物をお持ちします。",
+     "Allow me to carry your luggage. (humble)"
+    ],
+    [
+     "何時にお戻りになりますか。",
+     "What time will you be returning? (honorific)"
+    ]
+   ]
+  },
+  {
+   "t": "〜なくてもいい",
+   "p": "ない-form (drop い) + くてもいい",
+   "e": "'You don't have to...' — the opposite of 〜なければならない.",
+   "x": [
+    [
+     "今日は残業しなくてもいいです。",
+     "I don't have to work overtime today."
+    ],
+    [
+     "心配しなくてもいいですよ。",
+     "You don't have to worry."
+    ]
+   ]
+  },
+  {
+   "t": "〜し〜し (listing reasons)",
+   "p": "plain form + し",
+   "e": "Lists two or more reasons/facts, often implying there are even more, and can lead to a conclusion.",
+   "x": [
+    [
+     "このアパートは安いし、駅から近いし、便利です。",
+     "This apartment is cheap, and it's close to the station, so it's convenient."
+    ],
+    [
+     "雨も降っているし、今日はやめましょう。",
+     "It's raining too, so let's not do it today."
+    ]
+   ]
+  }
+ ]
+}

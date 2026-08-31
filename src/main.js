@@ -8,21 +8,32 @@ import courseworkData from './data/coursework.json' with { type: 'json' };
 import { renderHome } from './sections/home.js';
 import { renderKana } from './sections/kana.js';
 import { renderKanji } from './sections/kanji.js';
+import { renderKanji4 } from './sections/kanji-n4.js';
 import { renderVocab } from './sections/vocab.js';
+import { renderVocab4 } from './sections/vocab-n4.js';
 import { renderGrammar } from './sections/grammar.js';
+import { renderGrammar4 } from './sections/grammar-n4.js';
 import { renderReading } from './sections/reading.js';
+import { renderReading4 } from './sections/reading-n4.js';
 import { renderListening } from './sections/listening.js';
+import { renderListening4 } from './sections/listening-n4.js';
 import { renderMock } from './sections/mock.js';
 import { renderRef } from './sections/reference.js';
 import { renderFlashcards } from './sections/flashcards.js';
 import { renderCoursework, openUnit } from './sections/coursework.js';
 import { renderWriting } from './sections/writing.js';
 import { renderPlacement } from './sections/placement.js';
+import kanjiData4 from './data/kanji-n4.json' with { type: 'json' };
+import VOCAB4 from './data/vocab-n4.json' with { type: 'json' };
+import grammar4 from './data/grammar-n4.json' with { type: 'json' };
 
 const { KANJI } = kanjiData;
 const { GRAMMAR } = grammar;
 const { UNITS } = courseworkData;
 const ALLVOCAB = Object.values(VOCAB).flat();
+const { KANJI: KANJI4 } = kanjiData4;
+const { GRAMMAR: GRAMMAR4 } = grammar4;
+const ALLVOCAB4 = Object.values(VOCAB4).flat();
 
 /* Two-tier navigation. JLPT sub-tabs are split into learning pages and
    testing/practice pages with a divider; Coursework sub-tabs jump straight
@@ -42,13 +53,30 @@ const JLPT_TEST = [
   { id: 'mock',      ic: '試', label: 'Mock Test' },
   { id: 'placement', ic: '検', label: 'Placement' },
 ];
+/* JLPT N4 sub-tabs. Kana, writing practice, mock test, and placement are
+   shared/not yet duplicated for N4, so only the N4-specific pages are listed;
+   Flashcards and Reference route to the same shared pages (they already
+   include N4 decks / cover both levels). */
+const JLPT4_LEARN = [
+  { id: 'kanji4',   ic: '漢', label: 'Kanji' },
+  { id: 'vocab4',   ic: '語', label: 'Vocabulary' },
+  { id: 'grammar4', ic: '文', label: 'Grammar' },
+  { id: 'ref',      ic: '本', label: 'Reference' },
+];
+const JLPT4_TEST = [
+  { id: 'reading4',   ic: '読', label: 'Reading' },
+  { id: 'listening4', ic: '聴', label: 'Listening' },
+  { id: 'flash',      ic: '札', label: 'Flashcards' },
+];
 const GROUPS = [
   { id: 'home', ic: '家', label: 'Home' },
   { id: 'jlpt', ic: '日', label: 'JLPT N5' },
+  { id: 'jlpt4', ic: '四', label: 'JLPT N4' },
   { id: 'coursework', ic: '級', label: 'Coursework' },
 ];
 const GROUP_OF = {};
 JLPT_LEARN.concat(JLPT_TEST).forEach(t => { GROUP_OF[t.id] = 'jlpt'; });
+JLPT4_LEARN.concat(JLPT4_TEST).forEach(t => { if (!GROUP_OF[t.id]) GROUP_OF[t.id] = 'jlpt4'; });
 
 let curTab = 'home';
 let curUnitId = null; // which coursework unit is open (nav highlight)
@@ -67,6 +95,11 @@ const routes = {
   placement: () => renderPlacement(navigateTo),
   coursework: () => renderCoursework(navigateTo),
   ref: () => renderRef(navigateTo),
+  kanji4: renderKanji4,
+  vocab4: renderVocab4,
+  grammar4: renderGrammar4,
+  reading4: renderReading4,
+  listening4: renderListening4,
 };
 
 export function navigateTo(tabId) {
@@ -101,10 +134,11 @@ function renderNav() {
   GROUPS.forEach(g => {
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'tab' + (curTab === g.id || (g.id === 'jlpt' && GROUP_OF[curTab] === 'jlpt') ? ' on' : '');
+    btn.className = 'tab' + (curTab === g.id || (g.id === 'jlpt' && GROUP_OF[curTab] === 'jlpt') || (g.id === 'jlpt4' && GROUP_OF[curTab] === 'jlpt4') ? ' on' : '');
     btn.innerHTML = `<span class="ic">${g.ic}</span>${g.label}`;
     btn.onclick = () => {
       if (g.id === 'jlpt') navigateTo('kana');
+      else if (g.id === 'jlpt4') navigateTo('kanji4');
       else if (g.id === 'coursework') goUnit(curUnitId || (UNITS[0] && UNITS[0].id) || 1);
       else navigateTo('home');
     };
@@ -113,7 +147,7 @@ function renderNav() {
 
   // Secondary row
   navsub.innerHTML = '';
-  if (GROUP_OF[curTab] === 'jlpt') {
+  if (GROUP_OF[curTab] === 'jlpt' || GROUP_OF[curTab] === 'jlpt4') {
     navsub.style.display = '';
     const mk = (t) => {
       const btn = document.createElement('button');
@@ -123,13 +157,15 @@ function renderNav() {
       btn.onclick = () => navigateTo(t.id);
       navsub.appendChild(btn);
     };
-    JLPT_LEARN.forEach(mk);
+    const learnTabs = GROUP_OF[curTab] === 'jlpt4' ? JLPT4_LEARN : JLPT_LEARN;
+    const testTabs = GROUP_OF[curTab] === 'jlpt4' ? JLPT4_TEST : JLPT_TEST;
+    learnTabs.forEach(mk);
     const div = document.createElement('span');
     div.className = 'nav-div';
     div.setAttribute('role', 'separator');
     div.title = 'Practice & testing';
     navsub.appendChild(div);
-    JLPT_TEST.forEach(mk);
+    testTabs.forEach(mk);
   } else if (curTab === 'coursework') {
     navsub.style.display = '';
     const all = document.createElement('button');
@@ -188,19 +224,37 @@ if (searchInput) {
       KANJI.forEach(k => {
         const hay = (k[0] + ' ' + (k[1]||'') + ' ' + (k[2]||'') + ' ' + k[3]).toLowerCase();
         if (hay.includes(q) || k[0].includes(q)) {
-          hits.push({ type: 'Kanji', title: k[0] + ' — ' + k[3], meta: `ON ${k[1]||'–'} · KUN ${k[2]||'–'}`, go: () => { navigateTo('kanji'); } });
+          hits.push({ type: 'Kanji · N5', title: k[0] + ' — ' + k[3], meta: `ON ${k[1]||'–'} · KUN ${k[2]||'–'}`, go: () => { navigateTo('kanji'); } });
+        }
+      });
+      KANJI4.forEach(k => {
+        const hay = (k[0] + ' ' + (k[1]||'') + ' ' + (k[2]||'') + ' ' + k[3]).toLowerCase();
+        if (hay.includes(q) || k[0].includes(q)) {
+          hits.push({ type: 'Kanji · N4', title: k[0] + ' — ' + k[3], meta: `ON ${k[1]||'–'} · KUN ${k[2]||'–'}`, go: () => { navigateTo('kanji4'); } });
         }
       });
       ALLVOCAB.forEach(w => {
         const hay = (w[0] + ' ' + w[1] + ' ' + w[2]).toLowerCase();
         if (hay.includes(q)) {
-          hits.push({ type: 'Vocab', title: w[0] + '（' + w[1] + '）', meta: w[2], go: () => navigateTo('vocab') });
+          hits.push({ type: 'Vocab · N5', title: w[0] + '（' + w[1] + '）', meta: w[2], go: () => navigateTo('vocab') });
+        }
+      });
+      ALLVOCAB4.forEach(w => {
+        const hay = (w[0] + ' ' + w[1] + ' ' + w[2]).toLowerCase();
+        if (hay.includes(q)) {
+          hits.push({ type: 'Vocab · N4', title: w[0] + '（' + w[1] + '）', meta: w[2], go: () => navigateTo('vocab4') });
         }
       });
       GRAMMAR.forEach(g => {
         const hay = (g.t + ' ' + g.p + ' ' + g.e).toLowerCase();
         if (hay.includes(q)) {
-          hits.push({ type: 'Grammar', title: g.t, meta: g.p, go: () => navigateTo('grammar') });
+          hits.push({ type: 'Grammar · N5', title: g.t, meta: g.p, go: () => navigateTo('grammar') });
+        }
+      });
+      GRAMMAR4.forEach(g => {
+        const hay = (g.t + ' ' + g.p + ' ' + g.e).toLowerCase();
+        if (hay.includes(q)) {
+          hits.push({ type: 'Grammar · N4', title: g.t, meta: g.p, go: () => navigateTo('grammar4') });
         }
       });
       main.innerHTML = `

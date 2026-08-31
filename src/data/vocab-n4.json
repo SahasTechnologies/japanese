@@ -1,0 +1,2295 @@
+{
+ "Family & People": [
+  [
+   "主人",
+   "しゅじん",
+   "husband, master"
+  ],
+  [
+   "家内",
+   "かない",
+   "(my) wife"
+  ],
+  [
+   "夫",
+   "おっと",
+   "husband"
+  ],
+  [
+   "妻",
+   "つま",
+   "wife"
+  ],
+  [
+   "両親",
+   "りょうしん",
+   "parents"
+  ],
+  [
+   "祖父",
+   "そふ",
+   "grandfather"
+  ],
+  [
+   "祖母",
+   "そぼ",
+   "grandmother"
+  ],
+  [
+   "孫",
+   "まご",
+   "grandchild"
+  ],
+  [
+   "親戚",
+   "しんせき",
+   "relative"
+  ],
+  [
+   "恋人",
+   "こいびと",
+   "boyfriend/girlfriend, sweetheart"
+  ],
+  [
+   "彼氏",
+   "かれし",
+   "boyfriend"
+  ],
+  [
+   "彼女",
+   "かのじょ",
+   "girlfriend; she"
+  ],
+  [
+   "大人",
+   "おとな",
+   "adult"
+  ],
+  [
+   "若者",
+   "わかもの",
+   "young person"
+  ],
+  [
+   "年寄り",
+   "としより",
+   "elderly person"
+  ],
+  [
+   "赤ちゃん",
+   "あかちゃん",
+   "baby"
+  ],
+  [
+   "社長",
+   "しゃちょう",
+   "company president"
+  ],
+  [
+   "部長",
+   "ぶちょう",
+   "department head"
+  ],
+  [
+   "課長",
+   "かちょう",
+   "section chief"
+  ],
+  [
+   "先輩",
+   "せんぱい",
+   "senior (colleague/classmate)"
+  ],
+  [
+   "後輩",
+   "こうはい",
+   "junior (colleague/classmate)"
+  ],
+  [
+   "同僚",
+   "どうりょう",
+   "colleague"
+  ],
+  [
+   "お互い",
+   "おたがい",
+   "each other"
+  ],
+  [
+   "自分",
+   "じぶん",
+   "oneself"
+  ],
+  [
+   "相手",
+   "あいて",
+   "the other party, partner"
+  ],
+  [
+   "他人",
+   "たにん",
+   "stranger, someone unrelated"
+  ],
+  [
+   "人口",
+   "じんこう",
+   "population"
+  ],
+  [
+   "人間",
+   "にんげん",
+   "human being"
+  ],
+  [
+   "個人",
+   "こじん",
+   "individual, private person"
+  ]
+ ],
+ "Home & Daily Life": [
+  [
+   "台所",
+   "だいどころ",
+   "kitchen"
+  ],
+  [
+   "押入れ",
+   "おしいれ",
+   "closet (Japanese-style)"
+  ],
+  [
+   "布団",
+   "ふとん",
+   "futon, bedding"
+  ],
+  [
+   "エアコン",
+   "えあこん",
+   "air conditioner"
+  ],
+  [
+   "暖房",
+   "だんぼう",
+   "heating"
+  ],
+  [
+   "冷房",
+   "れいぼう",
+   "air conditioning (cooling)"
+  ],
+  [
+   "洗濯",
+   "せんたく",
+   "laundry"
+  ],
+  [
+   "掃除",
+   "そうじ",
+   "cleaning"
+  ],
+  [
+   "片付ける",
+   "かたづける",
+   "to tidy up, put away"
+  ],
+  [
+   "用意",
+   "ようい",
+   "preparation"
+  ],
+  [
+   "準備",
+   "じゅんび",
+   "preparation"
+  ],
+  [
+   "引っ越し",
+   "ひっこし",
+   "moving house"
+  ],
+  [
+   "近所",
+   "きんじょ",
+   "neighborhood"
+  ],
+  [
+   "アパート",
+   "あぱーと",
+   "apartment"
+  ],
+  [
+   "生活",
+   "せいかつ",
+   "life, living"
+  ],
+  [
+   "習慣",
+   "しゅうかん",
+   "habit, custom"
+  ],
+  [
+   "予定",
+   "よてい",
+   "plan, schedule"
+  ],
+  [
+   "約束",
+   "やくそく",
+   "promise"
+  ],
+  [
+   "用事",
+   "ようじ",
+   "errand, business"
+  ],
+  [
+   "都合",
+   "つごう",
+   "convenience, circumstances"
+  ],
+  [
+   "世話",
+   "せわ",
+   "care, looking after"
+  ],
+  [
+   "苦労",
+   "くろう",
+   "hardship, trouble"
+  ],
+  [
+   "邪魔",
+   "じゃま",
+   "hindrance, nuisance"
+  ],
+  [
+   "迷惑",
+   "めいわく",
+   "trouble, annoyance"
+  ],
+  [
+   "遠慮",
+   "えんりょ",
+   "reserve, holding back"
+  ],
+  [
+   "我慢",
+   "がまん",
+   "patience, endurance"
+  ],
+  [
+   "挨拶",
+   "あいさつ",
+   "greeting"
+  ],
+  [
+   "招待",
+   "しょうたい",
+   "invitation"
+  ],
+  [
+   "案内",
+   "あんない",
+   "guidance, information"
+  ]
+ ],
+ "Feelings & Abstract Ideas": [
+  [
+   "気持ち",
+   "きもち",
+   "feeling"
+  ],
+  [
+   "気分",
+   "きぶん",
+   "mood, feeling"
+  ],
+  [
+   "心配",
+   "しんぱい",
+   "worry"
+  ],
+  [
+   "安心",
+   "あんしん",
+   "relief, peace of mind"
+  ],
+  [
+   "残念",
+   "ざんねん",
+   "regrettable, disappointing"
+  ],
+  [
+   "恥ずかしい",
+   "はずかしい",
+   "embarrassing, shy"
+  ],
+  [
+   "寂しい",
+   "さびしい",
+   "lonely"
+  ],
+  [
+   "懐かしい",
+   "なつかしい",
+   "nostalgic"
+  ],
+  [
+   "羨ましい",
+   "うらやましい",
+   "enviable, envious"
+  ],
+  [
+   "悔しい",
+   "くやしい",
+   "frustrating, regrettable"
+  ],
+  [
+   "満足",
+   "まんぞく",
+   "satisfaction"
+  ],
+  [
+   "不満",
+   "ふまん",
+   "dissatisfaction"
+  ],
+  [
+   "興味",
+   "きょうみ",
+   "interest"
+  ],
+  [
+   "関心",
+   "かんしん",
+   "interest, concern"
+  ],
+  [
+   "自信",
+   "じしん",
+   "confidence"
+  ],
+  [
+   "冗談",
+   "じょうだん",
+   "joke"
+  ],
+  [
+   "不思議",
+   "ふしぎ",
+   "strange, mysterious"
+  ],
+  [
+   "当然",
+   "とうぜん",
+   "natural, obvious"
+  ],
+  [
+   "当たり前",
+   "あたりまえ",
+   "natural, of course"
+  ],
+  [
+   "結構",
+   "けっこう",
+   "fine, satisfactory; quite"
+  ],
+  [
+   "重要",
+   "じゅうよう",
+   "important"
+  ],
+  [
+   "必要",
+   "ひつよう",
+   "necessary"
+  ],
+  [
+   "十分",
+   "じゅうぶん",
+   "enough, sufficient"
+  ],
+  [
+   "便利",
+   "べんり",
+   "convenient"
+  ],
+  [
+   "不便",
+   "ふべん",
+   "inconvenient"
+  ],
+  [
+   "複雑",
+   "ふくざつ",
+   "complicated"
+  ],
+  [
+   "単純",
+   "たんじゅん",
+   "simple"
+  ],
+  [
+   "特別",
+   "とくべつ",
+   "special"
+  ],
+  [
+   "普通",
+   "ふつう",
+   "normal, usual"
+  ],
+  [
+   "一般",
+   "いっぱん",
+   "general"
+  ],
+  [
+   "自由",
+   "じゆう",
+   "freedom"
+  ],
+  [
+   "平気",
+   "へいき",
+   "calm, unconcerned"
+  ],
+  [
+   "立派",
+   "りっぱ",
+   "splendid, fine"
+  ],
+  [
+   "様々",
+   "さまざま",
+   "various"
+  ],
+  [
+   "大変",
+   "たいへん",
+   "tough, serious; very"
+  ],
+  [
+   "積極的",
+   "せっきょくてき",
+   "proactive, positive"
+  ],
+  [
+   "消極的",
+   "しょうきょくてき",
+   "passive, negative"
+  ],
+  [
+   "一般的",
+   "いっぱんてき",
+   "general, common"
+  ]
+ ],
+ "Verbs": [
+  [
+   "集まる",
+   "あつまる",
+   "to gather (intr.)"
+  ],
+  [
+   "集める",
+   "あつめる",
+   "to gather (tr.)"
+  ],
+  [
+   "決まる",
+   "きまる",
+   "to be decided"
+  ],
+  [
+   "決める",
+   "きめる",
+   "to decide"
+  ],
+  [
+   "増える",
+   "ふえる",
+   "to increase (intr.)"
+  ],
+  [
+   "増やす",
+   "ふやす",
+   "to increase (tr.)"
+  ],
+  [
+   "減る",
+   "へる",
+   "to decrease (intr.)"
+  ],
+  [
+   "減らす",
+   "へらす",
+   "to decrease (tr.)"
+  ],
+  [
+   "続く",
+   "つづく",
+   "to continue (intr.)"
+  ],
+  [
+   "続ける",
+   "つづける",
+   "to continue (tr.)"
+  ],
+  [
+   "変わる",
+   "かわる",
+   "to change (intr.)"
+  ],
+  [
+   "変える",
+   "かえる",
+   "to change (tr.)"
+  ],
+  [
+   "育つ",
+   "そだつ",
+   "to grow up (intr.)"
+  ],
+  [
+   "育てる",
+   "そだてる",
+   "to raise, bring up"
+  ],
+  [
+   "直す",
+   "なおす",
+   "to fix, correct"
+  ],
+  [
+   "直る",
+   "なおる",
+   "to be fixed, repaired"
+  ],
+  [
+   "壊す",
+   "こわす",
+   "to break (tr.)"
+  ],
+  [
+   "壊れる",
+   "こわれる",
+   "to break (intr.)"
+  ],
+  [
+   "治す",
+   "なおす",
+   "to cure, heal"
+  ],
+  [
+   "治る",
+   "なおる",
+   "to recover, heal (intr.)"
+  ],
+  [
+   "倒れる",
+   "たおれる",
+   "to fall over, collapse"
+  ],
+  [
+   "落ちる",
+   "おちる",
+   "to fall, drop (intr.)"
+  ],
+  [
+   "落とす",
+   "おとす",
+   "to drop (tr.)"
+  ],
+  [
+   "生まれる",
+   "うまれる",
+   "to be born"
+  ],
+  [
+   "太る",
+   "ふとる",
+   "to gain weight"
+  ],
+  [
+   "痩せる",
+   "やせる",
+   "to lose weight"
+  ],
+  [
+   "疲れる",
+   "つかれる",
+   "to get tired"
+  ],
+  [
+   "慣れる",
+   "なれる",
+   "to get used to"
+  ],
+  [
+   "困る",
+   "こまる",
+   "to be troubled"
+  ],
+  [
+   "喜ぶ",
+   "よろこぶ",
+   "to be pleased, rejoice"
+  ],
+  [
+   "怒る",
+   "おこる",
+   "to get angry"
+  ],
+  [
+   "泣く",
+   "なく",
+   "to cry"
+  ],
+  [
+   "笑う",
+   "わらう",
+   "to laugh, smile"
+  ],
+  [
+   "驚く",
+   "おどろく",
+   "to be surprised"
+  ],
+  [
+   "感じる",
+   "かんじる",
+   "to feel"
+  ],
+  [
+   "信じる",
+   "しんじる",
+   "to believe"
+  ],
+  [
+   "比べる",
+   "くらべる",
+   "to compare"
+  ],
+  [
+   "調べる",
+   "しらべる",
+   "to look into, investigate"
+  ],
+  [
+   "伝える",
+   "つたえる",
+   "to convey, tell"
+  ],
+  [
+   "伝わる",
+   "つたわる",
+   "to be conveyed, spread"
+  ],
+  [
+   "届く",
+   "とどく",
+   "to reach, arrive"
+  ],
+  [
+   "届ける",
+   "とどける",
+   "to deliver, report"
+  ],
+  [
+   "渡る",
+   "わたる",
+   "to cross"
+  ],
+  [
+   "渡す",
+   "わたす",
+   "to hand over"
+  ],
+  [
+   "迎える",
+   "むかえる",
+   "to go to meet, welcome"
+  ],
+  [
+   "連れる",
+   "つれる",
+   "to take (a person) along"
+  ],
+  [
+   "誘う",
+   "さそう",
+   "to invite, ask along"
+  ],
+  [
+   "断る",
+   "ことわる",
+   "to refuse, decline"
+  ],
+  [
+   "謝る",
+   "あやまる",
+   "to apologize"
+  ],
+  [
+   "許す",
+   "ゆるす",
+   "to forgive, permit"
+  ],
+  [
+   "守る",
+   "まもる",
+   "to protect, keep (a promise)"
+  ],
+  [
+   "支える",
+   "ささえる",
+   "to support"
+  ],
+  [
+   "頑張る",
+   "がんばる",
+   "to do one's best, try hard"
+  ],
+  [
+   "失敗する",
+   "しっぱいする",
+   "to fail"
+  ],
+  [
+   "成功する",
+   "せいこうする",
+   "to succeed"
+  ],
+  [
+   "完成する",
+   "かんせいする",
+   "to be completed"
+  ],
+  [
+   "発見する",
+   "はっけんする",
+   "to discover"
+  ],
+  [
+   "発明する",
+   "はつめいする",
+   "to invent"
+  ],
+  [
+   "発達する",
+   "はったつする",
+   "to develop"
+  ],
+  [
+   "発展する",
+   "はってんする",
+   "to develop, expand"
+  ],
+  [
+   "変化する",
+   "へんかする",
+   "to change"
+  ],
+  [
+   "案内する",
+   "あんないする",
+   "to guide"
+  ],
+  [
+   "招待する",
+   "しょうたいする",
+   "to invite"
+  ],
+  [
+   "挨拶する",
+   "あいさつする",
+   "to greet"
+  ],
+  [
+   "相談する",
+   "そうだんする",
+   "to consult"
+  ],
+  [
+   "予約する",
+   "よやくする",
+   "to reserve, book"
+  ],
+  [
+   "予定する",
+   "よていする",
+   "to plan, schedule"
+  ],
+  [
+   "約束する",
+   "やくそくする",
+   "to promise"
+  ],
+  [
+   "反対する",
+   "はんたいする",
+   "to oppose"
+  ],
+  [
+   "賛成する",
+   "さんせいする",
+   "to agree, approve"
+  ],
+  [
+   "注文する",
+   "ちゅうもんする",
+   "to order (something)"
+  ],
+  [
+   "用意する",
+   "よういする",
+   "to prepare"
+  ],
+  [
+   "準備する",
+   "じゅんびする",
+   "to prepare"
+  ],
+  [
+   "経験する",
+   "けいけんする",
+   "to experience"
+  ],
+  [
+   "我慢する",
+   "がまんする",
+   "to endure, be patient"
+  ],
+  [
+   "遠慮する",
+   "えんりょする",
+   "to hold back, be reserved"
+  ],
+  [
+   "心配する",
+   "しんぱいする",
+   "to worry"
+  ],
+  [
+   "満足する",
+   "まんぞくする",
+   "to be satisfied"
+  ],
+  [
+   "信頼する",
+   "しんらいする",
+   "to trust, rely on"
+  ],
+  [
+   "尊敬する",
+   "そんけいする",
+   "to respect"
+  ],
+  [
+   "感謝する",
+   "かんしゃする",
+   "to be grateful"
+  ],
+  [
+   "返事する",
+   "へんじする",
+   "to reply"
+  ],
+  [
+   "連絡する",
+   "れんらくする",
+   "to contact"
+  ],
+  [
+   "確認する",
+   "かくにんする",
+   "to confirm"
+  ],
+  [
+   "提出する",
+   "ていしゅつする",
+   "to submit, turn in"
+  ],
+  [
+   "受ける",
+   "うける",
+   "to receive, undergo (a test)"
+  ],
+  [
+   "受け取る",
+   "うけとる",
+   "to receive, accept"
+  ],
+  [
+   "あげる",
+   "あげる",
+   "to give (to others)"
+  ],
+  [
+   "もらう",
+   "もらう",
+   "to receive"
+  ],
+  [
+   "くれる",
+   "くれる",
+   "to give (to me)"
+  ],
+  [
+   "さしあげる",
+   "さしあげる",
+   "to give (humble)"
+  ],
+  [
+   "いただく",
+   "いただく",
+   "to receive (humble)"
+  ],
+  [
+   "くださる",
+   "くださる",
+   "to give (respectful)"
+  ],
+  [
+   "やる",
+   "やる",
+   "to do; to give (to inferiors, plants, animals)"
+  ],
+  [
+   "聞こえる",
+   "きこえる",
+   "to be audible, be heard"
+  ],
+  [
+   "見える",
+   "みえる",
+   "to be visible, be seen"
+  ],
+  [
+   "向かう",
+   "むかう",
+   "to head toward"
+  ],
+  [
+   "通じる",
+   "つうじる",
+   "to be understood, communicate"
+  ],
+  [
+   "進む",
+   "すすむ",
+   "to advance, proceed"
+  ],
+  [
+   "進める",
+   "すすめる",
+   "to advance, promote"
+  ],
+  [
+   "過ぎる",
+   "すぎる",
+   "to pass, exceed"
+  ],
+  [
+   "過ごす",
+   "すごす",
+   "to spend (time)"
+  ],
+  [
+   "残る",
+   "のこる",
+   "to remain"
+  ],
+  [
+   "残す",
+   "のこす",
+   "to leave behind"
+  ],
+  [
+   "咲く",
+   "さく",
+   "to bloom"
+  ],
+  [
+   "植える",
+   "うえる",
+   "to plant"
+  ],
+  [
+   "囲む",
+   "かこむ",
+   "to surround"
+  ],
+  [
+   "加える",
+   "くわえる",
+   "to add"
+  ],
+  [
+   "加わる",
+   "くわわる",
+   "to be added, join"
+  ],
+  [
+   "含む",
+   "ふくむ",
+   "to include, contain"
+  ],
+  [
+   "従う",
+   "したがう",
+   "to follow, obey"
+  ],
+  [
+   "逃げる",
+   "にげる",
+   "to run away, escape"
+  ],
+  [
+   "追う",
+   "おう",
+   "to chase"
+  ],
+  [
+   "叩く",
+   "たたく",
+   "to hit, strike"
+  ],
+  [
+   "投げる",
+   "なげる",
+   "to throw"
+  ],
+  [
+   "拾う",
+   "ひろう",
+   "to pick up"
+  ],
+  [
+   "包む",
+   "つつむ",
+   "to wrap"
+  ],
+  [
+   "畳む",
+   "たたむ",
+   "to fold"
+  ],
+  [
+   "割る",
+   "わる",
+   "to break, split"
+  ],
+  [
+   "割れる",
+   "われる",
+   "to break, crack (intr.)"
+  ]
+ ],
+ "i-Adjectives": [
+  [
+   "眠い",
+   "ねむい",
+   "sleepy"
+  ],
+  [
+   "痛い",
+   "いたい",
+   "painful"
+  ],
+  [
+   "かゆい",
+   "かゆい",
+   "itchy"
+  ],
+  [
+   "厳しい",
+   "きびしい",
+   "strict, severe"
+  ],
+  [
+   "優しい",
+   "やさしい",
+   "kind, gentle"
+  ],
+  [
+   "詳しい",
+   "くわしい",
+   "detailed, knowledgeable"
+  ],
+  [
+   "珍しい",
+   "めずらしい",
+   "rare, unusual"
+  ],
+  [
+   "恐ろしい",
+   "おそろしい",
+   "terrifying"
+  ],
+  [
+   "苦しい",
+   "くるしい",
+   "painful, hard"
+  ],
+  [
+   "悲しい",
+   "かなしい",
+   "sad"
+  ],
+  [
+   "嬉しい",
+   "うれしい",
+   "happy, glad"
+  ],
+  [
+   "汚い",
+   "きたない",
+   "dirty"
+  ],
+  [
+   "危ない",
+   "あぶない",
+   "dangerous"
+  ],
+  [
+   "深い",
+   "ふかい",
+   "deep"
+  ],
+  [
+   "浅い",
+   "あさい",
+   "shallow"
+  ],
+  [
+   "濃い",
+   "こい",
+   "strong, thick, dark (color)"
+  ],
+  [
+   "薄い",
+   "うすい",
+   "thin, weak, light (color)"
+  ],
+  [
+   "固い",
+   "かたい",
+   "hard, firm"
+  ],
+  [
+   "柔らかい",
+   "やわらかい",
+   "soft"
+  ],
+  [
+   "厚い",
+   "あつい",
+   "thick"
+  ],
+  [
+   "狭い",
+   "せまい",
+   "narrow, cramped"
+  ],
+  [
+   "太い",
+   "ふとい",
+   "thick, fat"
+  ],
+  [
+   "細い",
+   "ほそい",
+   "thin, slender"
+  ],
+  [
+   "温かい",
+   "あたたかい",
+   "warm"
+  ],
+  [
+   "涼しい",
+   "すずしい",
+   "cool"
+  ],
+  [
+   "硬い",
+   "かたい",
+   "hard, stiff"
+  ],
+  [
+   "すごい",
+   "すごい",
+   "amazing, terrible"
+  ],
+  [
+   "もったいない",
+   "もったいない",
+   "wasteful"
+  ],
+  [
+   "うるさい",
+   "うるさい",
+   "noisy, annoying"
+  ],
+  [
+   "眩しい",
+   "まぶしい",
+   "dazzling, bright"
+  ],
+  [
+   "きつい",
+   "きつい",
+   "tight, tough, harsh"
+  ]
+ ],
+ "na-Adjectives": [
+  [
+   "熱心",
+   "ねっしん",
+   "enthusiastic"
+  ],
+  [
+   "丁寧",
+   "ていねい",
+   "polite, careful"
+  ],
+  [
+   "適当",
+   "てきとう",
+   "suitable; sloppy"
+  ],
+  [
+   "盛ん",
+   "さかん",
+   "thriving, popular"
+  ],
+  [
+   "安全",
+   "あんぜん",
+   "safe"
+  ],
+  [
+   "危険",
+   "きけん",
+   "dangerous"
+  ],
+  [
+   "不自由",
+   "ふじゆう",
+   "inconvenient, disabled"
+  ],
+  [
+   "健康",
+   "けんこう",
+   "health, healthy"
+  ],
+  [
+   "不十分",
+   "ふじゅうぶん",
+   "insufficient"
+  ],
+  [
+   "確か",
+   "たしか",
+   "certain, sure"
+  ],
+  [
+   "無理",
+   "むり",
+   "unreasonable, impossible"
+  ],
+  [
+   "面倒",
+   "めんどう",
+   "troublesome"
+  ],
+  [
+   "得意",
+   "とくい",
+   "good at, proud of"
+  ],
+  [
+   "苦手",
+   "にがて",
+   "bad at, weak point"
+  ],
+  [
+   "夢中",
+   "むちゅう",
+   "absorbed in, crazy about"
+  ],
+  [
+   "熱中",
+   "ねっちゅう",
+   "enthusiasm, absorption"
+  ],
+  [
+   "正直",
+   "しょうじき",
+   "honest"
+  ],
+  [
+   "自然",
+   "しぜん",
+   "nature, natural"
+  ],
+  [
+   "新鮮",
+   "しんせん",
+   "fresh"
+  ],
+  [
+   "贅沢",
+   "ぜいたく",
+   "luxurious, extravagant"
+  ]
+ ],
+ "Time & Frequency": [
+  [
+   "締め切り",
+   "しめきり",
+   "deadline"
+  ],
+  [
+   "期限",
+   "きげん",
+   "time limit, deadline"
+  ],
+  [
+   "期間",
+   "きかん",
+   "period, term"
+  ],
+  [
+   "以内",
+   "いない",
+   "within"
+  ],
+  [
+   "以降",
+   "いこう",
+   "on and after"
+  ],
+  [
+   "以前",
+   "いぜん",
+   "before, previously"
+  ],
+  [
+   "以後",
+   "いご",
+   "after this, from now on"
+  ],
+  [
+   "最近",
+   "さいきん",
+   "recently"
+  ],
+  [
+   "最初",
+   "さいしょ",
+   "the first, beginning"
+  ],
+  [
+   "最後",
+   "さいご",
+   "the last, end"
+  ],
+  [
+   "間もなく",
+   "まもなく",
+   "soon, before long"
+  ],
+  [
+   "そろそろ",
+   "そろそろ",
+   "gradually, soon (it's time to)"
+  ],
+  [
+   "しばらく",
+   "しばらく",
+   "for a while"
+  ],
+  [
+   "たまに",
+   "たまに",
+   "occasionally"
+  ],
+  [
+   "めったに",
+   "めったに",
+   "rarely (+ negative)"
+  ],
+  [
+   "必ず",
+   "かならず",
+   "certainly, without fail"
+  ],
+  [
+   "絶対に",
+   "ぜったいに",
+   "absolutely"
+  ],
+  [
+   "きっと",
+   "きっと",
+   "surely, certainly"
+  ],
+  [
+   "もし",
+   "もし",
+   "if"
+  ],
+  [
+   "やっと",
+   "やっと",
+   "finally, at last"
+  ],
+  [
+   "ついに",
+   "ついに",
+   "finally, at last"
+  ],
+  [
+   "急に",
+   "きゅうに",
+   "suddenly"
+  ],
+  [
+   "だんだん",
+   "だんだん",
+   "gradually"
+  ],
+  [
+   "だいぶ",
+   "だいぶ",
+   "considerably, quite"
+  ],
+  [
+   "わざと",
+   "わざと",
+   "on purpose"
+  ],
+  [
+   "わざわざ",
+   "わざわざ",
+   "specially, going out of one's way"
+  ],
+  [
+   "せっかく",
+   "せっかく",
+   "with effort; special occasion"
+  ],
+  [
+   "なるべく",
+   "なるべく",
+   "as much as possible"
+  ],
+  [
+   "できるだけ",
+   "できるだけ",
+   "as much as possible"
+  ],
+  [
+   "次第に",
+   "しだいに",
+   "gradually"
+  ]
+ ],
+ "Nature & Weather": [
+  [
+   "湿度",
+   "しつど",
+   "humidity"
+  ],
+  [
+   "湿気",
+   "しっけ",
+   "moisture, humidity"
+  ],
+  [
+   "乾燥",
+   "かんそう",
+   "dryness"
+  ],
+  [
+   "曇る",
+   "くもる",
+   "to become cloudy"
+  ],
+  [
+   "積もる",
+   "つもる",
+   "to pile up (snow)"
+  ],
+  [
+   "溶ける",
+   "とける",
+   "to melt"
+  ],
+  [
+   "凍る",
+   "こおる",
+   "to freeze"
+  ],
+  [
+   "台風",
+   "たいふう",
+   "typhoon"
+  ],
+  [
+   "地震",
+   "じしん",
+   "earthquake"
+  ],
+  [
+   "津波",
+   "つなみ",
+   "tsunami"
+  ],
+  [
+   "火事",
+   "かじ",
+   "fire (disaster)"
+  ],
+  [
+   "災害",
+   "さいがい",
+   "disaster"
+  ],
+  [
+   "環境",
+   "かんきょう",
+   "environment"
+  ],
+  [
+   "自然",
+   "しぜん",
+   "nature"
+  ],
+  [
+   "季節",
+   "きせつ",
+   "season"
+  ],
+  [
+   "気候",
+   "きこう",
+   "climate"
+  ],
+  [
+   "温度",
+   "おんど",
+   "temperature"
+  ],
+  [
+   "景色",
+   "けしき",
+   "scenery"
+  ]
+ ],
+ "School & Work": [
+  [
+   "入学",
+   "にゅうがく",
+   "school entrance/enrollment"
+  ],
+  [
+   "入社",
+   "にゅうしゃ",
+   "joining a company"
+  ],
+  [
+   "就職",
+   "しゅうしょく",
+   "finding employment"
+  ],
+  [
+   "退職",
+   "たいしょく",
+   "retirement, resignation"
+  ],
+  [
+   "出張",
+   "しゅっちょう",
+   "business trip"
+  ],
+  [
+   "残業",
+   "ざんぎょう",
+   "overtime work"
+  ],
+  [
+   "休憩",
+   "きゅうけい",
+   "rest, break"
+  ],
+  [
+   "会議",
+   "かいぎ",
+   "meeting"
+  ],
+  [
+   "契約",
+   "けいやく",
+   "contract"
+  ],
+  [
+   "営業",
+   "えいぎょう",
+   "sales, business operations"
+  ],
+  [
+   "担当",
+   "たんとう",
+   "being in charge"
+  ],
+  [
+   "責任",
+   "せきにん",
+   "responsibility"
+  ],
+  [
+   "経営",
+   "けいえい",
+   "management"
+  ],
+  [
+   "経済",
+   "けいざい",
+   "economy"
+  ],
+  [
+   "政治",
+   "せいじ",
+   "politics"
+  ],
+  [
+   "社会",
+   "しゃかい",
+   "society"
+  ],
+  [
+   "文化",
+   "ぶんか",
+   "culture"
+  ],
+  [
+   "歴史",
+   "れきし",
+   "history"
+  ],
+  [
+   "科学",
+   "かがく",
+   "science"
+  ],
+  [
+   "技術",
+   "ぎじゅつ",
+   "technology, skill"
+  ],
+  [
+   "芸術",
+   "げいじゅつ",
+   "art"
+  ],
+  [
+   "宗教",
+   "しゅうきょう",
+   "religion"
+  ],
+  [
+   "専門",
+   "せんもん",
+   "specialty, major"
+  ],
+  [
+   "専門家",
+   "せんもんか",
+   "specialist, expert"
+  ],
+  [
+   "資料",
+   "しりょう",
+   "materials, data"
+  ],
+  [
+   "報告",
+   "ほうこく",
+   "report"
+  ],
+  [
+   "発表",
+   "はっぴょう",
+   "presentation, announcement"
+  ],
+  [
+   "申し込み",
+   "もうしこみ",
+   "application"
+  ],
+  [
+   "申し込む",
+   "もうしこむ",
+   "to apply"
+  ]
+ ],
+ "Places & Travel": [
+  [
+   "道路",
+   "どうろ",
+   "road"
+  ],
+  [
+   "信号",
+   "しんごう",
+   "traffic light"
+  ],
+  [
+   "横断歩道",
+   "おうだんほどう",
+   "pedestrian crossing"
+  ],
+  [
+   "歩道",
+   "ほどう",
+   "sidewalk"
+  ],
+  [
+   "交差点",
+   "こうさてん",
+   "intersection"
+  ],
+  [
+   "踏切",
+   "ふみきり",
+   "railway crossing"
+  ],
+  [
+   "高速道路",
+   "こうそくどうろ",
+   "highway, expressway"
+  ],
+  [
+   "駐車場",
+   "ちゅうしゃじょう",
+   "parking lot"
+  ],
+  [
+   "空港",
+   "くうこう",
+   "airport"
+  ],
+  [
+   "港",
+   "みなと",
+   "harbor, port"
+  ],
+  [
+   "大使館",
+   "たいしかん",
+   "embassy"
+  ],
+  [
+   "警察署",
+   "けいさつしょ",
+   "police station"
+  ],
+  [
+   "消防署",
+   "しょうぼうしょ",
+   "fire station"
+  ],
+  [
+   "市役所",
+   "しやくしょ",
+   "city hall"
+  ],
+  [
+   "役所",
+   "やくしょ",
+   "government office"
+  ],
+  [
+   "田舎",
+   "いなか",
+   "countryside"
+  ],
+  [
+   "都会",
+   "とかい",
+   "city, urban area"
+  ],
+  [
+   "建物",
+   "たてもの",
+   "building"
+  ],
+  [
+   "景色",
+   "けしき",
+   "scenery"
+  ]
+ ],
+ "Food & Cooking": [
+  [
+   "材料",
+   "ざいりょう",
+   "ingredients, materials"
+  ],
+  [
+   "調味料",
+   "ちょうみりょう",
+   "seasoning"
+  ],
+  [
+   "砂糖",
+   "さとう",
+   "sugar"
+  ],
+  [
+   "塩",
+   "しお",
+   "salt"
+  ],
+  [
+   "醤油",
+   "しょうゆ",
+   "soy sauce"
+  ],
+  [
+   "味噌",
+   "みそ",
+   "miso"
+  ],
+  [
+   "酢",
+   "す",
+   "vinegar"
+  ],
+  [
+   "油",
+   "あぶら",
+   "oil"
+  ],
+  [
+   "焼く",
+   "やく",
+   "to grill, bake"
+  ],
+  [
+   "煮る",
+   "にる",
+   "to boil, simmer"
+  ],
+  [
+   "蒸す",
+   "むす",
+   "to steam"
+  ],
+  [
+   "炒める",
+   "いためる",
+   "to stir-fry"
+  ],
+  [
+   "揚げる",
+   "あげる",
+   "to deep-fry"
+  ],
+  [
+   "冷やす",
+   "ひやす",
+   "to chill"
+  ],
+  [
+   "温める",
+   "あたためる",
+   "to warm up"
+  ],
+  [
+   "味見",
+   "あじみ",
+   "tasting (food)"
+  ],
+  [
+   "献立",
+   "こんだて",
+   "menu, meal plan"
+  ]
+ ],
+ "Body & Health": [
+  [
+   "怪我",
+   "けが",
+   "injury"
+  ],
+  [
+   "熱",
+   "ねつ",
+   "fever"
+  ],
+  [
+   "咳",
+   "せき",
+   "cough"
+  ],
+  [
+   "風邪",
+   "かぜ",
+   "a cold"
+  ],
+  [
+   "薬",
+   "くすり",
+   "medicine"
+  ],
+  [
+   "治療",
+   "ちりょう",
+   "medical treatment"
+  ],
+  [
+   "注射",
+   "ちゅうしゃ",
+   "injection"
+  ],
+  [
+   "検査",
+   "けんさ",
+   "examination, test"
+  ],
+  [
+   "ダイエット",
+   "だいえっと",
+   "diet (for weight loss)"
+  ],
+  [
+   "体重",
+   "たいじゅう",
+   "body weight"
+  ],
+  [
+   "血",
+   "ち",
+   "blood"
+  ],
+  [
+   "骨",
+   "ほね",
+   "bone"
+  ],
+  [
+   "脳",
+   "のう",
+   "brain"
+  ]
+ ],
+ "Katakana Loanwords": [
+  [
+   "アルバイト",
+   "あるばいと",
+   "part-time job"
+  ],
+  [
+   "パソコン",
+   "ぱそこん",
+   "personal computer"
+  ],
+  [
+   "インターネット",
+   "いんたーねっと",
+   "internet"
+  ],
+  [
+   "メール",
+   "めーる",
+   "email"
+  ],
+  [
+   "カレンダー",
+   "かれんだー",
+   "calendar"
+  ],
+  [
+   "スケジュール",
+   "すけじゅーる",
+   "schedule"
+  ],
+  [
+   "プレゼント",
+   "ぷれぜんと",
+   "present, gift"
+  ],
+  [
+   "パーティー",
+   "ぱーてぃー",
+   "party"
+  ],
+  [
+   "レポート",
+   "れぽーと",
+   "report"
+  ],
+  [
+   "サービス",
+   "さーびす",
+   "service"
+  ],
+  [
+   "システム",
+   "しすてむ",
+   "system"
+  ],
+  [
+   "プログラム",
+   "ぷろぐらむ",
+   "program"
+  ],
+  [
+   "ボランティア",
+   "ぼらんてぃあ",
+   "volunteer"
+  ],
+  [
+   "エネルギー",
+   "えねるぎー",
+   "energy"
+  ],
+  [
+   "アイデア",
+   "あいであ",
+   "idea"
+  ],
+  [
+   "イメージ",
+   "いめーじ",
+   "image"
+  ],
+  [
+   "タイプ",
+   "たいぷ",
+   "type"
+  ],
+  [
+   "サイズ",
+   "さいず",
+   "size"
+  ],
+  [
+   "メニュー",
+   "めにゅー",
+   "menu"
+  ],
+  [
+   "セール",
+   "せーる",
+   "sale"
+  ],
+  [
+   "ポイント",
+   "ぽいんと",
+   "point"
+  ],
+  [
+   "チェック",
+   "ちぇっく",
+   "check"
+  ],
+  [
+   "サイン",
+   "さいん",
+   "sign, signature"
+  ],
+  [
+   "ルール",
+   "るーる",
+   "rule"
+  ],
+  [
+   "マナー",
+   "まなー",
+   "manners"
+  ],
+  [
+   "キャンセル",
+   "きゃんせる",
+   "cancellation"
+  ],
+  [
+   "コピー",
+   "こぴー",
+   "copy"
+  ],
+  [
+   "メンバー",
+   "めんばー",
+   "member"
+  ],
+  [
+   "レベル",
+   "れべる",
+   "level"
+  ],
+  [
+   "デザイン",
+   "でざいん",
+   "design"
+  ]
+ ],
+ "Other": [
+  [
+   "場合",
+   "ばあい",
+   "case, situation"
+  ],
+  [
+   "理由",
+   "りゆう",
+   "reason"
+  ],
+  [
+   "原因",
+   "げんいん",
+   "cause"
+  ],
+  [
+   "結果",
+   "けっか",
+   "result"
+  ],
+  [
+   "目的",
+   "もくてき",
+   "purpose"
+  ],
+  [
+   "目標",
+   "もくひょう",
+   "goal"
+  ],
+  [
+   "方向",
+   "ほうこう",
+   "direction"
+  ],
+  [
+   "方法",
+   "ほうほう",
+   "method"
+  ],
+  [
+   "方針",
+   "ほうしん",
+   "policy, guideline"
+  ],
+  [
+   "条件",
+   "じょうけん",
+   "condition"
+  ],
+  [
+   "内容",
+   "ないよう",
+   "content"
+  ],
+  [
+   "状態",
+   "じょうたい",
+   "state, condition"
+  ],
+  [
+   "状況",
+   "じょうきょう",
+   "situation"
+  ],
+  [
+   "種類",
+   "しゅるい",
+   "kind, type"
+  ],
+  [
+   "割合",
+   "わりあい",
+   "proportion, rate"
+  ],
+  [
+   "程度",
+   "ていど",
+   "degree, extent"
+  ],
+  [
+   "範囲",
+   "はんい",
+   "range, scope"
+  ],
+  [
+   "部分",
+   "ぶぶん",
+   "part, portion"
+  ],
+  [
+   "全体",
+   "ぜんたい",
+   "the whole"
+  ],
+  [
+   "共通",
+   "きょうつう",
+   "common, shared"
+  ],
+  [
+   "関係",
+   "かんけい",
+   "relationship"
+  ],
+  [
+   "影響",
+   "えいきょう",
+   "influence, effect"
+  ],
+  [
+   "効果",
+   "こうか",
+   "effect"
+  ],
+  [
+   "価値",
+   "かち",
+   "value"
+  ],
+  [
+   "価格",
+   "かかく",
+   "price"
+  ],
+  [
+   "値段",
+   "ねだん",
+   "price"
+  ],
+  [
+   "料金",
+   "りょうきん",
+   "fee, charge"
+  ],
+  [
+   "割引",
+   "わりびき",
+   "discount"
+  ],
+  [
+   "税金",
+   "ぜいきん",
+   "tax"
+  ],
+  [
+   "収入",
+   "しゅうにゅう",
+   "income"
+  ]
+ ]
+}

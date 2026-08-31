@@ -4,9 +4,13 @@
 import kana from '../data/kana.json' with { type: 'json' };
 import kanjiData from '../data/kanji.json' with { type: 'json' };
 import VOCAB from '../data/vocab.json' with { type: 'json' };
+import kanjiData4 from '../data/kanji-n4.json' with { type: 'json' };
+import VOCAB4 from '../data/vocab-n4.json' with { type: 'json' };
 const { HIRA, KATA } = kana;
 const { KANJI } = kanjiData;
+const { KANJI: KANJI4 } = kanjiData4;
 const ALLVOCAB = Object.values(VOCAB).flat();
+const ALLVOCAB4 = Object.values(VOCAB4).flat();
 import { shuffle } from '../utils/helpers.js';
 import { speakWithBtn } from '../utils/tts.js';
 import { getState, save, formatVocabWord } from '../state.js';
@@ -47,6 +51,25 @@ const DECKS = {
       back: `<span class="fc-en mono">${r}</span>`,
       speak: ch,
       key: ch,
+    })),
+  },
+  vocab4: {
+    label: 'Vocabulary (N4)',
+    build: () => ALLVOCAB4.map(w => ({
+      front: `<span class="fc-jp">${formatVocabWord(w[0], w[1], null, 'n4')}</span>`,
+      back: `<span class="fc-en">${w[2]}</span><div class="fc-sub">${w[1]}</div>`,
+      speak: w[0],
+      key: w[0],
+    })),
+  },
+  kanji4: {
+    label: 'Kanji (N4)',
+    build: () => KANJI4.map(k => ({
+      front: `<span class="fc-jp big">${k[0]}</span>`,
+      back: `<span class="fc-en">${k[3]}</span>
+             <div class="fc-sub">ON ${k[1] || '–'} · KUN ${k[2] || '–'}</div>`,
+      speak: k[0],
+      key: k[0],
     })),
   },
 };

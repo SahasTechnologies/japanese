@@ -3,9 +3,10 @@
 > [!NOTE]
 > I created this app to help me study for the JLPT N5 exam. However, I started N5 study in August, and don't have time to code and also do the actual studying. I also wanted to experiment with different AI tools, and how to use AI to boost my productivity and education. So, this project was created entirely by AI with the exception of this single paragraph, and it has saved me so much time and effort, while also helping me better understand and become more familiar with dedicated AI coding tools. The app has since grown beyond just JLPT N5 — it now also tracks my actual class coursework unit by unit. You can access the application at [Japanese Study](https://jap.shimpi.dev), hosted on Cloudflare Pages. This website has helped me so, so much to study Japanese, and I hope it will help you too! 頑張ってください！このサイトが日本語の勉強に役立つことを願っています！
 
-An interactive Japanese study app with two halves:
+An interactive Japanese study app with three halves:
 
 - **JLPT N5** — the full N5 syllabus: kana, kanji (stroke order + tracing), vocabulary, grammar, writing practice, reading, listening, flashcards, a mock test, an optional placement test, and quick-reference tables.
+- **JLPT N4** — a parallel N4 track added on top of the N5 syllabus: 139 additional kanji (stroke order + tracing), 450+ additional vocabulary words, 40 N4 grammar patterns (passive, causative, potential, conditionals, ~そう/ようだ/らしい/はず, keigo basics, and more), reading passages, listening scripts, and its own N4 flashcard decks. It reuses the shared Flashcards and Reference pages and tracks its own progress separately from N5.
 - **Coursework** — my own class units (1–12), each with its own kanji, sentence examples, grammar Q&amp;A, vocabulary, quizzes, flashcards, and writing practice, styled as chevron/arrow rows to match my course materials.
 
 ## Features

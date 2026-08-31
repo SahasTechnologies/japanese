@@ -21,6 +21,16 @@ const JLPT_ITEMS = [
   { id: 'ref',       icon: '本', label: 'Reference',  desc: 'Numbers, counters, expressions, verbs',  color: 'var(--ink2)' },
 ];
 
+const JLPT4_ITEMS = [
+  { id: 'kanji4',     icon: '漢', label: 'Kanji',      desc: '139 more kanji · stroke order · tracing',   color: 'var(--blue)' },
+  { id: 'vocab4',     icon: '語', label: 'Vocabulary', desc: '450+ words · kana-only mode · learned tracking', color: 'var(--green)' },
+  { id: 'grammar4',   icon: '文', label: 'Grammar',    desc: '40 patterns — passive, causative, conditionals…', color: 'var(--gold)' },
+  { id: 'reading4',   icon: '読', label: 'Reading',    desc: 'Short passages & comprehension',         color: 'var(--red-deep)' },
+  { id: 'listening4', icon: '聴', label: 'Listening',  desc: 'Ear training via text-to-speech',        color: 'var(--blue)' },
+  { id: 'flash',      icon: '札', label: 'Flashcards', desc: 'N4 vocab & kanji decks included',          color: 'var(--gold)' },
+  { id: 'ref',        icon: '本', label: 'Reference',  desc: 'Shared with N5 — numbers, counters, verbs', color: 'var(--ink2)' },
+];
+
 function tileHtml({ id, icon, label, desc, color, pct }) {
   return `
     <div class="card dash-card">
@@ -72,6 +82,14 @@ export function renderHome(navigate) {
         <ion-icon name="chevron-down-outline" class="collapsible-caret"></ion-icon>
       </summary>
       <div class="dash" id="dash-jlpt"></div>
+    </details>
+
+    <details class="collapsible" open>
+      <summary>
+        <span class="collapsible-title"><span class="dash-ic">四</span> JLPT N4</span>
+        <ion-icon name="chevron-down-outline" class="collapsible-caret"></ion-icon>
+      </summary>
+      <div class="dash" id="dash-jlpt4"></div>
     </details>`;
 
   const dashJlpt = document.getElementById('dash-jlpt');
@@ -81,6 +99,15 @@ export function renderHome(navigate) {
     const card = el.firstElementChild;
     card.querySelector('.dash-cta').addEventListener('click', () => navigate(item.id));
     dashJlpt.appendChild(card);
+  });
+
+  const dashJlpt4 = document.getElementById('dash-jlpt4');
+  JLPT4_ITEMS.forEach(item => {
+    const el = document.createElement('div');
+    el.innerHTML = tileHtml({ ...item, pct: P.best[item.id] || 0 });
+    const card = el.firstElementChild;
+    card.querySelector('.dash-cta').addEventListener('click', () => navigate(item.id));
+    dashJlpt4.appendChild(card);
   });
 
   const dashCw = document.getElementById('dash-coursework');

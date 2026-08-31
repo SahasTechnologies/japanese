@@ -11,10 +11,16 @@ const DEFAULTS = {
   kanjiCanWrite: [],
   vocabLearned: [],
   courseworkLearned: [],
+  // N4-parallel progress (kept separate from the N5 arrays above)
+  kanjiLearned4: [],
+  kanjiCanRead4: [],
+  kanjiCanWrite4: [],
+  vocabLearned4: [],
   // 'all' | 'learned' | 'none'
   vocabKanjiMode: 'learned',
   showFurigana: true,
   mockBest: 0,
+  mockBest4: 0,
   flashPiles: {},
   // spaced repetition: id → { e: ease, iv: interval (days), due: 'YYYY-M-D', r: reviews }
   srs: {},
@@ -35,6 +41,11 @@ try {
       P.vocabKanjiMode = parsed.vocabHideKanji ? 'none' : 'learned';
     }
     if (!P.srs || typeof P.srs !== 'object') P.srs = {};
+    if (!Array.isArray(P.kanjiLearned4)) P.kanjiLearned4 = [];
+    if (!Array.isArray(P.kanjiCanRead4)) P.kanjiCanRead4 = [];
+    if (!Array.isArray(P.kanjiCanWrite4)) P.kanjiCanWrite4 = [];
+    if (!Array.isArray(P.vocabLearned4)) P.vocabLearned4 = [];
+    if (typeof P.mockBest4 !== 'number') P.mockBest4 = 0;
   }
 } catch (_) {}
 
@@ -53,6 +64,10 @@ export function resetState() {
     kanjiCanWrite: [],
     vocabLearned: [],
     courseworkLearned: [],
+    kanjiLearned4: [],
+    kanjiCanRead4: [],
+    kanjiCanWrite4: [],
+    vocabLearned4: [],
     vocabKanjiMode: 'learned',
     showFurigana: true,
     flashPiles: {},
@@ -79,11 +94,16 @@ export function replaceState(next) {
     kanjiCanWrite: arr(next.kanjiCanWrite).filter(x => typeof x === 'string'),
     vocabLearned: arr(next.vocabLearned).filter(x => typeof x === 'string'),
     courseworkLearned: arr(next.courseworkLearned).filter(x => typeof x === 'string'),
+    kanjiLearned4: arr(next.kanjiLearned4).filter(x => typeof x === 'string'),
+    kanjiCanRead4: arr(next.kanjiCanRead4).filter(x => typeof x === 'string'),
+    kanjiCanWrite4: arr(next.kanjiCanWrite4).filter(x => typeof x === 'string'),
+    vocabLearned4: arr(next.vocabLearned4).filter(x => typeof x === 'string'),
     vocabKanjiMode: ['all', 'learned', 'none'].includes(next.vocabKanjiMode)
       ? next.vocabKanjiMode
       : 'learned',
     showFurigana: typeof next.showFurigana === 'boolean' ? next.showFurigana : true,
     mockBest: typeof next.mockBest === 'number' && next.mockBest >= 0 ? next.mockBest : 0,
+    mockBest4: typeof next.mockBest4 === 'number' && next.mockBest4 >= 0 ? next.mockBest4 : 0,
     flashPiles: (next.flashPiles && typeof next.flashPiles === 'object' && !Array.isArray(next.flashPiles))
       ? next.flashPiles
       : {},
@@ -99,20 +119,22 @@ export function updateBest(id, score, total) {
   save();
 }
 
-export function toggleKanjiFlag(char, flag) {
-  const key = flag === 'write' ? 'kanjiCanWrite' : 'kanjiCanRead';
+export function toggleKanjiFlag(char, flag, level = 'n5') {
+  const suffix = level === 'n4' ? '4' : '';
+  const key = (flag === 'write' ? 'kanjiCanWrite' : 'kanjiCanRead') + suffix;
   const arr = P[key];
   const idx = arr.indexOf(char);
   if (idx >= 0) arr.splice(idx, 1);
   else arr.push(char);
-  if (flag === 'read') P.kanjiLearned = [...P.kanjiCanRead];
+  if (flag === 'read') P['kanjiLearned' + suffix] = [...P[key]];
   save();
 }
 
-export function toggleVocabLearned(word) {
-  const idx = P.vocabLearned.indexOf(word);
-  if (idx >= 0) P.vocabLearned.splice(idx, 1);
-  else P.vocabLearned.push(word);
+export function toggleVocabLearned(word, level = 'n5') {
+  const key = level === 'n4' ? 'vocabLearned4' : 'vocabLearned';
+  const idx = P[key].indexOf(word);
+  if (idx >= 0) P[key].splice(idx, 1);
+  else P[key].push(word);
   save();
 }
 
@@ -137,10 +159,11 @@ export function setShowFurigana(on) {
 }
 
 /** Every kanji in text is in kanjiCanRead (kana-only → true) */
-export function canShowKanjiForm(text) {
+export function canShowKanjiForm(text, level = 'n5') {
   const kanjiChars = [...text].filter(ch => /[\u4e00-\u9faf]/.test(ch));
   if (!kanjiChars.length) return true;
-  const known = new Set(P.kanjiCanRead || []);
+  const key = level === 'n4' ? 'kanjiCanRead4' : 'kanjiCanRead';
+  const known = new Set(P[key] || []);
   return kanjiChars.every(ch => known.has(ch));
 }
 
@@ -149,14 +172,14 @@ export function canShowKanjiForm(text) {
  * Furigana is per-kanji character (ruby above each kanji only; kana left bare).
  * readingMap: optional Map/object of kanji → preferred reading (from KANJI data).
  */
-export function formatVocabWord(expr, reading, readingMap = null) {
+export function formatVocabWord(expr, reading, readingMap = null, level = 'n5') {
   const mode = P.vocabKanjiMode || 'learned';
   const furi = P.showFurigana !== false;
   const hasKanji = /[\u4e00-\u9faf]/.test(expr);
 
   let showKanji = false;
   if (mode === 'all') showKanji = hasKanji;
-  else if (mode === 'learned') showKanji = hasKanji && canShowKanjiForm(expr);
+  else if (mode === 'learned') showKanji = hasKanji && canShowKanjiForm(expr, level);
 
   if (!showKanji) {
     return `<span class="vw-kana">${escapeHtml(reading)}</span>`;

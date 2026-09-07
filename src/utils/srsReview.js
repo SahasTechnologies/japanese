@@ -23,6 +23,10 @@ export function mountSrsReview(opts) {
   const queue = opts.queue.slice();
   let i = 0;
   let stats = { again: 0, hard: 0, good: 0, easy: 0 };
+  // a card rated “again” comes back later in this same session (max 3 repeats
+  // per card), so you leave the review only once it sticks
+  const repeats = {};
+  const REQUEUE_MAX = 3;
 
   main.innerHTML = `
     <button class="btn qz-exit-btn" id="srs-exit"><ion-icon name="arrow-back-outline"></ion-icon> ${opts.backLabel || 'Back'}</button>
@@ -70,6 +74,10 @@ export function mountSrsReview(opts) {
           stats[r.id]++;
           srsRate(card.id, r.id);
           i++;
+          if (r.id === 'again') {
+            repeats[card.id] = (repeats[card.id] || 0) + 1;
+            if (repeats[card.id] <= REQUEUE_MAX) queue.push(card.id);
+          }
           showCard();
         };
         actions.appendChild(b);

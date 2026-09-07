@@ -1,0 +1,149 @@
+{
+  "_notes": [
+    "Per-part word lists for the coursework Unit Mock Tests.",
+    "Each unit id maps to { parts: [...] }; each part is its own page of the mock test.",
+    "A word / bunpou item = { en, cells: [...] } where cells are ordered segments:",
+    "  { \"kana\": \"text\" }  — the learner types this kana/katakana (romaji→kana), 1 point",
+    "  { \"kanji\": \"字\", \"read\": \"かんじ\" } — a freehand drawing box for this kanji run, 1 point;",
+    "                                  'read' gives the reading shown under the box and in furigana",
+    "  { \"fixed\": \"text\" } — shown as-is, not scored (particles / pre-written aids).",
+    "Word-part points: one per scored cell. Bunpou items are worth 3 marks in the real test,",
+    "so each shows x / 3 where x = 3 × (cells correct ÷ cells scored), rounded.",
+    "If a unit has no entry (or parts is empty), the mock falls back to auto-generated",
+    "kana rows from the unit's own vocabulary pool."
+  ],
+  "UNITS": {
+    "1": {
+      "parts": [
+        {
+          "name": "Part 1",
+          "words": [
+            { "en": "(my) cousin", "cells": [{ "kana": "いとこ" }] },
+            { "en": "(my) father", "cells": [{ "kana": "ちち" }] },
+            { "en": "(my) mother", "cells": [{ "kana": "はは" }] },
+            { "en": "(my) grandfather", "cells": [{ "kana": "そふ" }] },
+            { "en": "(my) grandmother", "cells": [{ "kana": "そぼ" }] },
+            { "en": "(my) older brother", "cells": [{ "kana": "あに" }] },
+            { "en": "(my) older sister", "cells": [{ "kana": "あね" }] },
+            { "en": "(my) incle (uncle)", "typo": true, "cells": [{ "kana": "おじ" }] },
+            { "en": "(my) aunt", "cells": [{ "kana": "おば" }] },
+            {
+              "en": "5 minutes to 9 (8:55)",
+              "cells": [
+                { "kanji": "九", "read": "く" },
+                { "kanji": "時", "read": "じ" },
+                { "kanji": "五", "read": "ご" },
+                { "kanji": "分", "read": "ふん" },
+                { "kanji": "前", "read": "まえ" }
+              ]
+            },
+            { "en": "to sing (polite)", "cells": [{ "kana": "うたいます" }] },
+            { "en": "to play / hang out (polite)", "cells": [{ "kana": "あそびます" }] },
+            { "en": "to go out (polite)", "cells": [{ "kana": "でかけます" }] },
+            { "en": "to come (polite)", "cells": [{ "kana": "きます" }] },
+            { "en": "to return / go home (polite)", "cells": [{ "kana": "かえります" }] }
+          ],
+          "bunpou": [
+            {
+              "en": "What time is it now?",
+              "cells": [
+                { "kana": "いま" },
+                { "kanji": "何時", "read": "なんじ" },
+                { "kana": "ですか" }
+              ]
+            },
+            {
+              "en": "I will get on the bus at 4:10 p.m.",
+              "cells": [
+                { "kana": "ごご" },
+                { "kanji": "四時十分", "read": "よじじゅっぷん" },
+                { "fixed": "にバスに" },
+                { "kana": "のります" }
+              ]
+            },
+            {
+              "en": "I woke up at half past 7.",
+              "cells": [
+                { "kanji": "七時", "read": "しちじ" },
+                { "kanji": "半", "read": "はん" },
+                { "fixed": "に" },
+                { "kana": "おきました" }
+              ]
+            },
+            {
+              "en": "I meet with friends at 11:06 a.m.",
+              "cells": [
+                { "kana": "ごぜん" },
+                { "kanji": "十一時", "read": "じゅういちじ" },
+                { "kanji": "六分", "read": "ろっぷん" },
+                { "fixed": "にともだちに" },
+                { "kana": "あいます" }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Part 2",
+          "words": [
+            { "en": "when", "cells": [{ "kana": "いつ" }] },
+            { "en": "this year", "cells": [{ "kana": "ことし" }] },
+            { "en": "last month", "cells": [{ "kana": "せん" }, { "kanji": "月", "read": "げつ" }] },
+            { "en": "tomorrow", "cells": [{ "kana": "あした" }] },
+            { "en": "mountains", "cells": [{ "kana": "やま" }] },
+            { "en": "shop", "cells": [{ "kana": "みせ" }] },
+            { "en": "yesterday", "cells": [{ "kana": "きのう" }] },
+            { "en": "this month", "cells": [{ "kana": "こん" }, { "kanji": "月", "read": "げつ" }] },
+            { "en": "next year", "cells": [{ "kana": "らいねん" }] },
+            { "en": "beach / sea", "cells": [{ "kana": "うみ" }] },
+            { "en": "library", "cells": [{ "kana": "としょかん" }] },
+            { "en": "station", "cells": [{ "kana": "えき" }] },
+            {
+              "en": "a friend's house",
+              "cells": [{ "kana": "ともだち" }, { "fixed": "の" }, { "kana": "うち" }]
+            },
+            { "en": "town / city", "cells": [{ "kana": "まち" }] }
+          ],
+          "bunpou": [
+            {
+              "en": "I will eat a cake at the movie theatre today.",
+              "cells": [
+                { "kana": "きょう" },
+                { "fixed": "えいがかんで" },
+                { "kana": "ケーキ" },
+                { "fixed": "を" },
+                { "kana": "たべます" }
+              ]
+            },
+            {
+              "en": "I will meet with friends at the park next month.",
+              "cells": [
+                { "kana": "らい" },
+                { "kanji": "月", "read": "げつ" },
+                { "fixed": "にこうえんでともだちに" },
+                { "kana": "あいます" }
+              ]
+            },
+            {
+              "en": "I didn't drink water at the cafe last year.",
+              "cells": [
+                { "kana": "きょねん" },
+                { "fixed": "カフェで" },
+                { "kana": "みず" },
+                { "fixed": "を" },
+                { "kana": "のみませんでした" }
+              ]
+            },
+            {
+              "en": "Wouldn't you like to go out with me at night?",
+              "cells": [
+                { "kana": "よる" },
+                { "kana": "いっしょに" },
+                { "kana": "でかけませんか" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

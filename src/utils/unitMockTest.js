@@ -1,88 +1,82 @@
+/**
+ * Coursework Unit Mock Test — a paper-style writing drill built from
+ * mockParts.json, part by part:
+ *
+ *   Word rows        — one point per scored cell. Hiragana cells are typed
+ *                      (rōmaji → kana live); kanji cells are drawn freehand
+ *                      in their own box and self-marked ✓ / ✗ against the
+ *                      revealed character.
+ *   Bunpou Check     — translate the English sentence into Japanese using the
+ *                      same cells; each sentence is worth 3 marks (like the
+ *                      real test), awarded proportionally to cells got right.
+ *
+ * Cells in the data are ordered segments of the answer:
+ *   { "kana": "…" }          typed kana (auto-checked)
+ *   { "kanji": "字", "read": "…" }  drawn kanji (self-checked; reading hint + furigana)
+ *   { "fixed": "…" }         shown as-is, never scored
+ *
+ * Units without a mockParts entry fall back to auto rows from their vocab pool.
+ */
 import * as wanakana from 'wanakana';
-import kanjiData from '../data/kanji.json' with { type: 'json' };
-const { KANJI } = kanjiData;
-const kanjiByGlyph = {};
-KANJI.forEach(k => { kanjiByGlyph[k[0]] = k; });
-
-import { shuffle } from './helpers.js';
 import { mountFreehandBox } from './freehand.js';
 import { unitVocabPool } from './courseworkPool.js';
-import { furigana } from './furigana.js';
-import courseworkData from '../data/coursework.json' with { type: 'json' };
-import grammar from '../data/grammar.json' with { type: 'json' };
-const { UNITS: ALL_UNITS } = courseworkData;
-const { GRAMMAR } = grammar;
+import mockPartsData from '../data/mockParts.json' with { type: 'json' };
 
-/**
- * A big bank of {en, jp} sentence pairs drawn from every coursework unit and
- * every grammar pattern example — unit mocks pick their own sentences first
- * and top up from here, so the translation section stays fresh.
- */
-function globalSentenceBank() {
-  const bank = [];
-  ALL_UNITS.forEach(u => {
-    (u.kanji || []).forEach(k => (k.sentences || []).forEach(s => {
-      if (s.en && s.kanji) bank.push({ en: s.en, jp: s.kanji });
-    }));
-    (u.phraseChevrons || []).forEach(sec => (sec.groups || []).forEach(g => (g.items || []).forEach(it => {
-      if (it.en && it.jp) bank.push({ en: it.en, jp: it.jp });
-    })));
-    (u.grammarPractice || []).forEach(gp => ['example', 'example2'].forEach(key => {
-      const ex = gp[key];
-      if (!ex) return;
-      ['q', 'a', 'a1', 'a2'].forEach(k2 => {
-        if (ex[k2] && ex[k2].en && ex[k2].jp) bank.push({ en: ex[k2].en, jp: ex[k2].jp });
-      });
-    }));
-    (u.qaSections || []).forEach(sec => (sec.pairs || []).forEach(p => {
-      if (p.q.en && p.q.jp) bank.push({ en: p.q.en, jp: p.q.jp });
-      if (p.a.en && p.a.jp) bank.push({ en: p.a.en, jp: p.a.jp });
-    }));
-  });
-  GRAMMAR.forEach(g => (g.x || []).forEach(([jp, en]) => { if (jp && en) bank.push({ jp, en }); }));
-  return bank;
-}
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const hasKata = s => [...String(s)].some(ch => /[\u30a0-\u30ff]/.test(ch));
+const clean = s => String(s || '').trim().replace(/\s+/g, '');
 
-/** Collect {en, jp} translation pairs the unit actually teaches, for the free-response section */
-function unitTranslationPool(u) {
-  const pool = [];
-  (u.kanji || []).forEach(k => (k.sentences || []).forEach(s => {
-    if (s.en && s.kanji) pool.push({ en: s.en, jp: s.kanji });
-  }));
-  (u.phraseChevrons || []).forEach(sec => (sec.groups || []).forEach(g => (g.items || []).forEach(it => {
-    if (it.en && it.jp) pool.push({ en: it.en, jp: it.jp });
-  })));
-  (u.grammarPractice || []).forEach(gp => {
-    ['example', 'example2'].forEach(key => {
-      const ex = gp[key];
-      if (!ex) return;
-      ['q', 'a', 'a1', 'a2'].forEach(k => {
-        if (ex[k] && ex[k].en && ex[k].jp) pool.push({ en: ex[k].en, jp: ex[k].jp });
-      });
+/** Per-part configs from mockParts.json, or auto rows from the unit vocab pool. */
+function partsForUnit(u) {
+  const cfg = mockPartsData.UNITS && mockPartsData.UNITS[String(u.id)];
+  if (cfg && Array.isArray(cfg.parts) && cfg.parts.length) {
+    return cfg.parts.map(p => ({
+      name: p.name || 'Part',
+      words: p.words || [],
+      bunpou: p.bunpou || [],
+    }));
+  }
+  const pool = unitVocabPool(u);
+  const chunks = [];
+  for (let i = 0; i < pool.length; i += 10) {
+    chunks.push({
+      name: `Part ${chunks.length + 1}`,
+      words: pool.slice(i, i + 10).map(w => {
+        const [expr, reading, meaning] = w;
+        // fallback: type the whole reading in kana
+        return { en: String(meaning || ''), cells: [{ kana: reading || expr }] };
+      }),
+      bunpou: [],
     });
-  });
-  (u.qaSections || []).forEach(sec => (sec.pairs || []).forEach(p => {
-    if (p.q.en && p.q.jp) pool.push({ en: p.q.en, jp: p.q.jp });
-    if (p.a.en && p.a.jp) pool.push({ en: p.a.en, jp: p.a.jp });
-  }));
-  // Dedupe by english text, keep sentences (not bare fragments) preferentially
-  const seen = new Set();
-  return pool.filter(p => {
-    const key = p.en.trim().toLowerCase();
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
+  }
+  return chunks;
 }
 
-function isKatakanaWord(reading) {
-  return [...reading].some(ch => /[\u30a0-\u30ff]/.test(ch));
+const cellKind = c => (c && c.kanji ? 'kanji' : c && c.fixed ? 'fixed' : 'kana');
+const cellText = c => String(c.kanji ?? c.kana ?? c.fixed ?? '');
+const cellRead = c => (c && c.read ? String(c.read) : '');
+/** is this cell typed kana or drawn kanji (i.e. scored)? */
+const scored = c => cellKind(c) !== 'fixed';
+
+/** ruby-marked model answer assembled from the item's cells + full stop. */
+function answerHtml(item) {
+  const parts = (item.cells || []).map(c => {
+    const kind = cellKind(c);
+    if (kind === 'kanji') {
+      const r = cellRead(c);
+      return r ? `<ruby>${esc(cellText(c))}<rt>${esc(r)}</rt></ruby>` : esc(cellText(c));
+    }
+    return esc(cellText(c));
+  });
+  return parts.join('') + '。';
 }
 
-function hasKanjiForm(word) {
-  const [expr, reading] = word;
-  if (expr === reading) return false;
-  return [...expr].some(ch => /[\u4e00-\u9faf]/.test(ch));
+/** full kana reading strip of an item (kana cells + kanji readings + fixed). */
+function readingHint(item) {
+  return (item.cells || []).map(c => {
+    if (cellKind(c) === 'kanji') return cellRead(c);
+    return cellText(c);
+  }).join('');
 }
 
 /**
@@ -92,126 +86,389 @@ function hasKanjiForm(word) {
  */
 export function renderUnitMockTest(u, opts = {}) {
   const main = document.getElementById('main');
-  const pool = unitVocabPool(u);
-  const rows = shuffle(pool).slice(0, Math.min(20, pool.length));
-  // own unit's sentences first, then top up from the whole-app sentence bank
-  const own = shuffle(unitTranslationPool(u));
-  const seenEn = new Set(own.map(t => t.en.trim().toLowerCase()));
-  const extra = shuffle(globalSentenceBank()).filter(t => !seenEn.has(t.en.trim().toLowerCase()));
-  const translations = [...own, ...extra].slice(0, 3);
+  const parts = partsForUnit(u);
+  let partIdx = 0;
+  const results = []; // per part: { got, total, cells: [{kind, ok|null, expected, value}] }
+
+  if (!parts.length) {
+    main.innerHTML = `
+      <button class="btn qz-exit-btn" id="umt-exit"><ion-icon name="arrow-back-outline"></ion-icon> ← ${u.title}</button>
+      <div class="sec-title" style="margin-top:16px">${u.title} — Mock Test</div>
+      <p style="color:var(--ink2)">This unit has no vocabulary yet for a mock test.</p>`;
+    document.getElementById('umt-exit').onclick = () => opts.onExit?.();
+    return;
+  }
 
   main.innerHTML = `
     <button class="btn qz-exit-btn" id="umt-exit"><ion-icon name="arrow-back-outline"></ion-icon> ← ${u.title}</button>
     <div class="sec-title" style="margin-top:16px">${u.title} — Mock Test</div>
-    <div class="sec-sub">Fill in the hiragana reading for each word, and draw the kanji where one exists. Then answer three translation questions. This is self-checked — no pressure.</div>
+    <div class="sec-sub">Type each word's kana and draw its kanji where one is expected — one point per box. Then do the Bunpou Check sentences (3 marks each, like the real test). Self-checked — no pressure.</div>
 
-    <div class="card umt-table-card">
-      <table class="umt-table">
-        <thead>
-          <tr><th>English</th><th>Hiragana</th><th>Kanji</th></tr>
-        </thead>
-        <tbody id="umt-tbody"></tbody>
-      </table>
-      <div class="btnrow" style="margin-top:16px;justify-content:flex-start">
-        <button class="btn primary" id="umt-check">Check hiragana answers</button>
-      </div>
-      <div class="umt-score" id="umt-score"></div>
-    </div>
+    <div class="umt-part-tabs" id="umt-part-tabs"></div>
+    <div id="umt-part"></div>
 
-    <div class="kg-label">Translation — English to Japanese</div>
-    <div id="umt-translations"></div>
-
-    <div class="btnrow" style="margin:24px 0 40px">
+    <div class="btnrow" style="margin:20px 0 40px">
       <button class="btn primary" id="umt-finish">Finish</button>
     </div>`;
 
   document.getElementById('umt-exit').onclick = () => opts.onExit?.();
   window.scrollTo({ top: 0, behavior: 'instant' });
 
-  // ---- Table rows ----
-  const tbody = document.getElementById('umt-tbody');
-  rows.forEach((w, i) => {
-    const [expr, reading, meaning] = w;
-    const kanjiApplicable = hasKanjiForm(w);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="umt-en">${meaning}</td>
-      <td>
-        <input type="text" class="umt-hira-input" data-idx="${i}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="${isKatakanaWord(reading) ? 'katakana…' : 'hiragana…'}" />
-        <span class="umt-verdict" data-idx="${i}"></span>
-      </td>
-      <td>
-        ${kanjiApplicable
-          ? `<button class="btn umt-draw-btn" data-idx="${i}"><ion-icon name="brush-outline"></ion-icon> Draw</button>`
-          : `<span class="umt-na">—</span>`}
-        <div class="umt-draw-mount" data-idx="${i}" style="display:none"></div>
-      </td>`;
-    tbody.appendChild(tr);
-
-    const input = tr.querySelector('.umt-hira-input');
-    if (isKatakanaWord(reading)) wanakana.bind(input, { IMEMode: 'toKatakana' });
-    else wanakana.bind(input, { IMEMode: true });
-
-    const drawBtn = tr.querySelector('.umt-draw-btn');
-    if (drawBtn) {
-      drawBtn.onclick = () => {
-        const mount = tr.querySelector('.umt-draw-mount');
-        const open = mount.style.display !== 'none';
-        mount.style.display = open ? 'none' : 'block';
-        if (!open && !mount.dataset.mounted) {
-          mountFreehandBox(mount, expr);
-          mount.dataset.mounted = '1';
-        }
-      };
-    }
+  const tabs = document.getElementById('umt-part-tabs');
+  parts.forEach((p, i) => {
+    const tab = document.createElement('button');
+    tab.type = 'button';
+    tab.className = 'umt-part-tab';
+    tab.textContent = p.name;
+    tab.onclick = () => { partIdx = i; showPart(); };
+    tabs.appendChild(tab);
   });
 
-  document.getElementById('umt-check').onclick = () => {
-    let correct = 0;
-    rows.forEach((w, i) => {
-      const [, reading] = w;
-      const input = tbody.querySelector(`.umt-hira-input[data-idx="${i}"]`);
-      const verdict = tbody.querySelector(`.umt-verdict[data-idx="${i}"]`);
-      const val = input.value.trim();
-      const ok = val === reading || wanakana.toHiragana(val.replace(/\s+/g, '')) === reading;
-      if (ok) {
-        correct++;
-        verdict.innerHTML = '<ion-icon name="checkmark-circle" style="color:var(--green)"></ion-icon>';
-      } else {
-        verdict.innerHTML = `<ion-icon name="close-circle" style="color:var(--red)"></ion-icon> <span class="umt-answer">${reading}</span>`;
+  function showPart() {
+    const p = parts[partIdx];
+    const partEl = document.getElementById('umt-part');
+    [...tabs.children].forEach((el, i) => el.classList.toggle('active', i === partIdx));
+
+    const wordPoints = p.words.reduce((n, w) => n + w.cells.filter(scored).length, 0);
+    const bunpouCount = p.bunpou.length;
+
+    partEl.innerHTML = `
+      <div class="umt-part-head">
+        <span class="umt-part-name">${esc(p.name)} — words &amp; kanji</span>
+        <span class="umt-part-count">${wordPoints} points · ${bunpouCount} Bunpou Check sentence${bunpouCount === 1 ? '' : 's'} (3 marks each)</span>
+      </div>
+      <div class="card umt-table-card">
+        <table class="umt-table">
+          <thead><tr><th>English</th><th>Hiragana</th><th>Kanji</th></tr></thead>
+          <tbody id="umt-tbody"></tbody>
+        </table>
+        <div class="btnrow" style="margin-top:16px;justify-content:flex-start">
+          <button class="btn primary" id="umt-check"><ion-icon name="checkmark-outline"></ion-icon> Check answers</button>
+          <span class="umt-score" id="umt-score"></span>
+        </div>
+      </div>
+      ${p.bunpou.length ? `
+        <div class="kg-label" style="margin:26px 0 8px">Bunpou Check — translate each sentence</div>
+        <div id="umt-bunpou"></div>` : ''}
+      <div id="umt-bunpou-score" class="umt-score" style="margin-top:12px"></div>`;
+
+    // ---------- word table ----------
+    const tbody = document.getElementById('umt-tbody');
+    const prev = results[partIdx];
+
+    p.words.forEach((w, wi) => {
+      const tr = document.createElement('tr');
+      const kanaCells = w.cells.filter(c => cellKind(c) === 'kana');
+      const kanjiCells = w.cells.filter(c => cellKind(c) === 'kanji');
+      const hasFixed = w.cells.some(c => cellKind(c) === 'fixed');
+      const hint = kanjiCells.length || hasFixed ? readingHint(w) : '';
+
+      tr.innerHTML = `
+        <td class="umt-en">
+          <div>${esc(w.en)}${w.typo ? ' <span class="umt-typo">(spelling!)</span>' : ''}</div>
+          ${hint ? `<div class="umt-read">${esc(hint)}</div>` : ''}
+        </td>
+        <td class="umt-hira-col">${kanaColHtml(w, wi)}</td>
+        <td class="umt-kanji-col">${kanjiColHtml(w, wi)}</td>`;
+      tbody.appendChild(tr);
+
+      // bind typed kana inputs
+      w.cells.forEach((c, ci) => {
+        if (cellKind(c) !== 'kana') return;
+        const input = tbody.querySelector(`.umt-hira-input[data-w="${wi}"][data-c="${ci}"]`);
+        if (hasKata(cellText(c))) wanakana.bind(input, { IMEMode: 'toKatakana' });
+        else wanakana.bind(input, { IMEMode: true });
+      });
+
+      // mount one freehand box per kanji cell
+      w.cells.forEach((c, ci) => {
+        if (cellKind(c) !== 'kanji') return;
+        const mount = tbody.querySelector(`.umt-draw-mount[data-w="${wi}"][data-c="${ci}"]`);
+        mountFreehandBox(mount, cellText(c));
+      });
+
+      // restore any previous check state for this row
+      if (prev) {
+        w.cells.forEach((c, ci) => {
+          const st = prev.cells[wi] && prev.cells[wi][ci];
+          if (!st) return;
+          if (cellKind(c) === 'kana') {
+            const input = tbody.querySelector(`.umt-hira-input[data-w="${wi}"][data-c="${ci}"]`);
+            if (input && st.value != null) input.value = st.value;
+          }
+          if (st.verdictHtml) {
+            const v = tbody.querySelector(`.umt-verdict[data-w="${wi}"][data-c="${ci}"]`);
+            if (v) v.innerHTML = st.verdictHtml;
+          }
+          if (cellKind(c) === 'kanji') {
+            const box = tbody.querySelector(`.umt-box[data-w="${wi}"][data-c="${ci}"]`);
+            if (box && st.ok != null) {
+              box.dataset.mark = st.ok ? 'ok' : 'miss';
+              box.querySelectorAll('.umt-mark-btn').forEach(b =>
+                b.classList.toggle('chosen', b.dataset.mark === (st.ok ? 'ok' : 'miss')));
+            }
+          }
+        });
       }
     });
-    document.getElementById('umt-score').textContent = `${correct} / ${rows.length} correct`;
-  };
 
-  // ---- Translation questions ----
-  const transMount = document.getElementById('umt-translations');
-  if (!translations.length) {
-    transMount.innerHTML = `<p style="color:var(--ink2);font-size:13.5px">Not enough example sentences in this unit yet for translation questions.</p>`;
+    // ---------- kanji self-marking ----------
+    tbody.querySelectorAll('.umt-mark-btn').forEach(btn => {
+      btn.onclick = () => {
+        const box = btn.closest('.umt-box');
+        box.dataset.mark = btn.dataset.mark;
+        box.querySelectorAll('.umt-mark-btn').forEach(b =>
+          b.classList.toggle('chosen', b === btn));
+      };
+    });
+
+    // ---------- Bunpou Check cards ----------
+    const bunpouMount = document.getElementById('umt-bunpou');
+    if (bunpouMount) {
+      p.bunpou.forEach((item, bi) => {
+        const card = document.createElement('div');
+        card.className = 'card umt-bunpou-card';
+        card.innerHTML = `
+          <div class="umt-trans-q"><span class="umt-bunpou-tag">3 marks</span> ${bi + 1}. ${esc(item.en)}</div>
+          <div class="umt-bunpou-line" id="ubp-line-${bi}"></div>
+          <div class="btnrow" style="margin-top:10px;justify-content:flex-start">
+            <button class="btn" data-role="reveal">Show answer</button>
+            <span class="umt-score" data-role="marks"></span>
+          </div>
+          <div class="umt-trans-answer" data-role="answer" style="display:none">${answerHtml(item)}</div>`;
+        bunpouMount.appendChild(card);
+
+        const line = card.querySelector(`#ubp-line-${bi}`);
+        item.cells.forEach((c, ci) => {
+          const kind = cellKind(c);
+          const wrap = document.createElement('div');
+          wrap.className = 'ubp-cell';
+          if (kind === 'fixed') {
+            wrap.innerHTML = `<span class="umt-fixed">${esc(cellText(c))}</span>`;
+          } else if (kind === 'kanji') {
+            wrap.innerHTML = `
+              <span class="umt-box-read">${esc(cellRead(c))}</span>
+              <span class="ubp-draw-mount"></span>
+              <span class="umt-box-marks">
+                <button type="button" class="btn umt-mark-btn" data-mark="ok" title="I wrote it correctly"><ion-icon name="checkmark-outline"></ion-icon></button>
+                <button type="button" class="btn umt-mark-btn" data-mark="miss" title="I got it wrong"><ion-icon name="close-outline"></ion-icon></button>
+              </span>`;
+            wrap.dataset.mark = '';
+            wrap.dataset.i = bi;
+            wrap.dataset.c = ci;
+            wrap.classList.add('umt-box');
+          } else {
+            wrap.innerHTML = `
+              <input type="text" class="umt-hira-input ubp-input" autocomplete="off" autocapitalize="off" spellcheck="false"
+                placeholder="${hasKata(cellText(c)) ? 'katakana…' : 'hiragana…'}" />
+              <span class="umt-verdict"></span>`;
+            wrap.dataset.i = bi;
+            wrap.dataset.c = ci;
+            const input = wrap.querySelector('input');
+            if (hasKata(cellText(c))) wanakana.bind(input, { IMEMode: 'toKatakana' });
+            else wanakana.bind(input, { IMEMode: true });
+          }
+          line.appendChild(wrap);
+          if (kind === 'kanji') mountFreehandBox(wrap.querySelector('.ubp-draw-mount'), cellText(c));
+        });
+
+        card.querySelector('[data-role="reveal"]').onclick = ev => {
+          const ans = card.querySelector('[data-role="answer"]');
+          const open = ans.style.display !== 'none';
+          ans.style.display = open ? 'none' : 'block';
+          ev.currentTarget.textContent = open ? 'Show answer' : 'Hide answer';
+        };
+      });
+      bunpouMount.querySelectorAll('.umt-mark-btn').forEach(btn => {
+        btn.onclick = () => {
+          const box = btn.closest('.umt-box');
+          box.dataset.mark = btn.dataset.mark;
+          box.querySelectorAll('.umt-mark-btn').forEach(b =>
+            b.classList.toggle('chosen', b === btn));
+        };
+      });
+
+      // restore previous bunpou state
+      if (prev) {
+        p.bunpou.forEach((item, bi) => {
+          item.cells.forEach((c, ci) => {
+            const st = prev.bunpou && prev.bunpou[bi] && prev.bunpou[bi][ci];
+            if (!st) return;
+            if (cellKind(c) === 'kana') {
+              const input = bunpouMount.querySelector(`.ubp-cell[data-i="${bi}"][data-c="${ci}"] input`);
+              if (input && st.value != null) input.value = st.value;
+            }
+            if (st.verdictHtml) {
+              const v = bunpouMount.querySelector(`.ubp-cell[data-i="${bi}"][data-c="${ci}"] .umt-verdict`);
+              if (v) v.innerHTML = st.verdictHtml;
+            }
+            if (cellKind(c) === 'kanji') {
+              const box = bunpouMount.querySelector(`.umt-box[data-i="${bi}"][data-c="${ci}"]`);
+              if (box && st.ok != null) {
+                box.dataset.mark = st.ok ? 'ok' : 'miss';
+                box.querySelectorAll('.umt-mark-btn').forEach(b =>
+                  b.classList.toggle('chosen', b.dataset.mark === (st.ok ? 'ok' : 'miss')));
+              }
+            }
+          });
+        });
+        const cards = bunpouMount.querySelectorAll('.umt-bunpou-card');
+        (prev.bunpouMarks || []).forEach((m, bi) => {
+          const el = cards[bi] && cards[bi].querySelector('[data-role="marks"]');
+          if (el && m != null) el.textContent = m;
+        });
+      }
+    }
+
+    // ---------- Check ----------
+    const checkBtn = document.getElementById('umt-check');
+    if (checkBtn) checkBtn.onclick = () => checkPart(p, partEl);
+
+    if (prev && prev.wordScore) {
+      document.getElementById('umt-score').textContent = prev.wordScore;
+    }
+    const bScore = document.getElementById('umt-bunpou-score');
+    if (bScore && prev && prev.bunpouScore) bScore.textContent = prev.bunpouScore;
   }
-  translations.forEach((t, i) => {
-    const card = document.createElement('div');
-    card.className = 'card umt-trans-card';
-    card.innerHTML = `
-      <div class="umt-trans-q">${i + 1}. ${t.en}</div>
-      <textarea class="umt-trans-input" rows="2" placeholder="日本語で書いてください…"></textarea>
-      <div class="btnrow" style="margin-top:8px;justify-content:flex-start">
-        <button class="btn" data-role="reveal">Show answer</button>
-      </div>
-      <div class="umt-trans-answer" data-role="answer" style="display:none">${furigana(t.jp)}</div>`;
-    transMount.appendChild(card);
-    card.querySelector('[data-role="reveal"]').onclick = () => {
-      const ans = card.querySelector('[data-role="answer"]');
-      ans.style.display = ans.style.display === 'none' ? 'block' : 'none';
-    };
-  });
 
+  function kanaColHtml(w, wi) {
+    const parts = [];
+    w.cells.forEach((c, ci) => {
+      if (cellKind(c) === 'kanji') return;
+      if (cellKind(c) === 'fixed') {
+        parts.push(`<span class="umt-fixed">${esc(cellText(c))}</span>`);
+        return;
+      }
+      parts.push(`
+        <div class="umt-kana-cell">
+          <input type="text" class="umt-hira-input" data-w="${wi}" data-c="${ci}"
+            autocomplete="off" autocapitalize="off" spellcheck="false"
+            placeholder="${hasKata(cellText(c)) ? 'katakana…' : 'hiragana…'}" />
+          <span class="umt-verdict" data-w="${wi}" data-c="${ci}"></span>
+        </div>`);
+    });
+    return parts.length ? parts.join('') : '<span class="umt-na">—</span>';
+  }
+
+  function kanjiColHtml(w, wi) {
+    const kanjiCells = w.cells.filter(c => cellKind(c) === 'kanji');
+    if (!kanjiCells.length) return '<span class="umt-na">—</span>';
+    return kanjiCells.map((c, i) => {
+      const ci = w.cells.indexOf(c);
+      return `
+        <div class="umt-box" data-w="${wi}" data-c="${ci}" data-mark="">
+          <span class="umt-box-read">${esc(cellRead(c))}</span>
+          <span class="umt-draw-mount" data-w="${wi}" data-c="${ci}"></span>
+          <span class="umt-box-marks">
+            <button type="button" class="btn umt-mark-btn" data-mark="ok" title="I wrote it correctly"><ion-icon name="checkmark-outline"></ion-icon></button>
+            <button type="button" class="btn umt-mark-btn" data-mark="miss" title="I got it wrong"><ion-icon name="close-outline"></ion-icon></button>
+          </span>
+        </div>`;
+    }).join('');
+  }
+
+  function verdictHtml(ok, expected) {
+    return ok
+      ? '<ion-icon name="checkmark-circle" style="color:var(--green)"></ion-icon>'
+      : `<ion-icon name="close-circle" style="color:var(--red)"></ion-icon> <span class="umt-answer">${esc(expected)}</span>`;
+  }
+
+  function checkPart(p, partEl) {
+    let wordGot = 0, wordTotal = 0;
+    const cellRecs = [];
+
+    // words
+    p.words.forEach((w, wi) => {
+      const recs = [];
+      w.cells.forEach((c, ci) => {
+        if (!scored(c)) { recs.push(null); return; }
+        wordTotal++;
+        if (cellKind(c) === 'kana') {
+          const input = partEl.querySelector(`.umt-hira-input[data-w="${wi}"][data-c="${ci}"]`);
+          const expected = clean(cellText(c));
+          const val = clean(input?.value || '');
+          const ok = val === expected || wanakana.toHiragana(val) === expected;
+          if (ok) wordGot++;
+          const vEl = partEl.querySelector(`.umt-verdict[data-w="${wi}"][data-c="${ci}"]`);
+          if (vEl) vEl.innerHTML = verdictHtml(ok, cellText(c));
+          recs.push({ ok, value: input?.value || '', verdictHtml: vEl ? vEl.innerHTML : '' });
+        } else {
+          const box = partEl.querySelector(`.umt-box[data-w="${wi}"][data-c="${ci}"]`);
+          const ok = box && box.dataset.mark === 'ok';
+          if (ok) wordGot++;
+          const vEl = partEl.querySelector(`.umt-verdict[data-w="${wi}"][data-c="${ci}"]`);
+          recs.push({ ok: !!ok, verdictHtml: vEl ? vEl.innerHTML : '' });
+        }
+      });
+      cellRecs.push(recs);
+    });
+
+    // bunpou
+    const bunpouRecs = [];
+    const bunpouMarks = [];
+    p.bunpou.forEach((item, bi) => {
+      const recs = [];
+      let got = 0, total = 0;
+      item.cells.forEach((c, ci) => {
+        if (!scored(c)) { recs.push(null); return; }
+        total++;
+        if (cellKind(c) === 'kana') {
+          const input = partEl.querySelector(`.ubp-cell[data-i="${bi}"][data-c="${ci}"] input`);
+          const expected = clean(cellText(c));
+          const val = clean(input?.value || '');
+          const ok = val === expected || wanakana.toHiragana(val) === expected;
+          if (ok) got++;
+          const vEl = partEl.querySelector(`.ubp-cell[data-i="${bi}"][data-c="${ci}"] .umt-verdict`);
+          if (vEl) vEl.innerHTML = verdictHtml(ok, cellText(c));
+          recs.push({ ok, value: input?.value || '', verdictHtml: vEl ? vEl.innerHTML : '' });
+        } else {
+          const box = partEl.querySelector(`.umt-box[data-i="${bi}"][data-c="${ci}"]`);
+          const ok = box && box.dataset.mark === 'ok';
+          if (ok) got++;
+          recs.push({ ok: !!ok, verdictHtml: '' });
+        }
+      });
+      bunpouRecs.push(recs);
+      const marks = total ? Math.round((got / total) * 3 * 10) / 10 : 0;
+      bunpouMarks.push(`${marks} / 3`);
+    });
+
+    const wordScore = `${wordGot} / ${wordTotal} points`;
+    document.getElementById('umt-score').textContent = wordScore;
+    const bScoreEl = document.getElementById('umt-bunpou-score');
+    if (bScoreEl && bunpouMarks.length) {
+      bScoreEl.textContent = `Bunpou Check: ${bunpouMarks.join(' · ')}`;
+    }
+    // per-card marks
+    const cards = partEl.querySelectorAll('.umt-bunpou-card');
+    bunpouMarks.forEach((m, bi) => {
+      const el = cards[bi] && cards[bi].querySelector('[data-role="marks"]');
+      if (el) el.textContent = m;
+    });
+
+    results[partIdx] = {
+      got: wordGot + bunpouRecs.reduce((a, r) => a + r.filter(Boolean).filter(x => x.ok).length, 0),
+      total: wordTotal + bunpouRecs.reduce((a, r) => a + r.filter(Boolean).length, 0),
+      cells: cellRecs,
+      bunpou: bunpouRecs,
+      bunpouMarks,
+      wordScore,
+      bunpouScore: bScoreEl ? bScoreEl.textContent : '',
+    };
+  }
+
+  // ---------- Finish ----------
   document.getElementById('umt-finish').onclick = () => {
     if (opts.onDone) {
-      const scoreEl = document.getElementById('umt-score');
-      const m = scoreEl.textContent.match(/(\d+) \/ (\d+)/);
-      if (m) opts.onDone(+m[1], +m[2]);
+      const done = results.filter(r => r && r.total > 0);
+      if (done.length) {
+        const got = done.reduce((a, r) => a + r.got, 0);
+        const total = done.reduce((a, r) => a + r.total, 0);
+        opts.onDone(got, total);
+      }
     }
     opts.onExit?.();
   };
+
+  showPart();
 }

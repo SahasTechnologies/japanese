@@ -4,7 +4,6 @@ const { UNITS } = courseworkData;
 const { KANJI, RADICALS } = kanjiData;
 import { speakWithBtn } from '../utils/tts.js';
 import { shuffle, jpNum } from '../utils/helpers.js';
-import { writingPractice } from '../utils/writing.js';
 import { exampleSentences } from './vocab.js';
 import { updateBest, getState, toggleCourseworkLearned } from '../state.js';
 import { mountKanjiPractice } from './kanji.js';
@@ -15,7 +14,7 @@ import { setNavUnit } from '../main.js';
 import { srsCounts, srsQueue } from '../utils/srs.js';
 import { mountSrsReview } from '../utils/srsReview.js';
 import { pitchHtml } from '../utils/pitch.js';
-import { runSentenceDrill } from '../utils/sentenceBuilder.js';
+import { openUnitPractice } from '../utils/practice.js';
 import { rubyWord } from '../utils/furigana.js';
 
 const kanjiByGlyph = {};
@@ -349,11 +348,10 @@ function renderUnitDetail() {
   } else {
     if (pool.length >= 4) {
       html += `<div class="btnrow" style="justify-content:flex-start;margin-bottom:18px;flex-wrap:wrap">
-        <button class="btn primary" id="cw-quiz-btn"><ion-icon name="help-circle-outline"></ion-icon> Quiz this unit</button>
+        <button class="btn primary" id="cw-practice-btn"><ion-icon name="pencil-outline"></ion-icon> Practice</button>
+        <button class="btn" id="cw-quiz-btn"><ion-icon name="help-circle-outline"></ion-icon> Quiz this unit</button>
         <button class="btn" id="cw-flash-btn"><ion-icon name="albums-outline"></ion-icon> Flashcards</button>
-        <button class="btn" id="cw-write-btn"><ion-icon name="create-outline"></ion-icon> Writing practice</button>
         <button class="btn" id="cw-srs-btn"><ion-icon name="layers-outline"></ion-icon> SRS review</button>
-        <button class="btn" id="cw-sb-btn"><ion-icon name="puzzle-outline"></ion-icon> Sentence builder</button>
         ${pool.length >= 8 ? `<button class="btn red" id="cw-mock-btn"><ion-icon name="school-outline"></ion-icon> Unit mock test</button>` : ''}
       </div>
       <div id="cw-tool-area" style="margin-bottom:24px"></div>`;
@@ -458,9 +456,6 @@ function renderUnitDetail() {
   const flashBtn = document.getElementById('cw-flash-btn');
   if (flashBtn) flashBtn.onclick = () => renderUnitFlashcards(toolArea, pool);
 
-  const writeBtn = document.getElementById('cw-write-btn');
-  if (writeBtn) writeBtn.onclick = () => writingPractice(toolArea, pool, { onDone });
-
   const srsBtn2 = document.getElementById('cw-srs-btn');
   if (srsBtn2) {
     const srsCards = pool.map(w => ({
@@ -480,21 +475,11 @@ function renderUnitDetail() {
     });
   }
 
-  const sbBtn = document.getElementById('cw-sb-btn');
-  if (sbBtn) {
-    sbBtn.onclick = () => {
-      const items = [];
-      (u.kanji || []).forEach(k => (k.sentences || []).forEach(s => { if (s.kanji && s.en) items.push({ jp: s.kanji, en: s.en }); }));
-      (u.phraseChevrons || []).forEach(sec => (sec.groups || []).forEach(g => (g.items || []).forEach(it => { if (it.jp && it.en) items.push({ jp: it.jp, en: it.en }); })));
-      (u.grammarPractice || []).forEach(gp => ['example', 'example2'].forEach(key => {
-        const ex = gp[key];
-        if (ex && ex.q?.jp && ex.q?.en) items.push({ jp: ex.q.jp, en: ex.q.en });
-        if (ex && ex.a?.jp && ex.a?.en) items.push({ jp: ex.a.jp, en: ex.a.en });
-      }));
-      const area = document.getElementById('cw-tool-area');
-      if (area) runSentenceDrill(area, items, { limit: 10 });
-    };
-  }
+  const practiceBtn = document.getElementById('cw-practice-btn');
+  if (practiceBtn) practiceBtn.onclick = () => openUnitPractice(u, {
+    onDone: (s, t) => updateBest('coursework-practice-' + u.id, s, t),
+    onExit: renderUnitDetail,
+  });
 
   const mockBtn = document.getElementById('cw-mock-btn');
   if (mockBtn) mockBtn.onclick = () =>

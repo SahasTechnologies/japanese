@@ -25,7 +25,7 @@
             { "en": "(my) grandmother", "cells": [{ "kana": "そぼ" }] },
             { "en": "(my) older brother", "cells": [{ "kana": "あに" }] },
             { "en": "(my) older sister", "cells": [{ "kana": "あね" }] },
-            { "en": "(my) incle (uncle)", "typo": true, "cells": [{ "kana": "おじ" }] },
+            { "en": "(my) uncle", "cells": [{ "kana": "おじ" }] },
             { "en": "(my) aunt", "cells": [{ "kana": "おば" }] },
             {
               "en": "5 minutes to 9 (8:55)",

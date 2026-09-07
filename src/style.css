@@ -2326,8 +2326,18 @@ ion-icon {
   height: 110px;
 }
 
-.umt-draw-mount .fhb-reveal {
-  font-size: 52px;
+.umt-draw-mount .fhb-top {
+  flex-direction: column;
+  align-items: center;
+}
+
+.umt-draw-mount .fhb-answer {
+  min-width: 54px;
+  min-height: 54px;
+}
+
+.umt-draw-mount .fhb-answer-glyph {
+  font-size: 46px;
 }
 
 .umt-selfmark {
@@ -2400,9 +2410,16 @@ ion-icon {
   color: var(--red-deep);
 }
 
-/* Freehand drawing box */
+/* Freehand drawing box — answer shows in its own area beside the canvas so
+   a drawing made at any scale can be compared with the real glyph. */
+.fhb-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .fhb-canvas-wrap {
-  position: relative;
   width: 140px;
   height: 140px;
   border: 1.5px dashed var(--line);
@@ -2418,20 +2435,27 @@ ion-icon {
   cursor: crosshair;
 }
 
-.fhb-reveal {
-  position: absolute;
-  inset: 0;
+.fhb-answer {
   display: none;
   align-items: center;
   justify-content: center;
-  font: 700 64px var(--serif);
-  color: var(--ink2);
-  opacity: 0.28;
-  pointer-events: none;
+  min-width: 68px;
+  min-height: 68px;
+  padding: 6px 12px;
+  border: 1.5px dashed var(--line);
+  border-radius: 10px;
+  background: var(--surface-soft);
+  text-align: center;
 }
 
-.fhb-reveal.show {
-  display: flex;
+.fhb-answer.show {
+  display: inline-flex;
+}
+
+.fhb-answer-glyph {
+  font: 700 52px/1.05 var(--serif);
+  color: var(--ink);
+  white-space: nowrap;
 }
 
 @media (max-width: 640px) {
@@ -3184,7 +3208,7 @@ ion-icon {
 }
 #pr-draw-mount { display: flex; justify-content: center; margin: 12px 0 6px; }
 #pr-draw-mount .fhb-canvas-wrap { width: 200px; height: 200px; }
-#pr-draw-mount .fhb-reveal { font-size: 90px; }
+#pr-draw-mount .fhb-answer-glyph { font-size: 88px; }
 
 .pr-review {
   margin: 6px auto 24px;
@@ -3277,7 +3301,7 @@ ion-icon {
 .umt-box-marks { display: flex; gap: 4px; }
 .umt-kanji-col { display: flex; flex-wrap: wrap; gap: 4px; }
 .umt-kanji-col .umt-draw-mount .fhb-canvas-wrap { width: 92px; height: 92px; }
-.umt-kanji-col .fhb-reveal { font-size: 40px; }
+.umt-kanji-col .fhb-top { flex-direction: column; align-items: center; }
 .umt-kanji-col .fhb .btnrow { justify-content: center; }
 .umt-kanji-col .fhb [data-role="clear-btn"] { display: none; }
 .umt-mark-btn { font-size: 12px; padding: 2px 7px; line-height: 1; }
@@ -3323,7 +3347,6 @@ ion-icon {
   text-align: center;
 }
 .ubp-cell .umt-draw-mount .fhb-canvas-wrap { width: 80px; height: 80px; }
-.ubp-cell .fhb-reveal { font-size: 34px; }
 .ubp-cell .fhb .btnrow { justify-content: center; }
 .ubp-cell .fhb [data-role="clear-btn"] { display: none; }
 .ubp-cell .umt-box-read { font-size: 11px; }

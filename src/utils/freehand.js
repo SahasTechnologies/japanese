@@ -1,7 +1,9 @@
 /**
  * A blank square the person can draw in freehand (canvas-based, no stroke
  * grading — this is for self-testing recall, not the guided KanjiVG tracer).
- * Includes Clear and Reveal-answer controls.
+ * Includes Clear and a Reveal button; the answer is shown in its own area
+ * next to the canvas (not overlaid), so a drawing made at any size/scale can
+ * be compared side by side with the real glyph.
  *
  * @param {HTMLElement} root - container to mount into
  * @param {string} answer - the kanji/word to reveal for self-checking
@@ -9,13 +11,15 @@
 export function mountFreehandBox(root, answer) {
   root.innerHTML = `
     <div class="fhb">
-      <div class="fhb-canvas-wrap">
-        <canvas class="fhb-canvas" width="200" height="200"></canvas>
-        <div class="fhb-reveal" data-role="reveal-overlay">${answer}</div>
+      <div class="fhb-top">
+        <div class="fhb-canvas-wrap">
+          <canvas class="fhb-canvas" width="200" height="200"></canvas>
+        </div>
+        <div class="fhb-answer" data-role="reveal-area" role="img" aria-label="Correct answer: ${String(answer).replace(/"/g, '&quot;')}"></div>
       </div>
       <div class="btnrow" style="margin-top:8px;justify-content:flex-start">
         <button class="btn" data-role="clear-btn"><ion-icon name="refresh-outline"></ion-icon> Clear</button>
-        <button class="btn" data-role="reveal-btn"><ion-icon name="eye-outline"></ion-icon> Reveal</button>
+        <button class="btn" data-role="reveal-btn"><ion-icon name="eye-outline"></ion-icon> Show kanji</button>
       </div>
     </div>`;
 
@@ -56,8 +60,17 @@ export function mountFreehandBox(root, answer) {
   root.querySelector('[data-role="clear-btn"]').onclick = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   };
-  const overlay = root.querySelector('[data-role="reveal-overlay"]');
-  root.querySelector('[data-role="reveal-btn"]').onclick = () => {
-    overlay.classList.toggle('show');
+  const area = root.querySelector('[data-role="reveal-area"]');
+  const btn = root.querySelector('[data-role="reveal-btn"]');
+  const show = () => {
+    const open = area.classList.toggle('show');
+    if (open) {
+      area.innerHTML = `<span class="fhb-answer-glyph">${String(answer).replace(/&/g, '&amp;').replace(/</g, '&lt;')}</span>`;
+      btn.innerHTML = '<ion-icon name="eye-off-outline"></ion-icon> Hide kanji';
+    } else {
+      area.innerHTML = '';
+      btn.innerHTML = '<ion-icon name="eye-outline"></ion-icon> Show kanji';
+    }
   };
+  btn.onclick = show;
 }

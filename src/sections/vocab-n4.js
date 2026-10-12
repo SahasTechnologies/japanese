@@ -1,7 +1,7 @@
 import VOCAB from '../data/vocab-n4.json' with { type: 'json' };
 const ALLVOCAB = Object.values(VOCAB).flat();
 import { runFullQuiz } from '../utils/fullQuiz.js';
-import { shuffle } from '../utils/helpers.js';
+import { shuffle, masuStem } from '../utils/helpers.js';
 import { speakWithBtn } from '../utils/tts.js';
 import {
   updateBest, getState,
@@ -37,11 +37,11 @@ export function exampleSentences4(expr, reading, meaning) {
   // Prefer natural patterns by rough POS
   if (/^to\s/.test(m) || m.includes('(v.') || m.includes('verb')) {
     examples.push({
-      jp: `${w}ます。`,
+      jp: `${masuStem(w)}ます。`,
       en: `I / someone ${m.replace(/^to\s+/, '')}.`,
     });
     examples.push({
-      jp: `毎日、${w}ます。`,
+      jp: `毎日、${masuStem(w)}ます。`,
       en: `I ${m.replace(/^to\s+/, '')} every day.`,
     });
   } else if (m.includes('i-adj') || /(い)$/.test(r) && /(big|small|new|old|good|bad|hot|cold|high|long|short|interesting|busy|beautiful|delicious|difficult|easy|expensive|cheap|early|late|young|old)/.test(m)) {
@@ -50,7 +50,7 @@ export function exampleSentences4(expr, reading, meaning) {
       en: `This is ${m.split(/[;,]/)[0].trim()}.`,
     });
     examples.push({
-      jp: `${w}い${w.includes('い') ? '' : ''}本です。`.replace('いいい', 'いい'),
+      jp: `${w}本です。`,
       en: `It is a ${m.split(/[;,]/)[0].trim()} book.`,
     });
   } else if (/(person|man|woman|student|teacher|friend|family|child|doctor)/.test(m)) {

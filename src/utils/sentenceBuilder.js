@@ -92,9 +92,9 @@ export function runSentenceDrill(container, items, opts = {}) {
         <div class="sb-fb" id="sb-fb"></div>
       </div>`;
 
-    const answerEl = document.getElementById('sb-answer');
-    const tokensEl = document.getElementById('sb-tokens');
-    const fb = document.getElementById('sb-fb');
+    const answerEl = container.querySelector('#sb-answer');
+    const tokensEl = container.querySelector('#sb-tokens');
+    const fb = container.querySelector('#sb-fb');
 
     const used = new Set();
     function renderTokens() {
@@ -135,17 +135,17 @@ export function runSentenceDrill(container, items, opts = {}) {
 
     renderTokens();
     renderAnswer();
-    document.getElementById('sb-undo').onclick = undo;
-    document.getElementById('sb-reset').onclick = reset;
-    document.getElementById('sb-speak').onclick = e => speakWithBtn(item.jp, e.currentTarget);
-    document.getElementById('sb-check').onclick = () => {
+    container.querySelector('#sb-undo').onclick = undo;
+    container.querySelector('#sb-reset').onclick = reset;
+    container.querySelector('#sb-speak').onclick = e => speakWithBtn(item.jp, e.currentTarget);
+    container.querySelector('#sb-check').onclick = () => {
       const attempt = built.map(b => b.t).join('');
       if (attempt === item.jp.replace(/[。、．\s]/g, '')) {
         if (!wrongOnce) score++;
         fb.innerHTML = '<ion-icon name="checkmark-circle"></ion-icon> Correct!';
         fb.className = 'sb-fb ok';
         [...tokensEl.children].forEach(t => (t.disabled = true));
-        document.getElementById('sb-check').disabled = true;
+        container.querySelector('#sb-check').disabled = true;
         setTimeout(() => { i++; show(); }, 900);
       } else {
         wrongOnce = true;
@@ -176,8 +176,8 @@ export function runSentenceDrill(container, items, opts = {}) {
           ${opts.onExit ? `<button class="btn" id="sb-exit">${opts.backLabel || '← Back'}</button>` : ''}
         </div>
       </div>`;
-    document.getElementById('sb-again').onclick = () => runSentenceDrill(container, items, opts);
-    if (opts.onExit) document.getElementById('sb-exit').onclick = () => opts.onExit();
+    container.querySelector('#sb-again').onclick = () => runSentenceDrill(container, items, opts);
+    if (opts.onExit) container.querySelector('#sb-exit').onclick = () => opts.onExit();
   }
 
   show();

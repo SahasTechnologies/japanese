@@ -93,8 +93,13 @@ export function renderGrammar4() {
 
   document.getElementById('gsb-btn').onclick = () => {
     const items = GRAMMAR.flatMap(g => (g.x || []).map(([jp, en]) => ({ jp, en })));
-    const area = document.createElement('div');
-    document.getElementById('gl').prepend(area);
+    // reuse one drill area so repeated clicks don't stack new drills
+    let area = document.getElementById('gsb-area');
+    if (!area) {
+      area = document.createElement('div');
+      area.id = 'gsb-area';
+      document.getElementById('gl').prepend(area);
+    }
     runSentenceDrill(area, items, { limit: 10 });
     area.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   };

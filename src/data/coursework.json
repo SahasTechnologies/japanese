@@ -5599,11 +5599,757 @@
     {
       "id": 9,
       "title": "Unit 9",
-      "subtitle": "Coming soon",
-      "kanji": [],
+      "subtitle": "まっすぐ 行きます — Directions: going straight, turning, crossing & compass points",
+      "kanji": [
+        {
+          "glyph": "右",
+          "sentences": [
+            {
+              "kanji": "右に まがります。",
+              "kana": "みぎに まがります。",
+              "en": "(You) turn right."
+            },
+            {
+              "kanji": "右がわ",
+              "kana": "みぎがわ",
+              "en": "right-hand side"
+            },
+            {
+              "kanji": "右目",
+              "kana": "みぎめ",
+              "en": "right eye"
+            }
+          ]
+        },
+        {
+          "glyph": "左",
+          "sentences": [
+            {
+              "kanji": "左に まがります。",
+              "kana": "ひだりに まがります。",
+              "en": "(You) turn left."
+            },
+            {
+              "kanji": "左がわ",
+              "kana": "ひだりがわ",
+              "en": "left-hand side"
+            },
+            {
+              "kanji": "左手",
+              "kana": "ひだりて",
+              "en": "left hand"
+            }
+          ]
+        },
+        {
+          "glyph": "入",
+          "sentences": [
+            {
+              "kanji": "入ります。",
+              "kana": "はいります。",
+              "en": "(You) enter."
+            },
+            {
+              "kanji": "入れます。",
+              "kana": "いれます。",
+              "en": "(I) put (something) in."
+            },
+            {
+              "kanji": "入口",
+              "kana": "いりぐち",
+              "en": "entrance"
+            }
+          ]
+        },
+        {
+          "glyph": "出",
+          "sentences": [
+            {
+              "kanji": "出ます。",
+              "kana": "でます。",
+              "en": "(I) leave / come out."
+            },
+            {
+              "kanji": "出口",
+              "kana": "でぐち",
+              "en": "exit"
+            },
+            {
+              "kanji": "出かけます。",
+              "kana": "でかけます。",
+              "en": "(I) go out."
+            }
+          ]
+        },
+        {
+          "glyph": "東",
+          "sentences": [
+            {
+              "kanji": "東",
+              "kana": "ひがし",
+              "en": "east"
+            },
+            {
+              "kanji": "東がわ",
+              "kana": "ひがしがわ",
+              "en": "eastern side"
+            },
+            {
+              "kanji": "東口",
+              "kana": "ひがしぐち",
+              "en": "east entrance/exit"
+            },
+            {
+              "kanji": "東京",
+              "kana": "とうきょう",
+              "en": "Tokyo (capital city of Japan)"
+            }
+          ]
+        },
+        {
+          "glyph": "西",
+          "sentences": [
+            {
+              "kanji": "西",
+              "kana": "にし",
+              "en": "west"
+            },
+            {
+              "kanji": "西がわ",
+              "kana": "にしがわ",
+              "en": "western side"
+            },
+            {
+              "kanji": "西口",
+              "kana": "にしぐち",
+              "en": "west entrance/exit"
+            }
+          ]
+        },
+        {
+          "glyph": "南",
+          "sentences": [
+            {
+              "kanji": "南",
+              "kana": "みなみ",
+              "en": "south"
+            },
+            {
+              "kanji": "南がわ",
+              "kana": "みなみがわ",
+              "en": "south side"
+            },
+            {
+              "kanji": "南口",
+              "kana": "みなみぐち",
+              "en": "south entrance/exit"
+            }
+          ]
+        },
+        {
+          "glyph": "北",
+          "sentences": [
+            {
+              "kanji": "北",
+              "kana": "きた",
+              "en": "north"
+            },
+            {
+              "kanji": "北がわ",
+              "kana": "きたがわ",
+              "en": "north side"
+            },
+            {
+              "kanji": "北口",
+              "kana": "きたぐち",
+              "en": "north entrance/exit"
+            }
+          ]
+        }
+      ],
       "qaSections": [],
-      "vocabSections": [],
-      "grammarPractice": []
+      "vocabSections": [
+        {
+          "title": "Direction words",
+          "words": [
+            [
+              "一つめ／一ばんめ",
+              "ひとつめ／いちばんめ",
+              "first"
+            ],
+            [
+              "二つめ／二ばんめ",
+              "ふたつめ／にばんめ",
+              "second"
+            ],
+            [
+              "三つめ／三ばんめ",
+              "みっつめ／さんばんめ",
+              "third"
+            ],
+            [
+              "つぎ",
+              "つぎ",
+              "next"
+            ],
+            [
+              "右",
+              "みぎ",
+              "right"
+            ],
+            [
+              "左",
+              "ひだり",
+              "left"
+            ],
+            [
+              "右がわ",
+              "みぎがわ",
+              "right-hand side"
+            ],
+            [
+              "左がわ",
+              "ひだりがわ",
+              "left-hand side"
+            ],
+            [
+              "東",
+              "ひがし",
+              "east"
+            ],
+            [
+              "西",
+              "にし",
+              "west"
+            ],
+            [
+              "南",
+              "みなみ",
+              "south"
+            ],
+            [
+              "北",
+              "きた",
+              "north"
+            ],
+            [
+              "そうすると",
+              "そうすると",
+              "if/when you do that"
+            ]
+          ]
+        },
+        {
+          "title": "Verbs",
+          "words": [
+            [
+              "まっすぐ 行きます",
+              "まっすぐ いきます",
+              "to go straight"
+            ],
+            [
+              "(右に) まがります",
+              "(みぎに) まがります",
+              "to turn (right)"
+            ],
+            [
+              "(みちを) わたります",
+              "(みちを) わたります",
+              "to cross (the road)"
+            ],
+            [
+              "出ます",
+              "でます",
+              "to exit / leave"
+            ],
+            [
+              "入ります",
+              "はいります",
+              "to enter"
+            ],
+            [
+              "かかります",
+              "かかります",
+              "to take time"
+            ]
+          ]
+        },
+        {
+          "title": "Adjectives",
+          "words": [
+            [
+              "ちかい",
+              "ちかい",
+              "nearby / close"
+            ],
+            [
+              "とおい",
+              "とおい",
+              "far"
+            ]
+          ]
+        },
+        {
+          "title": "Place names (core)",
+          "words": [
+            [
+              "えいがかん",
+              "えいがかん",
+              "movie theatre"
+            ],
+            [
+              "としょかん",
+              "としょかん",
+              "library"
+            ],
+            [
+              "びじゅつかん",
+              "びじゅつかん",
+              "art gallery"
+            ],
+            [
+              "りょかん",
+              "りょかん",
+              "Japanese-style inn"
+            ],
+            [
+              "はなや",
+              "はなや",
+              "flower shop"
+            ],
+            [
+              "にくや",
+              "にくや",
+              "butcher"
+            ],
+            [
+              "本や",
+              "ほんや",
+              "bookshop"
+            ],
+            [
+              "やおや",
+              "やおや",
+              "greengrocer"
+            ],
+            [
+              "くすりや",
+              "くすりや",
+              "pharmacy"
+            ],
+            [
+              "くつや",
+              "くつや",
+              "shoe shop"
+            ],
+            [
+              "えき",
+              "えき",
+              "train station"
+            ],
+            [
+              "パンや",
+              "パンや",
+              "bakery"
+            ],
+            [
+              "ぎんこう",
+              "ぎんこう",
+              "bank"
+            ],
+            [
+              "ゆうびんきょく",
+              "ゆうびんきょく",
+              "post office"
+            ],
+            [
+              "びょういん",
+              "びょういん",
+              "hospital"
+            ],
+            [
+              "おてら",
+              "おてら",
+              "Buddhist temple"
+            ],
+            [
+              "スーパー",
+              "スーパー",
+              "supermarket"
+            ],
+            [
+              "じんじゃ",
+              "じんじゃ",
+              "Shinto shrine"
+            ],
+            [
+              "コンビニ",
+              "コンビニ",
+              "convenience store"
+            ],
+            [
+              "バスてい",
+              "バスてい",
+              "bus stop"
+            ],
+            [
+              "ホテル",
+              "ホテル",
+              "hotel"
+            ],
+            [
+              "タクシーのりば",
+              "タクシーのりば",
+              "taxi stand"
+            ],
+            [
+              "ちかてつ",
+              "ちかてつ",
+              "subway"
+            ],
+            [
+              "みち",
+              "みち",
+              "road"
+            ],
+            [
+              "かど",
+              "かど",
+              "corner"
+            ],
+            [
+              "はし",
+              "はし",
+              "bridge"
+            ],
+            [
+              "こうさてん",
+              "こうさてん",
+              "intersection"
+            ],
+            [
+              "しんごう",
+              "しんごう",
+              "traffic signal/lights"
+            ],
+            [
+              "入口",
+              "いりぐち",
+              "entrance"
+            ],
+            [
+              "出口",
+              "でぐち",
+              "exit"
+            ]
+          ]
+        }
+      ],
+      "grammarPractice": [
+        {
+          "title": "ぶんぽう ポイント 1 — Asking where something is (workbook 188)",
+          "note": "どこ asks where a place is; この へんに Place が ありますか asks whether one is nearby; Place に 行きたいんですが… states where you want to go.",
+          "example": {
+            "q": {
+              "jp": "すみません。 えきは どこですか。",
+              "en": "Excuse me, where is the station?",
+              "bold": [
+                "どこ"
+              ]
+            }
+          },
+          "pattern": {
+            "headers": [],
+            "rows": [
+              [
+                "Q1",
+                "すみません。",
+                "Place/building",
+                "は",
+                "どこですか。"
+              ],
+              [
+                "Q2",
+                "この へんに",
+                "place",
+                "が",
+                "ありますか。"
+              ],
+              [
+                "Q2",
+                "すみません。",
+                "Place",
+                "に",
+                "行きたいんですが…"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "こ／そ／あ／ど words (ひとくちメモ review)",
+          "note": "こ = near the speaker, そ = near the listener, あ = away from both, ど = question.",
+          "table": {
+            "headers": [
+              "Word",
+              "Meaning",
+              "Used for"
+            ],
+            "rows": [
+              [
+                "この + noun",
+                "this (noun)",
+                "near the speaker"
+              ],
+              [
+                "その + noun",
+                "that (noun)",
+                "near the listener"
+              ],
+              [
+                "あの + noun",
+                "that (noun) over there",
+                "away from both"
+              ],
+              [
+                "どの + noun?",
+                "which (noun)?",
+                "question"
+              ],
+              [
+                "これ + particle",
+                "this one",
+                "near the speaker"
+              ],
+              [
+                "それ + particle",
+                "that one",
+                "near the listener"
+              ],
+              [
+                "あれ + particle",
+                "that one over there",
+                "away from both"
+              ],
+              [
+                "どれ + particle?",
+                "which one?",
+                "question"
+              ],
+              [
+                "ここ + particle",
+                "here",
+                "near the speaker"
+              ],
+              [
+                "そこ + particle",
+                "there",
+                "near the listener"
+              ],
+              [
+                "あそこ + particle",
+                "over there",
+                "away from both"
+              ],
+              [
+                "どこ + particle?",
+                "where?",
+                "question"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "ぶんぽう ポイント 2 — Giving directions (workbook 190)",
+          "note": "With directions, use を with 行きます, わたります, まがります and 出ます to show what you go along, cross, turn at or leave.",
+          "example": {
+            "q": {
+              "jp": "この みちを まっすぐ 行きます。",
+              "en": "Go straight along this street.",
+              "bold": [
+                "この みちを"
+              ]
+            }
+          },
+          "example2": {
+            "q": {
+              "jp": "そうすると、左がわに ゆうびんきょくが あります。",
+              "en": "If you do that, the post office will be on the left-hand side.",
+              "bold": [
+                "そうすると、"
+              ]
+            }
+          },
+          "pattern": {
+            "headers": [],
+            "rows": [
+              [
+                "Going straight",
+                "Place",
+                "を",
+                "まっすぐ 行きます。"
+              ],
+              [
+                "Crossing",
+                "Place",
+                "を",
+                "わたります。"
+              ],
+              [
+                "Turning",
+                "Place/number の かど",
+                "を",
+                "direction に まがります。"
+              ],
+              [
+                "Next",
+                "そうすると、direction に",
+                "place",
+                "が あります。"
+              ]
+            ]
+          },
+          "drills": [
+            [
+              "二つ目の かど",
+              "を",
+              "右",
+              "に まがります。"
+            ],
+            [
+              "ぎんこうの かど",
+              "を",
+              "左",
+              "に まがります。"
+            ]
+          ]
+        },
+        {
+          "title": "ぶんぽう ポイント 3 — Joining two or more sets of actions (workbook 194)",
+          "note": "Change the first verb to て form, add 、, then give the next action.",
+          "example": {
+            "q": {
+              "jp": "この みちを まっすぐ 行って、つぎの かどを 右に まがります。",
+              "en": "Go straight ahead on this road and turn right at the next corner.",
+              "bold": [
+                "行って、"
+              ]
+            }
+          },
+          "example2": {
+            "q": {
+              "jp": "まっすぐ 行って、しんごうを 右に まがります。",
+              "en": "Go straight ahead and then turn right at the traffic lights.",
+              "bold": [
+                "行って、"
+              ]
+            }
+          },
+          "pattern": {
+            "headers": [],
+            "rows": [
+              [
+                "Pattern",
+                "Action A verb て form、",
+                "Action B。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "ぶんぽう ポイント 4 — Showing the order of actions (workbook 198)",
+          "note": "Verb て form から、 means 'after doing A, do B'.",
+          "example": {
+            "q": {
+              "jp": "あの かどを 左に まがってから、はしを わたって ください。",
+              "en": "Turn left at that corner and then cross the bridge.",
+              "bold": [
+                "まがってから、"
+              ]
+            }
+          },
+          "example2": {
+            "q": {
+              "jp": "えきを 出てから、しんごうを わたります。",
+              "en": "After I leave the station, I cross at the traffic lights.",
+              "bold": [
+                "出てから、"
+              ]
+            }
+          },
+          "pattern": {
+            "headers": [],
+            "rows": [
+              [
+                "Pattern",
+                "Action A verb て form から、",
+                "Action B。"
+              ]
+            ]
+          }
+        },
+        {
+          "title": "ぶんぽう ポイント 5 — Asking and saying how long it takes (workbook 200)",
+          "note": "くらい can be used instead of ぐらい.",
+          "example": {
+            "q": {
+              "jp": "うちから 学校まで どのくらい かかりますか。",
+              "en": "How long does it take to get from home to school?",
+              "bold": [
+                "どのくらい かかりますか"
+              ]
+            }
+          },
+          "example2": {
+            "q": {
+              "jp": "うちから 学校まで バスで 25分くらい かかります。",
+              "en": "It takes 25 minutes from home to school by bus.",
+              "bold": [
+                "25分くらい かかります"
+              ]
+            }
+          },
+          "pattern": {
+            "headers": [],
+            "rows": [
+              [
+                "Q",
+                "Place から place まで",
+                "どのくらい",
+                "かかりますか。"
+              ],
+              [
+                "A",
+                "Place から place まで",
+                "duration ぐらい",
+                "かかります ／ です。"
+              ]
+            ]
+          }
+        }
+      ],
+      "grammarNotes": [
+        {
+          "title": "Asking directions (ポイント 1 & 2)",
+          "paragraphs": [
+            "Three ways to ask for directions: Place は どこですか。 / この へんに Place が ありますか。 / Place に 行きたいんですが…。",
+            "Inserting ん (〜んです) adds your feeling: カフェに 行きたいです is a plain wish; カフェに 行きたいんです emphasises it. Ending with が (…んですが…) shows hesitation and invites the listener to join the conversation. Tone changes the impression, so use the right tone."
+          ],
+          "examples": [
+            {
+              "jp": "カフェは どこですか。",
+              "en": "Where is the coffee shop?"
+            },
+            {
+              "jp": "この へんに カフェが ありますか。",
+              "en": "Is there a coffee shop around here?"
+            },
+            {
+              "jp": "カフェに 行きたいんですが…。",
+              "en": "I want to go to a coffee shop, but…"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": 10,

@@ -19,7 +19,7 @@ const ALLVOCAB = Object.values(VOCAB).flat();
 const { KANJI } = kanjiData;
 const { PARTICLE_QUIZ } = grammar;
 import { runFullQuiz } from '../utils/fullQuiz.js';
-import { shuffle } from '../utils/helpers.js';
+import { shuffle, masuStem } from '../utils/helpers.js';
 import { HAS_TTS } from '../utils/tts.js';
 import { furigana, rubyWord } from '../utils/furigana.js';
 import { tokenize } from '../utils/sentenceBuilder.js';
@@ -39,8 +39,7 @@ function exampleFor(w) {
   const m = (meaning || '').toLowerCase();
   if (/^to\s/.test(m)) {
     // verbs: rough masu-form so the sentence reads naturally
-    const stem = /[る]$/.test(expr) ? expr.slice(0, -1) : /[う]$/.test(expr) ? expr.slice(0, -1) + 'い' : expr;
-    return `${stem}ます。`;
+    return `${masuStem(expr)}ます。`;
   }
   if (/place|school|station|home|store/.test(m)) return `${expr}へ 行きます。`;
   if (/food|drink|water|tea|rice|bread/.test(m)) return `${expr}を 食べます。`;

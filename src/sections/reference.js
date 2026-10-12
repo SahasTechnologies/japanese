@@ -1,4 +1,6 @@
 import ref from '../data/reference.json' with { type: 'json' };
+import kanjiData from '../data/kanji.json' with { type: 'json' };
+const N5_KANJI = kanjiData.KANJI.length;
 const { EXPRESSIONS, NUMBERS, COUNTERS, DAYS, MONTHS, VERB_CONJUGATION } = ref;
 const TOC = [
   { id: 'ref-numbers', label: 'Numbers (数字)', section: null },
@@ -8,7 +10,7 @@ const TOC = [
   { id: 'ref-expr', label: 'Common expressions', section: null },
   { id: 'ref-verbs', label: 'Verb groups & て-form', section: null },
   { id: 'go-kana', label: '→ Kana trainer', section: 'kana' },
-  { id: 'go-kanji', label: '→ Kanji (103 characters)', section: 'kanji' },
+  { id: 'go-kanji', label: `→ Kanji (${N5_KANJI} characters)`, section: 'kanji' },
   { id: 'go-vocab', label: '→ Vocabulary (~700 words)', section: 'vocab' },
   { id: 'go-grammar', label: '→ Grammar & particles', section: 'grammar' },
   { id: 'go-writing', label: '→ Writing practice', section: 'writing' },
@@ -112,7 +114,7 @@ export function renderRef(navigateTo) {
     'What this app covers',
     `<ul class="ref-coverage">
       <li><button type="button" class="ref-jump" data-go="kana"><strong>Kana</strong> — full hiragana & katakana charts + quizzes</button></li>
-      <li><button type="button" class="ref-jump" data-go="kanji"><strong>Kanji</strong> — 103 N5 characters, stroke order, trace, can-read / can-write</button></li>
+      <li><button type="button" class="ref-jump" data-go="kanji"><strong>Kanji</strong> — ${N5_KANJI} N5 characters, stroke order, trace, can-read / can-write</button></li>
       <li><button type="button" class="ref-jump" data-go="vocab"><strong>Vocabulary</strong> — 700+ N5 words, example sentences, kana/kanji modes</button></li>
       <li><button type="button" class="ref-jump" data-go="grammar"><strong>Grammar</strong> — core patterns and particle drills</button></li>
       <li><button type="button" class="ref-jump" data-go="writing"><strong>Writing</strong> — type rōmaji, watch it become kana, kanji accepted too</button></li>

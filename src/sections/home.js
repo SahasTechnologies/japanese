@@ -5,13 +5,18 @@ import { speakWithBtn } from '../utils/tts.js';
 import courseworkData from '../data/coursework.json' with { type: 'json' };
 import { openUnit } from './coursework.js';
 import { unitHasContent } from '../utils/courseworkPool.js';
+import kanjiData from '../data/kanji.json' with { type: 'json' };
+import grammarData from '../data/grammar.json' with { type: 'json' };
 const { UNITS } = courseworkData;
+const N5_KANJI = kanjiData.KANJI.length;
+const N5_GRAMMAR = grammarData.GRAMMAR.length;
+const escHtml = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const JLPT_ITEMS = [
   { id: 'kana',      icon: 'あ', label: 'Kana',       desc: 'Hiragana & Katakana — charts + drills',   color: 'var(--red)' },
-  { id: 'kanji',     icon: '漢', label: 'Kanji',      desc: '108 kanji · stroke order · tracing · dictation',     color: 'var(--blue)' },
+  { id: 'kanji',     icon: '漢', label: 'Kanji',      desc: `${N5_KANJI} kanji · stroke order · tracing · dictation`,     color: 'var(--blue)' },
   { id: 'vocab',     icon: '語', label: 'Vocabulary', desc: '700+ words · kana-only mode · learned tracking', color: 'var(--green)' },
-  { id: 'grammar',   icon: '文', label: 'Grammar',    desc: '25 patterns + particle drills',          color: 'var(--gold)' },
+  { id: 'grammar',   icon: '文', label: 'Grammar',    desc: `${N5_GRAMMAR} patterns + particle drills`,          color: 'var(--gold)' },
   { id: 'writing',   icon: '書', label: 'Writing',    desc: 'Type rōmaji, watch it become kana',       color: 'var(--green)' },
   { id: 'reading',   icon: '読', label: 'Reading',    desc: 'Short passages & comprehension',         color: 'var(--red-deep)' },
   { id: 'listening', icon: '聴', label: 'Listening',  desc: 'Ear training via text-to-speech',        color: 'var(--blue)' },
@@ -157,20 +162,20 @@ function wotdContentHtml(d) {
       <div class="wotd-head"><ion-icon name="calendar-outline"></ion-icon> Japanese Word of the Day</div>
       <div class="wotd-main">
         <div class="wotd-word">
-          <span class="wotd-kanji">${d.word}</span>
+          <span class="wotd-kanji">${escHtml(d.word)}</span>
           <button class="btn icon-btn" id="wotd-speak" title="Listen"><ion-icon name="volume-high-outline"></ion-icon></button>
         </div>
-        <div class="wotd-kana">${d.kana}${d.romaji ? ` <span class="wotd-romaji">(${d.romaji})</span>` : ''}</div>
-        <div class="wotd-eng">${d.english}${d.pos ? ` <span class="wotd-pos">${d.pos}</span>` : ''}</div>
+        <div class="wotd-kana">${escHtml(d.kana)}${d.romaji ? ` <span class="wotd-romaji">(${escHtml(d.romaji)})</span>` : ''}</div>
+        <div class="wotd-eng">${escHtml(d.english)}${d.pos ? ` <span class="wotd-pos">${escHtml(d.pos)}</span>` : ''}</div>
       </div>
       ${d.example ? `
         <div class="wotd-example">
           <div class="wotd-ex-jp">
-            <span>${d.example.jp}</span>
+            <span>${escHtml(d.example.jp)}</span>
             ${d.example.audio ? `<button class="btn icon-btn" id="wotd-ex-speak" title="Listen"><ion-icon name="volume-high-outline"></ion-icon></button>` : ''}
           </div>
-          <div class="wotd-ex-kana">${d.example.kana}</div>
-          <div class="wotd-ex-en">${d.example.en}</div>
+          <div class="wotd-ex-kana">${escHtml(d.example.kana)}</div>
+          <div class="wotd-ex-en">${escHtml(d.example.en)}</div>
         </div>` : ''}
     </div>`;
 }

@@ -49,7 +49,11 @@ function playUrl(url, rate, fallbackText, opts = {}) {
   audio.playbackRate = Math.min(2, Math.max(0.5, rate || 1));
   currentAudio = audio;
   const cleanup = () => { if (currentAudio === audio) currentAudio = null; };
+  let fellBack = false;
   const fallback = () => {
+    // a failed load fires 'error' and may also reject play(); speak only once
+    if (fellBack) return;
+    fellBack = true;
     cleanup();
     opts.onerror?.();
     if (fallbackText) speakBrowser(fallbackText, rate, opts);

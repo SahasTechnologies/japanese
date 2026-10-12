@@ -105,6 +105,14 @@ async function main() {
     process.exit(0);
   }
 
+  // keep previously fetched strokes for any character that failed this time,
+  // so a flaky network can't wipe out good data
+  let previous = {};
+  try { previous = existsSync(OUT) ? JSON.parse(readFileSync(OUT, 'utf8')) : {}; } catch (_) {}
+  for (const ch of LIST) {
+    if (!result[ch]?.length && previous[ch]?.length) result[ch] = previous[ch];
+  }
+
   const dir = dirname(OUT);
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 

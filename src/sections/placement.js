@@ -99,7 +99,7 @@ export function renderPlacement(navigate) {
           <div class="qz-q">${q.q}</div>
           <div class="qz-opts" id="pt-opts"></div>
         </div>`;
-      const box = document.getElementById('pt-opts');
+      const box = area.querySelector('#pt-opts');
       // shipped data lists the correct answer first — shuffle so position
       // never gives it away
       let options = (q.options || []).slice();
@@ -157,7 +157,7 @@ export function renderPlacement(navigate) {
             <button class="btn" id="pt-home">Skip &amp; go to Home</button>
           </div>
         </div>`;
-      const markBtn = document.getElementById('pt-mark');
+      const markBtn = area.querySelector('#pt-mark');
       if (markBtn && !markBtn.disabled) {
         markBtn.onclick = () => {
           const P = getState();
@@ -166,7 +166,7 @@ export function renderPlacement(navigate) {
           navigate('home');
         };
       }
-      document.getElementById('pt-home').onclick = () => navigate('home');
+      area.querySelector('#pt-home').onclick = () => navigate('home');
     }
 
     show();

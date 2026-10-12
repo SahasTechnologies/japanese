@@ -42,7 +42,7 @@ function renderKanjiList() {
   const mode = P.vocabKanjiMode || 'learned';
   main.innerHTML = `
     <div class="sec-title">Kanji Trainer</div>
-    <div class="sec-sub">103 N5 kanji grouped by theme. Tap a kanji to see stroke order and trace it.</div>
+    <div class="sec-sub">${KANJI.length} N5 kanji grouped by theme. Tap a kanji to see stroke order and trace it.</div>
     <div class="btnrow" style="justify-content:flex-start;margin-bottom:14px;flex-wrap:wrap">
       <button class="btn primary" id="kqbtn"><ion-icon name="help-circle-outline"></ion-icon> Meaning quiz</button>
       <button class="btn" id="klqbtn" ${learnedCount < 4 ? 'disabled title="Mark at least 4 kanji as learned"' : ''}>

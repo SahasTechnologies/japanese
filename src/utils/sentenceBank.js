@@ -22,7 +22,7 @@
  */
 import courseworkData from '../data/coursework.json' with { type: 'json' };
 import grammarData from '../data/grammar.json' with { type: 'json' };
-import { shuffle } from './helpers.js';
+import { shuffle, masuStem } from './helpers.js';
 
 const { UNITS: ALL_UNITS } = courseworkData;
 const { GRAMMAR } = grammarData;
@@ -123,23 +123,23 @@ function clockParts(en) {
   return null;
 }
 
-/** conjugate a ます-reading verb into polite forms */
+/**
+ * Polite forms of a verb (ます / ません / ました / たいです / ましょう), built from
+ * its dictionary or ます form. Kanji verbs keep their kanji stem (行く → 行きます).
+ */
 function politeForms(expr, reading) {
   const r = cleanReading(reading);
-  if (!r || !/ます$/.test(r)) return null;
-  const base = r.replace(/ます$/, '');
-  const glue = kana => {
-    if (!hasKanji(expr)) return kana;
-    // overwrite the trailing kana of the expression with the conjugated form
-    const ex = String(expr).replace(/\s+/g, '');
-    if (ex.endsWith(r)) return ex.slice(0, ex.length - r.length) + kana;
-    return ex;
-  };
+  if (!r) return null;
+  const ex = String(expr).replace(/\s+/g, '');
+  const kanaStem = masuStem(r);
+  const stem = hasKanji(ex) && masuStem(ex) ? masuStem(ex) : kanaStem;
+  if (!stem) return null;
   return {
-    masu: glue(r), neg: glue(r.replace(/ます$/, 'ません')),
-    past: glue(r.replace(/ます$/, 'ました')),
-    tai: glue(base + 'たいです'),
-    masho: glue(base + 'ましょう'),
+    masu: `${stem}ます`,
+    neg: `${stem}ません`,
+    past: `${stem}ました`,
+    tai: `${stem}たいです`,
+    masho: `${stem}ましょう`,
   };
 }
 

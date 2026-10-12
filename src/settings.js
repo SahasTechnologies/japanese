@@ -290,9 +290,6 @@ function renderDialog(s) {
 function bindDialog(dialog, getS, setS) {
   const close = () => dialog.open && dialog.close();
   dialog.querySelector('#settingsClose')?.addEventListener('click', close);
-  dialog.addEventListener('click', (e) => {
-    if (e.target === dialog) close();
-  });
 
   dialog.querySelectorAll('[data-theme]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -405,6 +402,10 @@ export function initSettings({ onReset } = {}) {
   dialog.className = 'settings-dialog';
   dialog.innerHTML = renderDialog(s);
   document.body.appendChild(dialog);
+  // backdrop click closes the dialog; bound once here (bindDialog runs on every re-render)
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
 
   const getS = () => s;
   const setS = (next) => {

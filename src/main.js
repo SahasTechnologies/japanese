@@ -23,6 +23,8 @@ import { renderFlashcards } from './sections/flashcards.js';
 import { renderCoursework, openUnit } from './sections/coursework.js';
 import { renderWriting } from './sections/writing.js';
 import { renderPlacement } from './sections/placement.js';
+
+const escHtml = s => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 import kanjiData4 from './data/kanji-n4.json' with { type: 'json' };
 import VOCAB4 from './data/vocab-n4.json' with { type: 'json' };
 import grammar4 from './data/grammar-n4.json' with { type: 'json' };
@@ -259,7 +261,7 @@ if (searchInput) {
       });
       main.innerHTML = `
         <div class="sec-title">Search results</div>
-        <div class="sec-sub">${hits.length} match${hits.length === 1 ? '' : 'es'} for “${q.replace(/"/g,'')}”</div>
+        <div class="sec-sub">${hits.length} match${hits.length === 1 ? '' : 'es'} for “${escHtml(q)}”</div>
         <div class="search-results" id="sr"></div>`;
       const sr = document.getElementById('sr');
       if (!hits.length) {
@@ -268,7 +270,7 @@ if (searchInput) {
         hits.slice(0, 80).forEach(h => {
           const el = document.createElement('div');
           el.className = 'search-hit';
-          el.innerHTML = `<div class="sh-title">${h.title}</div><div class="sh-meta">${h.type} · ${h.meta}</div>`;
+          el.innerHTML = `<div class="sh-title">${escHtml(h.title)}</div><div class="sh-meta">${escHtml(h.type)} · ${escHtml(h.meta)}</div>`;
           el.onclick = () => h.go();
           sr.appendChild(el);
         });

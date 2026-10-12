@@ -354,9 +354,9 @@ export function renderUnitMockTest(u, opts = {}) {
     if (checkBtn) checkBtn.onclick = () => checkPart(p, partEl);
 
     if (prev && prev.wordScore) {
-      document.getElementById('umt-score').textContent = prev.wordScore;
+      partEl.querySelector('#umt-score').textContent = prev.wordScore;
     }
-    const bScore = document.getElementById('umt-bunpou-score');
+    const bScore = partEl.querySelector('#umt-bunpou-score');
     if (bScore && prev && prev.bunpouScore) bScore.textContent = prev.bunpouScore;
   }
 
@@ -462,8 +462,8 @@ export function renderUnitMockTest(u, opts = {}) {
     });
 
     const wordScore = `${wordGot} / ${wordTotal} points`;
-    document.getElementById('umt-score').textContent = wordScore;
-    const bScoreEl = document.getElementById('umt-bunpou-score');
+    partEl.querySelector('#umt-score').textContent = wordScore;
+    const bScoreEl = partEl.querySelector('#umt-bunpou-score');
     if (bScoreEl && marksList.length) {
       bScoreEl.textContent = `Bunpou Check: ${marksList.map(m => `${m.toFixed(1)} / 3`).join(' · ')}`;
     }

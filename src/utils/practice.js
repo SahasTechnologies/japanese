@@ -579,6 +579,8 @@ function runLesson(u, cfg, api, starter = null) {
         if (!t) return;
         if (zone === 'slot') moveIn(t); else moveOut(t);
       };
+      slot.dataset.zone = 'slot';
+      tray.dataset.zone = 'tray';
       [slot, tray].forEach(zone => {
         zone.addEventListener('dragover', ev => ev.preventDefault());
         zone.addEventListener('drop', ev => onDrop(ev, zone.dataset.zone || 'tray'));

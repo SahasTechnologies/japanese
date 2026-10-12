@@ -21,6 +21,8 @@ export function quiz(container, qs, opts = {}) {
     if (!opts.time) return;
     stopTimer();
     timer = setInterval(() => {
+      // the quiz was left (exit / navigation): stop without recording a result
+      if (!container.isConnected) { finished = true; stopTimer(); return; }
       timeLeft--;
       const el = container.querySelector('#tm');
       if (el) el.innerHTML = `<ion-icon name="timer-outline"></ion-icon> ${fmtTime(timeLeft)}`;

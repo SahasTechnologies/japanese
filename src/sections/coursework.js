@@ -464,6 +464,17 @@ function renderUnitDetail() {
       back: `<div class="srs-meaning">${w[2]}</div><div class="srs-sub">${w[1]}${pitchHtml(w[0], w[1])}</div>`,
       speak: w[0],
     }));
+    // the unit's kanji too, so drawing misses from practice come back for review
+    (u.kanji || []).forEach(k => {
+      const info = kanjiByGlyph[k.glyph];
+      const id = `cv:${u.id}:${k.glyph}`;
+      if (!info || srsCards.some(c => c.id === id)) return;
+      srsCards.push({
+        id,
+        front: `<span class="big-kana">${esc(k.glyph)}</span>`,
+        back: `<div class="srs-meaning">${esc(info[3] || '')}</div><div class="srs-sub">${esc([info[1], info[2]].filter(Boolean).join(' · '))}</div>`,
+      });
+    });
     const srsIds = srsCards.map(c => c.id);
     const sc2 = srsCounts(srsIds);
     srsBtn2.innerHTML = `<ion-icon name="layers-outline"></ion-icon> SRS review <b class="mono">${sc2.due + sc2.fresh}</b>`;

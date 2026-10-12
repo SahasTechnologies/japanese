@@ -57,14 +57,14 @@ export function writingPractice(container, words, opts = {}) {
         <div class="wp-fb" id="wp-fb"></div>
       </div>`;
 
-    const input = document.getElementById('wp-input');
+    const input = container.querySelector('#wp-input');
     if (useKata) wanakana.bind(input, { IMEMode: 'toKatakana' });
     else wanakana.bind(input, { IMEMode: true });
     input.focus();
 
-    document.getElementById('wp-speak').onclick = e => speakWithBtn(expr, e.currentTarget);
+    container.querySelector('#wp-speak').onclick = e => speakWithBtn(expr, e.currentTarget);
 
-    const fb = document.getElementById('wp-fb');
+    const fb = container.querySelector('#wp-fb');
     function check() {
       const val = input.value.trim();
       const okKana = val === reading;
@@ -72,8 +72,8 @@ export function writingPractice(container, words, opts = {}) {
       const okNoSpace = wanakana.toHiragana(val.replace(/\s+/g, '')) === reading;
       const ok = okKana || okKanji || okNoSpace;
       input.disabled = true;
-      document.getElementById('wp-check').disabled = true;
-      document.getElementById('wp-skip').disabled = true;
+      container.querySelector('#wp-check').disabled = true;
+      container.querySelector('#wp-skip').disabled = true;
       if (ok) {
         score++;
         fb.innerHTML = `<ion-icon name="checkmark-circle"></ion-icon> Correct! <span class="wp-answer">${expr}${expr !== reading ? ` (${reading})` : ''}</span>`;
@@ -85,8 +85,8 @@ export function writingPractice(container, words, opts = {}) {
       setTimeout(() => { i++; i < pool.length ? show() : finish(); }, 1300);
     }
 
-    document.getElementById('wp-check').onclick = check;
-    document.getElementById('wp-skip').onclick = () => {
+    container.querySelector('#wp-check').onclick = check;
+    container.querySelector('#wp-skip').onclick = () => {
       input.disabled = true;
       fb.innerHTML = `<ion-icon name="close-circle"></ion-icon> Answer: <span class="wp-answer">${expr}${expr !== reading ? ` (${reading})` : ''}</span>`;
       fb.className = 'wp-fb err';
@@ -108,8 +108,8 @@ export function writingPractice(container, words, opts = {}) {
           ${opts.back ? `<button class="btn" id="wp-back">← Back</button>` : ''}
         </div>
       </div>`;
-    document.getElementById('wp-again').onclick = () => { i = 0; score = 0; show(); };
-    if (opts.back) document.getElementById('wp-back').onclick = () => opts.back();
+    container.querySelector('#wp-again').onclick = () => { i = 0; score = 0; show(); };
+    if (opts.back) container.querySelector('#wp-back').onclick = () => opts.back();
     if (opts.onDone) opts.onDone(score, pool.length);
   }
 
